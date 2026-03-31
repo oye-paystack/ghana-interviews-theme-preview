@@ -1,5 +1,4 @@
 import { Play, Stop } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
 import { TextMorph } from "torph/react";
 import playerShellSrc from "../../../Player Translucent.svg";
 import playerGrillSrc from "../../../Grill.png";
@@ -10,17 +9,13 @@ function PlayerStage({
   merchants,
   activeIndex,
   activeMerchant,
+  isPlaying,
+  onTogglePlayback,
   spacing,
   textMorphDuration,
   textMorphEase,
   playbackPulseDuration,
 }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    setIsPlaying(false);
-  }, [activeMerchant.id]);
-
   const buttonLabel = isPlaying ? "Stop playback" : activeMerchant.listenLabel;
 
   return (
@@ -52,7 +47,7 @@ function PlayerStage({
           aria-pressed={isPlaying}
           data-text-morph-duration={textMorphDuration}
           data-text-morph-ease={textMorphEase}
-          onClick={() => setIsPlaying((playing) => !playing)}
+          onClick={onTogglePlayback}
         >
           <span className={styles.listenPillIcon} aria-hidden="true">
             {isPlaying ? (

@@ -32,6 +32,10 @@ describe("ThemeShowcaseSection", () => {
     renderThemeShowcase();
 
     const listenButton = screen.getByRole("button", { name: /listen to eric/i });
+    const merchantCopy = screen.getByTestId("merchant-copy");
+
+    expect(merchantCopy).toHaveAttribute("data-playing", "false");
+
     fireEvent.click(listenButton);
 
     expect(screen.getByRole("button", { name: /stop playback/i })).toHaveAttribute(
@@ -43,6 +47,7 @@ describe("ThemeShowcaseSection", () => {
       "true",
     );
     expect(screen.getByTestId("playback-indicator")).toHaveAttribute("data-playing", "true");
+    expect(merchantCopy).toHaveAttribute("data-playing", "true");
 
     fireEvent.click(screen.getByRole("button", { name: /stop playback/i }));
 
@@ -55,6 +60,7 @@ describe("ThemeShowcaseSection", () => {
       "false",
     );
     expect(screen.getByTestId("playback-indicator")).toHaveAttribute("data-playing", "false");
+    expect(merchantCopy).toHaveAttribute("data-playing", "false");
   });
 
   test("resets playback button state when the merchant changes", () => {
@@ -71,6 +77,7 @@ describe("ThemeShowcaseSection", () => {
       "data-playing",
       "false",
     );
+    expect(screen.getByTestId("merchant-copy")).toHaveAttribute("data-playing", "false");
   });
 
   test("clamps next and previous navigation at the ends", () => {

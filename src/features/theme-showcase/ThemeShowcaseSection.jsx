@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ConfigPopover from "./ConfigPopover";
 import MerchantCopy from "./MerchantCopy";
 import MerchantNav from "./MerchantNav";
@@ -33,6 +33,7 @@ function ThemeShowcaseSection({
   const [playbackPulseDuration, setPlaybackPulseDuration] = useState(
     DEFAULT_PLAYBACK_PULSE_DURATION,
   );
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
 
   const activeMerchant = merchants[activeIndex];
@@ -40,6 +41,10 @@ function ThemeShowcaseSection({
   const atEnd = activeIndex === merchants.length - 1;
   const sectionHeadingId = `${theme.id}-heading`;
   const textMorphEaseString = `cubic-bezier(${textMorphEase.join(", ")})`;
+
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [activeMerchant.id]);
 
   const sectionStyle = {
     "--orbit-spacing": `${orbitSpacing}px`,
@@ -64,7 +69,7 @@ function ThemeShowcaseSection({
 
         <div className={styles.cardBody}>
           <section className={`${styles.panel} ${styles.copyPanel}`} aria-live="polite">
-            <MerchantCopy merchant={activeMerchant} />
+            <MerchantCopy merchant={activeMerchant} isPlaying={isPlaying} />
           </section>
 
           <section className={`${styles.panel} ${styles.playerPanel}`} aria-label="Cassette player">
@@ -72,6 +77,8 @@ function ThemeShowcaseSection({
               merchants={merchants}
               activeIndex={activeIndex}
               activeMerchant={activeMerchant}
+              isPlaying={isPlaying}
+              onTogglePlayback={() => setIsPlaying((playing) => !playing)}
               spacing={orbitSpacing}
               textMorphDuration={textMorphDuration}
               textMorphEase={textMorphEaseString}
