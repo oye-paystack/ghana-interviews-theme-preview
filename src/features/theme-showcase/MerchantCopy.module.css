@@ -28,7 +28,7 @@
 .title {
   margin: 0;
   color: var(--title);
-  font-family: "PP Mori Bold", sans-serif;
+  font-family: var(--font-display);
   font-size: 32px;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -37,8 +37,7 @@
 .body {
   margin: 16px 0 0;
   color: var(--title);
-  font-family: "InterDisplay", "Inter", "Helvetica Neue", Arial, sans-serif;
-  font-optical-sizing: auto;
+  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 400;
   line-height: 1.42;
@@ -87,7 +86,7 @@
 .quoteText {
   margin: 0;
   color: var(--title);
-  font-family: "InterDisplay", "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body);
   font-size: 24px;
   font-weight: 400;
   line-height: 1.5;
@@ -115,15 +114,15 @@
 
 .quoteSpeaker {
   color: var(--title);
-  font-family: "InterDisplay", "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body);
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.2;
 }
 
 .quoteRole {
   color: var(--tag-bg);
-  font-family: "InterDisplay", "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body);
   font-size: 16px;
   font-weight: 400;
   line-height: 1.35;

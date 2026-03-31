@@ -50,7 +50,7 @@
   top: 190px;
   right: 30px;
   color: rgba(255, 255, 255, 0.58);
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: var(--font-body);
   font-size: 6.6px;
   letter-spacing: -0.03em;
 }
@@ -129,9 +129,9 @@
 }
 
 .listenPillLabel {
-  font-family: "InterDisplay", "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1;
 }
 

@@ -9,7 +9,7 @@
   width: min(535px, 100%);
   margin: 0 auto;
   color: var(--title);
-  font-family: "PP Mori Bold", sans-serif;
+  font-family: var(--font-display);
   font-size: 36px;
   line-height: 1.18;
   text-align: center;
@@ -34,9 +34,10 @@
 
 .tagIndex {
   opacity: 0.48;
-  font-family: "PP Mori Heavy", sans-serif;
+  font-family: var(--font-display);
   font-size: 20px;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .tagText {
