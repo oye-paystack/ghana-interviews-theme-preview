@@ -28,6 +28,37 @@ describe("ThemeShowcaseSection", () => {
     );
   });
 
+  test("toggles the playback button label and pressed state", () => {
+    renderThemeShowcase();
+
+    const listenButton = screen.getByRole("button", { name: /listen to eric/i });
+    fireEvent.click(listenButton);
+
+    expect(screen.getByRole("button", { name: /stop playback/i })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /stop playback/i }));
+
+    expect(screen.getByRole("button", { name: /listen to eric/i })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+  });
+
+  test("resets playback button state when the merchant changes", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /listen to eric/i }));
+    fireEvent.click(screen.getByRole("button", { name: /next merchant/i }));
+
+    expect(screen.getByRole("button", { name: /listen to sharon/i })).toHaveAttribute(
+      "aria-pressed",
+      "false",
+    );
+  });
+
   test("clamps next and previous navigation at the ends", () => {
     renderThemeShowcase();
 

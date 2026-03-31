@@ -1,4 +1,5 @@
-import { Play } from "@phosphor-icons/react";
+import { Play, Stop } from "@phosphor-icons/react";
+import { useEffect, useState } from "react";
 import { TextMorph } from "torph/react";
 import playerShellSrc from "../../../Player Translucent.svg";
 import playerGrillSrc from "../../../Grill.png";
@@ -13,6 +14,14 @@ function PlayerStage({
   textMorphDuration,
   textMorphEase,
 }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [activeMerchant.id]);
+
+  const buttonLabel = isPlaying ? "Stop playback" : activeMerchant.listenLabel;
+
   return (
     <div className={styles.stage}>
       <CassetteOrbit merchants={merchants} activeIndex={activeIndex} spacing={spacing} />
@@ -26,11 +35,17 @@ function PlayerStage({
         <button
           className={styles.listenPill}
           type="button"
+          aria-pressed={isPlaying}
           data-text-morph-duration={textMorphDuration}
           data-text-morph-ease={textMorphEase}
+          onClick={() => setIsPlaying((playing) => !playing)}
         >
           <span className={styles.listenPillIcon} aria-hidden="true">
-            <Play className={styles.listenPillGlyph} weight="fill" />
+            {isPlaying ? (
+              <Stop className={styles.listenPillGlyph} weight="fill" />
+            ) : (
+              <Play className={styles.listenPillGlyph} weight="fill" />
+            )}
           </span>
           <TextMorph
             as="span"
@@ -38,7 +53,7 @@ function PlayerStage({
             duration={textMorphDuration}
             ease={textMorphEase}
           >
-            {activeMerchant.listenLabel}
+            {buttonLabel}
           </TextMorph>
         </button>
       </div>
