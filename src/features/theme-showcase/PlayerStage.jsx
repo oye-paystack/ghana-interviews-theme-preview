@@ -13,6 +13,7 @@ function PlayerStage({
   spacing,
   textMorphDuration,
   textMorphEase,
+  playbackPulseDuration,
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -24,12 +25,25 @@ function PlayerStage({
 
   return (
     <div className={styles.stage}>
-      <CassetteOrbit merchants={merchants} activeIndex={activeIndex} spacing={spacing} />
+      <CassetteOrbit
+        merchants={merchants}
+        activeIndex={activeIndex}
+        spacing={spacing}
+        isPlaying={isPlaying}
+      />
 
       <div className={styles.playerBody}>
         <img className={styles.shell} src={playerShellSrc} alt="" aria-hidden="true" />
         <img className={styles.grill} src={playerGrillSrc} alt="" aria-hidden="true" />
         <div className={styles.window} aria-hidden="true" />
+        <span
+          className={`${styles.playbackIndicator} ${isPlaying ? styles.playbackIndicatorActive : ""}`}
+          style={{ "--playback-pulse-duration": `${playbackPulseDuration}ms` }}
+          data-playing={isPlaying ? "true" : "false"}
+          data-pulse-duration={playbackPulseDuration}
+          data-testid="playback-indicator"
+          aria-hidden="true"
+        />
         <span className={styles.playback}>PLAYBACK</span>
 
         <button

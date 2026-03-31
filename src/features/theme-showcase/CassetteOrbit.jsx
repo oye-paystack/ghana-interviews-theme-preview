@@ -1,4 +1,4 @@
-import cassetteSrc from "../../../Cassette.svg";
+import CassetteArtwork from "./CassetteArtwork";
 import styles from "./CassetteOrbit.module.css";
 
 const positionClassNames = {
@@ -27,21 +27,23 @@ function getCassettePosition(index, activeIndex) {
   return distance > 1 ? "hidden-right" : "hidden-left";
 }
 
-function CassetteOrbit({ merchants, activeIndex, spacing }) {
+function CassetteOrbit({ merchants, activeIndex, spacing, isPlaying }) {
   return (
     <div className={styles.orbit} style={{ "--orbit-spacing": `${spacing}px` }} aria-hidden="true">
       {merchants.map((merchant, index) => {
         const position = getCassettePosition(index, activeIndex);
+        const isCenterCassette = position === "center";
 
         return (
           <article
             className={`${styles.cassette} ${positionClassNames[position]}`}
             data-position={position}
+            data-playing={isCenterCassette && isPlaying ? "true" : "false"}
             data-testid={`cassette-${merchant.id}`}
             key={merchant.id}
             style={{ "--stack-order": index + 1 }}
           >
-            <img className={styles.cassetteBase} src={cassetteSrc} alt="" />
+            <CassetteArtwork isSpinning={isCenterCassette && isPlaying} />
             <div className={styles.cassetteLabel}>{merchant.recordingLabel}</div>
           </article>
         );

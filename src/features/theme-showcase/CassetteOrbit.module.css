@@ -73,12 +73,6 @@
   --cassette-opacity: 0;
 }
 
-.cassetteBase {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 .cassetteLabel {
   position: absolute;
   top: 26px;

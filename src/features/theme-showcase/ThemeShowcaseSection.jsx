@@ -8,6 +8,7 @@ import styles from "./ThemeShowcaseSection.module.css";
 const DEFAULT_ORBIT_SPACING = 392;
 const DEFAULT_TEXT_MORPH_DURATION = 400;
 const DEFAULT_TEXT_MORPH_EASE = [0.19, 1, 0.22, 1];
+const DEFAULT_PLAYBACK_PULSE_DURATION = 3200;
 
 function clampIndex(value, length) {
   if (length <= 0) {
@@ -29,6 +30,9 @@ function ThemeShowcaseSection({
   const [orbitSpacing, setOrbitSpacing] = useState(DEFAULT_ORBIT_SPACING);
   const [textMorphDuration, setTextMorphDuration] = useState(DEFAULT_TEXT_MORPH_DURATION);
   const [textMorphEase, setTextMorphEase] = useState(DEFAULT_TEXT_MORPH_EASE);
+  const [playbackPulseDuration, setPlaybackPulseDuration] = useState(
+    DEFAULT_PLAYBACK_PULSE_DURATION,
+  );
   const [isConfigOpen, setIsConfigOpen] = useState(false);
 
   const activeMerchant = merchants[activeIndex];
@@ -71,6 +75,7 @@ function ThemeShowcaseSection({
               spacing={orbitSpacing}
               textMorphDuration={textMorphDuration}
               textMorphEase={textMorphEaseString}
+              playbackPulseDuration={playbackPulseDuration}
             />
           </section>
         </div>
@@ -92,10 +97,12 @@ function ThemeShowcaseSection({
           textMorphDuration={textMorphDuration}
           textMorphEase={textMorphEase}
           textMorphEaseString={textMorphEaseString}
+          playbackPulseDuration={playbackPulseDuration}
           isOpen={isConfigOpen}
           onToggle={() => setIsConfigOpen((open) => !open)}
           onSpacingChange={(value) => setOrbitSpacing(value)}
           onTextMorphDurationChange={(value) => setTextMorphDuration(value)}
+          onPlaybackPulseDurationChange={(value) => setPlaybackPulseDuration(value)}
           onTextMorphEaseChange={(index, value) =>
             setTextMorphEase((currentEase) =>
               currentEase.map((point, pointIndex) =>

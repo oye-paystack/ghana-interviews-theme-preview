@@ -5,10 +5,12 @@ function ConfigPopover({
   textMorphDuration,
   textMorphEase,
   textMorphEaseString,
+  playbackPulseDuration,
   isOpen,
   onToggle,
   onSpacingChange,
   onTextMorphDurationChange,
+  onPlaybackPulseDurationChange,
   onTextMorphEaseChange,
 }) {
   return (
@@ -54,6 +56,23 @@ function ConfigPopover({
             value={textMorphDuration}
             onChange={(event) =>
               onTextMorphDurationChange(Number(event.currentTarget.value))
+            }
+          />
+
+          <label className={styles.field} htmlFor="playback-pulse-duration">
+            <span className={styles.label}>Playback pulse duration</span>
+            <span className={styles.value}>{playbackPulseDuration}ms</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="playback-pulse-duration"
+            type="range"
+            min="500"
+            max="3200"
+            step="50"
+            value={playbackPulseDuration}
+            onChange={(event) =>
+              onPlaybackPulseDurationChange(Number(event.currentTarget.value))
             }
           />
 

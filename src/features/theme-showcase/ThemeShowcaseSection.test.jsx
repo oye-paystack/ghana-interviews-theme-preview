@@ -38,6 +38,11 @@ describe("ThemeShowcaseSection", () => {
       "aria-pressed",
       "true",
     );
+    expect(screen.getByTestId("cassette-africa-world-airlines")).toHaveAttribute(
+      "data-playing",
+      "true",
+    );
+    expect(screen.getByTestId("playback-indicator")).toHaveAttribute("data-playing", "true");
 
     fireEvent.click(screen.getByRole("button", { name: /stop playback/i }));
 
@@ -45,6 +50,11 @@ describe("ThemeShowcaseSection", () => {
       "aria-pressed",
       "false",
     );
+    expect(screen.getByTestId("cassette-africa-world-airlines")).toHaveAttribute(
+      "data-playing",
+      "false",
+    );
+    expect(screen.getByTestId("playback-indicator")).toHaveAttribute("data-playing", "false");
   });
 
   test("resets playback button state when the merchant changes", () => {
@@ -55,6 +65,10 @@ describe("ThemeShowcaseSection", () => {
 
     expect(screen.getByRole("button", { name: /listen to sharon/i })).toHaveAttribute(
       "aria-pressed",
+      "false",
+    );
+    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
+      "data-playing",
       "false",
     );
   });
@@ -148,6 +162,21 @@ describe("ThemeShowcaseSection", () => {
     expect(listenButton).toHaveAttribute(
       "data-text-morph-ease",
       "cubic-bezier(0.23, 0.88, 0.32, 1)",
+    );
+  });
+
+  test("updates playback pulse duration from the config popover", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+    fireEvent.change(screen.getByLabelText(/playback pulse duration/i), {
+      target: { value: "1850" },
+    });
+
+    expect(screen.getByText("1850ms")).toBeInTheDocument();
+    expect(screen.getByTestId("playback-indicator")).toHaveAttribute(
+      "data-pulse-duration",
+      "1850",
     );
   });
 
