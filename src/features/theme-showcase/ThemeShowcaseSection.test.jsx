@@ -18,11 +18,10 @@ describe("ThemeShowcaseSection", () => {
   test("renders the initial merchant state", () => {
     renderThemeShowcase();
 
-    expect(screen.getByRole("heading", { name: /africa world airlines/i })).toBeInTheDocument();
-    expect(screen.getByText(/4x/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /listen to eric/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /previous merchant/i })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /africa world airlines/i })).toHaveAttribute(
+    expect(screen.getByRole("heading", { name: /achieve by petra/i })).toBeInTheDocument();
+    expect(screen.getByText(/100%/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /listen to sharon/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /achieve by petra/i })).toHaveAttribute(
       "aria-pressed",
       "true",
     );
@@ -31,7 +30,7 @@ describe("ThemeShowcaseSection", () => {
   test("toggles the playback button label and pressed state", () => {
     renderThemeShowcase();
 
-    const listenButton = screen.getByRole("button", { name: /listen to eric/i });
+    const listenButton = screen.getByRole("button", { name: /listen to sharon/i });
     const merchantCopy = screen.getByTestId("merchant-copy");
 
     expect(merchantCopy).toHaveAttribute("data-playing", "false");
@@ -42,7 +41,7 @@ describe("ThemeShowcaseSection", () => {
       "aria-pressed",
       "true",
     );
-    expect(screen.getByTestId("cassette-africa-world-airlines")).toHaveAttribute(
+    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
       "data-playing",
       "true",
     );
@@ -51,11 +50,11 @@ describe("ThemeShowcaseSection", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /stop playback/i }));
 
-    expect(screen.getByRole("button", { name: /listen to eric/i })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: /listen to sharon/i })).toHaveAttribute(
       "aria-pressed",
       "false",
     );
-    expect(screen.getByTestId("cassette-africa-world-airlines")).toHaveAttribute(
+    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
       "data-playing",
       "false",
     );
@@ -66,32 +65,18 @@ describe("ThemeShowcaseSection", () => {
   test("resets playback button state when the merchant changes", () => {
     renderThemeShowcase();
 
-    fireEvent.click(screen.getByRole("button", { name: /listen to eric/i }));
-    fireEvent.click(screen.getByRole("button", { name: /next merchant/i }));
+    fireEvent.click(screen.getByRole("button", { name: /listen to sharon/i }));
+    fireEvent.click(screen.getByRole("button", { name: /warc/i }));
 
-    expect(screen.getByRole("button", { name: /listen to sharon/i })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: /listen to felipe/i })).toHaveAttribute(
       "aria-pressed",
       "false",
     );
-    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
+    expect(screen.getByTestId("cassette-warc")).toHaveAttribute(
       "data-playing",
       "false",
     );
     expect(screen.getByTestId("merchant-copy")).toHaveAttribute("data-playing", "false");
-  });
-
-  test("clamps next and previous navigation at the ends", () => {
-    renderThemeShowcase();
-
-    fireEvent.click(screen.getByRole("button", { name: /next merchant/i }));
-    fireEvent.click(screen.getByRole("button", { name: /next merchant/i }));
-
-    expect(screen.getByRole("heading", { name: /^warc$/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /next merchant/i })).toBeDisabled();
-
-    fireEvent.click(screen.getByRole("button", { name: /previous merchant/i }));
-
-    expect(screen.getByRole("heading", { name: /achieve by petra/i })).toBeInTheDocument();
   });
 
   test("selects a merchant from the icon navigation", () => {
@@ -107,27 +92,33 @@ describe("ThemeShowcaseSection", () => {
   test("updates cassette positions from the active index", () => {
     renderThemeShowcase();
 
-    expect(screen.getByTestId("cassette-africa-world-airlines")).toHaveAttribute(
+    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
       "data-position",
       "center",
     );
-    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
+    expect(screen.getByTestId("cassette-warc")).toHaveAttribute(
       "data-position",
       "right",
     );
-    expect(screen.getByTestId("cassette-warc")).toHaveAttribute("data-position", "hidden-right");
-
-    fireEvent.click(screen.getByRole("button", { name: /next merchant/i }));
-
     expect(screen.getByTestId("cassette-africa-world-airlines")).toHaveAttribute(
+      "data-position",
+      "hidden-right",
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /warc/i }));
+
+    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
       "data-position",
       "left",
     );
-    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
+    expect(screen.getByTestId("cassette-warc")).toHaveAttribute(
       "data-position",
       "center",
     );
-    expect(screen.getByTestId("cassette-warc")).toHaveAttribute("data-position", "right");
+    expect(screen.getByTestId("cassette-africa-world-airlines")).toHaveAttribute(
+      "data-position",
+      "right",
+    );
   });
 
   test("updates the orbit spacing readout and css variable", () => {
@@ -163,7 +154,7 @@ describe("ThemeShowcaseSection", () => {
       target: { value: "1" },
     });
 
-    const listenButton = screen.getByRole("button", { name: /listen to eric/i });
+    const listenButton = screen.getByRole("button", { name: /listen to sharon/i });
 
     expect(listenButton).toHaveAttribute("data-text-morph-duration", "260");
     expect(listenButton).toHaveAttribute(

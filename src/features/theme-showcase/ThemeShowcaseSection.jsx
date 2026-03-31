@@ -37,8 +37,6 @@ function ThemeShowcaseSection({
   const [isConfigOpen, setIsConfigOpen] = useState(false);
 
   const activeMerchant = merchants[activeIndex];
-  const atStart = activeIndex === 0;
-  const atEnd = activeIndex === merchants.length - 1;
   const sectionHeadingId = `${theme.id}-heading`;
   const textMorphEaseString = `cubic-bezier(${textMorphEase.join(", ")})`;
 
@@ -91,11 +89,7 @@ function ThemeShowcaseSection({
       <MerchantNav
         merchants={merchants}
         activeIndex={activeIndex}
-        onPrev={() => setActiveIndex((index) => clampIndex(index - 1, merchants.length))}
-        onNext={() => setActiveIndex((index) => clampIndex(index + 1, merchants.length))}
         onSelect={(index) => setActiveIndex(index)}
-        atStart={atStart}
-        atEnd={atEnd}
       />
 
       {showDebugControls ? (
