@@ -1,0 +1,107 @@
+.orbit {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cassette {
+  --cassette-scale: 0.95;
+  --cassette-rotation: 0deg;
+  --cassette-translate-x: 0px;
+  --cassette-translate-y: 0px;
+  --cassette-opacity: 0;
+  position: absolute;
+  left: 50%;
+  top: 323px;
+  width: 315px;
+  height: 199px;
+  z-index: var(--stack-order, 1);
+  filter: drop-shadow(var(--cassette-shadow));
+  opacity: var(--cassette-opacity);
+  transform: translate3d(
+      calc(-50% + var(--cassette-translate-x)),
+      var(--cassette-translate-y),
+      0
+    )
+    rotate(var(--cassette-rotation))
+    scale(var(--cassette-scale));
+  transform-origin: center center;
+  transition:
+    transform 620ms cubic-bezier(0.22, 0.7, 0.18, 1),
+    opacity 420ms ease,
+    filter 620ms cubic-bezier(0.22, 0.7, 0.18, 1);
+  will-change: transform, opacity;
+}
+
+.cassetteLeft {
+  --cassette-scale: 0.95;
+  --cassette-rotation: 5deg;
+  --cassette-translate-x: calc(var(--orbit-spacing) * -1);
+  --cassette-translate-y: -12px;
+  --cassette-opacity: 0.34;
+}
+
+.cassetteCenter {
+  --cassette-scale: 1;
+  --cassette-rotation: 0deg;
+  --cassette-translate-x: 0px;
+  --cassette-translate-y: 0px;
+  --cassette-opacity: 1;
+}
+
+.cassetteRight {
+  --cassette-scale: 0.95;
+  --cassette-rotation: -5deg;
+  --cassette-translate-x: var(--orbit-spacing);
+  --cassette-translate-y: -12px;
+  --cassette-opacity: 0.34;
+}
+
+.cassetteHiddenLeft {
+  --cassette-scale: 0.92;
+  --cassette-rotation: 8deg;
+  --cassette-translate-x: calc((var(--orbit-spacing) + 84px) * -1);
+  --cassette-translate-y: 16px;
+  --cassette-opacity: 0;
+}
+
+.cassetteHiddenRight {
+  --cassette-scale: 0.92;
+  --cassette-rotation: -8deg;
+  --cassette-translate-x: calc(var(--orbit-spacing) + 84px);
+  --cassette-translate-y: 16px;
+  --cassette-opacity: 0;
+}
+
+.cassetteBase {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cassetteLabel {
+  position: absolute;
+  top: 26px;
+  left: 95px;
+  max-width: 152px;
+  color: #514741;
+  font-family: var(--scribble-font);
+  font-size: 12.5px;
+  line-height: 1;
+  white-space: nowrap;
+  transform: rotate(-1.6deg);
+  letter-spacing: 0.02em;
+}
+
+.cassetteLeft .cassetteLabel,
+.cassetteRight .cassetteLabel,
+.cassetteHiddenLeft .cassetteLabel,
+.cassetteHiddenRight .cassetteLabel {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cassette {
+    transition: none;
+  }
+}

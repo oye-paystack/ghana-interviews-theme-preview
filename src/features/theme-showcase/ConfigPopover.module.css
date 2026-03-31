@@ -1,0 +1,52 @@
+.popover {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 30;
+  width: 220px;
+  border: 1px solid rgba(82, 56, 39, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 249, 242, 0.88);
+  backdrop-filter: blur(10px);
+}
+
+.popoverOpen {
+  box-shadow: 0 12px 26px rgba(50, 34, 21, 0.12);
+}
+
+.summaryButton {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--nav-active);
+  cursor: pointer;
+  font-family: "PP Mori Bold", sans-serif;
+  font-size: 14px;
+  text-align: left;
+}
+
+.body {
+  padding: 0 14px 14px;
+}
+
+.field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.label,
+.value {
+  color: var(--muted);
+  font-family: "InterDisplay", "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+}
+
+.slider {
+  width: 100%;
+}

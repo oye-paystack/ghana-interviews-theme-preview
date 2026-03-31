@@ -1,0 +1,129 @@
+.section {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: 96px 32px 72px;
+  --orbit-spacing: 392px;
+}
+
+.heading {
+  width: min(535px, 100%);
+  margin: 0 auto;
+  color: var(--title);
+  font-family: "PP Mori Bold", sans-serif;
+  font-size: 36px;
+  line-height: 1.18;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+.card {
+  position: relative;
+  width: min(1066px, 100%);
+  margin: 154px auto 0;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--tag-bg);
+  border-radius: 8px 8px 0 0;
+  color: var(--tag-text);
+}
+
+.tagIndex {
+  opacity: 0.48;
+  font-family: "PP Mori Heavy", sans-serif;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.tagText {
+  font-family: "PP Mori Bold", sans-serif;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.cardBody {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 759px;
+  border-radius: 0 8px 8px 8px;
+}
+
+.panel {
+  min-height: 759px;
+}
+
+.copyPanel {
+  background: var(--copy-panel);
+  padding: 40px;
+  border-radius: 0 0 0 8px;
+}
+
+.playerPanel {
+  position: relative;
+  overflow: hidden;
+  background: var(--player-panel);
+  border-radius: 0 8px 8px 0;
+}
+
+@media (max-width: 1180px) {
+  .section {
+    padding-inline: 24px;
+  }
+
+  .card {
+    margin-top: 128px;
+  }
+
+  .cardBody {
+    grid-template-columns: 1fr;
+  }
+
+  .copyPanel {
+    min-height: 320px;
+    border-radius: 0;
+  }
+
+  .playerPanel {
+    min-height: 760px;
+    border-radius: 0 0 8px 8px;
+  }
+}
+
+@media (max-width: 760px) {
+  .section {
+    padding: 72px 16px 48px;
+  }
+
+  .heading {
+    font-size: 28px;
+  }
+
+  .card {
+    margin-top: 88px;
+  }
+
+  .tag {
+    max-width: calc(100% - 12px);
+    gap: 6px;
+    padding: 8px 12px;
+  }
+
+  .tagIndex,
+  .tagText {
+    font-size: 15px;
+  }
+
+  .copyPanel {
+    min-height: auto;
+    padding: 28px 24px 36px;
+  }
+
+  .playerPanel {
+    min-height: 620px;
+  }
+}

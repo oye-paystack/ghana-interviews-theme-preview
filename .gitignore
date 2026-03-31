@@ -1,3 +1,7 @@
 .DS_Store
 .npm/
 Library/
+node_modules/
+dist/
+coverage/
+.vite/
