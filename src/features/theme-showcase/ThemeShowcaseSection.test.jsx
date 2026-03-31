@@ -90,6 +90,36 @@ describe("ThemeShowcaseSection", () => {
     expect(screen.getByTestId("theme-showcase-section")).toHaveStyle("--orbit-spacing: 420px");
   });
 
+  test("updates text morph controls from the config popover", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+
+    fireEvent.change(screen.getByLabelText(/text morph duration/i), {
+      target: { value: "260" },
+    });
+    fireEvent.change(screen.getByLabelText(/^x1$/i), {
+      target: { value: "0.23" },
+    });
+    fireEvent.change(screen.getByLabelText(/^y1$/i), {
+      target: { value: "0.88" },
+    });
+    fireEvent.change(screen.getByLabelText(/^x2$/i), {
+      target: { value: "0.32" },
+    });
+    fireEvent.change(screen.getByLabelText(/^y2$/i), {
+      target: { value: "1" },
+    });
+
+    const listenButton = screen.getByRole("button", { name: /listen to eric/i });
+
+    expect(listenButton).toHaveAttribute("data-text-morph-duration", "260");
+    expect(listenButton).toHaveAttribute(
+      "data-text-morph-ease",
+      "cubic-bezier(0.23, 0.88, 0.32, 1)",
+    );
+  });
+
   test("keeps section state when the config popover opens and closes", () => {
     renderThemeShowcase();
 

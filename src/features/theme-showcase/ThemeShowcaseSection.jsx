@@ -6,6 +6,8 @@ import PlayerStage from "./PlayerStage";
 import styles from "./ThemeShowcaseSection.module.css";
 
 const DEFAULT_ORBIT_SPACING = 392;
+const DEFAULT_TEXT_MORPH_DURATION = 400;
+const DEFAULT_TEXT_MORPH_EASE = [0.19, 1, 0.22, 1];
 
 function clampIndex(value, length) {
   if (length <= 0) {
@@ -25,12 +27,15 @@ function ThemeShowcaseSection({
     clampIndex(initialActiveIndex, merchants.length),
   );
   const [orbitSpacing, setOrbitSpacing] = useState(DEFAULT_ORBIT_SPACING);
+  const [textMorphDuration, setTextMorphDuration] = useState(DEFAULT_TEXT_MORPH_DURATION);
+  const [textMorphEase, setTextMorphEase] = useState(DEFAULT_TEXT_MORPH_EASE);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
 
   const activeMerchant = merchants[activeIndex];
   const atStart = activeIndex === 0;
   const atEnd = activeIndex === merchants.length - 1;
   const sectionHeadingId = `${theme.id}-heading`;
+  const textMorphEaseString = `cubic-bezier(${textMorphEase.join(", ")})`;
 
   const sectionStyle = {
     "--orbit-spacing": `${orbitSpacing}px`,
@@ -64,6 +69,8 @@ function ThemeShowcaseSection({
               activeIndex={activeIndex}
               activeMerchant={activeMerchant}
               spacing={orbitSpacing}
+              textMorphDuration={textMorphDuration}
+              textMorphEase={textMorphEaseString}
             />
           </section>
         </div>
@@ -82,9 +89,20 @@ function ThemeShowcaseSection({
       {showDebugControls ? (
         <ConfigPopover
           spacing={orbitSpacing}
+          textMorphDuration={textMorphDuration}
+          textMorphEase={textMorphEase}
+          textMorphEaseString={textMorphEaseString}
           isOpen={isConfigOpen}
           onToggle={() => setIsConfigOpen((open) => !open)}
           onSpacingChange={(value) => setOrbitSpacing(value)}
+          onTextMorphDurationChange={(value) => setTextMorphDuration(value)}
+          onTextMorphEaseChange={(index, value) =>
+            setTextMorphEase((currentEase) =>
+              currentEase.map((point, pointIndex) =>
+                pointIndex === index ? value : point,
+              ),
+            )
+          }
         />
       ) : null}
     </section>

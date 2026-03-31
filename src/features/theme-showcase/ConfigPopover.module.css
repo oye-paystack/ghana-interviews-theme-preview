@@ -3,7 +3,7 @@
   top: 20px;
   left: 20px;
   z-index: 30;
-  width: 220px;
+  width: 310px;
   border: 1px solid rgba(82, 56, 39, 0.12);
   border-radius: 14px;
   background: rgba(255, 249, 242, 0.88);
@@ -33,11 +33,16 @@
   padding: 0 14px 14px;
 }
 
+.group {
+  margin-top: 14px;
+}
+
 .field {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  gap: 12px;
 }
 
 .label,
@@ -47,6 +52,39 @@
   font-size: 13px;
 }
 
+.value {
+  text-align: right;
+}
+
 .slider {
   width: 100%;
+}
+
+.bezierGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pointField {
+  display: grid;
+  gap: 6px;
+}
+
+.pointLabel {
+  color: var(--muted);
+  font-family: "InterDisplay", "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.numberInput {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid rgba(82, 56, 39, 0.14);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--title);
+  font-family: "InterDisplay", "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
 }
