@@ -133,6 +133,22 @@ describe("ThemeShowcaseSection", () => {
     expect(screen.getByTestId("theme-showcase-section")).toHaveStyle("--orbit-spacing: 420px");
   });
 
+  test("updates the side cassette offset from the config popover", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+
+    fireEvent.change(screen.getByLabelText(/side cassette y offset/i), {
+      target: { value: "24" },
+    });
+
+    expect(screen.getByText("24px")).toBeInTheDocument();
+    expect(screen.getByLabelText(/cassette player/i).querySelector("[data-side-offset-y]")).toHaveAttribute(
+      "data-side-offset-y",
+      "24",
+    );
+  });
+
   test("updates text morph controls from the config popover", () => {
     renderThemeShowcase();
 
@@ -176,6 +192,18 @@ describe("ThemeShowcaseSection", () => {
       "data-pulse-duration",
       "1850",
     );
+  });
+
+  test("toggles the grid overlay from the config popover", () => {
+    renderThemeShowcase();
+
+    const section = screen.getByTestId("theme-showcase-section");
+    expect(section).toHaveAttribute("data-show-grid", "false");
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+    fireEvent.click(screen.getByLabelText(/show grid overlay/i));
+
+    expect(section).toHaveAttribute("data-show-grid", "true");
   });
 
   test("keeps section state when the config popover opens and closes", () => {

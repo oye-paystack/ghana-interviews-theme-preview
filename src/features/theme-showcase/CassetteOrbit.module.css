@@ -37,7 +37,7 @@
   --cassette-scale: 0.95;
   --cassette-rotation: 5deg;
   --cassette-translate-x: calc(var(--orbit-spacing) * -1);
-  --cassette-translate-y: -12px;
+  --cassette-translate-y: var(--side-cassette-offset-y, -12px);
   --cassette-opacity: 0.34;
 }
 
@@ -53,7 +53,7 @@
   --cassette-scale: 0.95;
   --cassette-rotation: -5deg;
   --cassette-translate-x: var(--orbit-spacing);
-  --cassette-translate-y: -12px;
+  --cassette-translate-y: var(--side-cassette-offset-y, -12px);
   --cassette-opacity: 0.34;
 }
 

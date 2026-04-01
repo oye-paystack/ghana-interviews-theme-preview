@@ -1,11 +1,54 @@
 .section {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 16px;
   width: min(100%, 1440px);
   margin: 0 auto;
-  padding: 96px 32px 72px;
+  padding: 96px 24px 72px;
   --orbit-spacing: 392px;
 }
 
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0 24px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(255, 89, 89, 0.1) 0,
+      rgba(255, 89, 89, 0.1) calc((100% - 176px) / 12),
+      transparent calc((100% - 176px) / 12),
+      transparent calc(((100% - 176px) / 12) + 16px)
+    ),
+    linear-gradient(
+      to right,
+      rgba(255, 89, 89, 0.18) 0,
+      rgba(255, 89, 89, 0.18) 1px,
+      transparent 1px,
+      transparent calc((100% - 176px) / 12),
+      rgba(255, 89, 89, 0.18) calc((100% - 176px) / 12),
+      rgba(255, 89, 89, 0.18) calc(((100% - 176px) / 12) + 1px),
+      transparent calc(((100% - 176px) / 12) + 1px),
+      transparent calc(((100% - 176px) / 12) + 16px)
+    );
+  background-repeat: repeat-x;
+  background-size: calc(((100% - 176px) / 12) + 16px) 100%;
+  mix-blend-mode: multiply;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 140ms ease-out;
+}
+
+.section[data-show-grid="true"]::before {
+  opacity: 1;
+}
+
 .heading {
+  position: relative;
+  grid-column: 4 / span 6;
   width: min(535px, 100%);
   margin: 0 auto;
   color: var(--title);
@@ -18,8 +61,16 @@
 
 .card {
   position: relative;
-  width: min(1066px, 100%);
+  grid-column: 3 / span 8;
+  width: 100%;
   margin: 154px auto 0;
+}
+
+.navSlot {
+  position: relative;
+  grid-column: 3 / span 8;
+  display: flex;
+  justify-content: center;
 }
 
 .tag {
@@ -73,11 +124,20 @@
 
 @media (max-width: 1180px) {
   .section {
+    display: block;
     padding-inline: 24px;
+  }
+
+  .section::before {
+    display: none;
   }
 
   .card {
     margin-top: 128px;
+  }
+
+  .navSlot {
+    display: block;
   }
 
   .cardBody {

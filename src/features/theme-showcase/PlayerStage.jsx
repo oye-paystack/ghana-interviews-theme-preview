@@ -12,6 +12,7 @@ function PlayerStage({
   isPlaying,
   onTogglePlayback,
   spacing,
+  sideOffsetY,
   textMorphDuration,
   textMorphEase,
   playbackPulseDuration,
@@ -24,6 +25,7 @@ function PlayerStage({
         merchants={merchants}
         activeIndex={activeIndex}
         spacing={spacing}
+        sideOffsetY={sideOffsetY}
         isPlaying={isPlaying}
       />
 

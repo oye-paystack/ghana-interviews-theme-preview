@@ -2,15 +2,19 @@ import styles from "./ConfigPopover.module.css";
 
 function ConfigPopover({
   spacing,
+  sideCassetteOffsetY,
   textMorphDuration,
   textMorphEase,
   textMorphEaseString,
   playbackPulseDuration,
+  showGridOverlay,
   isOpen,
   onToggle,
   onSpacingChange,
+  onSideCassetteOffsetYChange,
   onTextMorphDurationChange,
   onPlaybackPulseDurationChange,
+  onShowGridOverlayChange,
   onTextMorphEaseChange,
 }) {
   return (
@@ -27,6 +31,17 @@ function ConfigPopover({
 
       {isOpen ? (
         <div className={styles.body} id="theme-config-body">
+          <label className={styles.toggleField} htmlFor="show-grid-overlay">
+            <span className={styles.label}>Show grid overlay</span>
+            <input
+              id="show-grid-overlay"
+              className={styles.checkbox}
+              type="checkbox"
+              checked={showGridOverlay}
+              onChange={(event) => onShowGridOverlayChange(event.currentTarget.checked)}
+            />
+          </label>
+
           <label className={styles.field} htmlFor="orbit-spacing">
             <span className={styles.label}>Orbit spacing</span>
             <span className={styles.value}>{spacing}px</span>
@@ -40,6 +55,23 @@ function ConfigPopover({
             step="2"
             value={spacing}
             onChange={(event) => onSpacingChange(Number(event.currentTarget.value))}
+          />
+
+          <label className={styles.field} htmlFor="side-cassette-offset-y">
+            <span className={styles.label}>Side cassette Y offset</span>
+            <span className={styles.value}>{sideCassetteOffsetY}px</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="side-cassette-offset-y"
+            type="range"
+            min="-64"
+            max="64"
+            step="2"
+            value={sideCassetteOffsetY}
+            onChange={(event) =>
+              onSideCassetteOffsetYChange(Number(event.currentTarget.value))
+            }
           />
 
           <label className={styles.field} htmlFor="text-morph-duration">

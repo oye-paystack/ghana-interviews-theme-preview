@@ -27,9 +27,23 @@ function getCassettePosition(index, activeIndex) {
   return distance > 1 ? "hidden-right" : "hidden-left";
 }
 
-function CassetteOrbit({ merchants, activeIndex, spacing, isPlaying }) {
+function CassetteOrbit({
+  merchants,
+  activeIndex,
+  spacing,
+  sideOffsetY,
+  isPlaying,
+}) {
   return (
-    <div className={styles.orbit} style={{ "--orbit-spacing": `${spacing}px` }} aria-hidden="true">
+    <div
+      className={styles.orbit}
+      style={{
+        "--orbit-spacing": `${spacing}px`,
+        "--side-cassette-offset-y": `${sideOffsetY}px`,
+      }}
+      data-side-offset-y={sideOffsetY}
+      aria-hidden="true"
+    >
       {merchants.map((merchant, index) => {
         const position = getCassettePosition(index, activeIndex);
         const isCenterCassette = position === "center";

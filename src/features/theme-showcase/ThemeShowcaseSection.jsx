@@ -6,6 +6,7 @@ import PlayerStage from "./PlayerStage";
 import styles from "./ThemeShowcaseSection.module.css";
 
 const DEFAULT_ORBIT_SPACING = 392;
+const DEFAULT_SIDE_CASSETTE_OFFSET_Y = -12;
 const DEFAULT_TEXT_MORPH_DURATION = 400;
 const DEFAULT_TEXT_MORPH_EASE = [0.19, 1, 0.22, 1];
 const DEFAULT_PLAYBACK_PULSE_DURATION = 3200;
@@ -28,6 +29,9 @@ function ThemeShowcaseSection({
     clampIndex(initialActiveIndex, merchants.length),
   );
   const [orbitSpacing, setOrbitSpacing] = useState(DEFAULT_ORBIT_SPACING);
+  const [sideCassetteOffsetY, setSideCassetteOffsetY] = useState(
+    DEFAULT_SIDE_CASSETTE_OFFSET_Y,
+  );
   const [textMorphDuration, setTextMorphDuration] = useState(DEFAULT_TEXT_MORPH_DURATION);
   const [textMorphEase, setTextMorphEase] = useState(DEFAULT_TEXT_MORPH_EASE);
   const [playbackPulseDuration, setPlaybackPulseDuration] = useState(
@@ -35,6 +39,7 @@ function ThemeShowcaseSection({
   );
   const [isPlaying, setIsPlaying] = useState(false);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
+  const [showGridOverlay, setShowGridOverlay] = useState(false);
 
   const activeMerchant = merchants[activeIndex];
   const sectionHeadingId = `${theme.id}-heading`;
@@ -54,6 +59,7 @@ function ThemeShowcaseSection({
       style={sectionStyle}
       aria-labelledby={sectionHeadingId}
       data-testid="theme-showcase-section"
+      data-show-grid={showGridOverlay ? "true" : "false"}
     >
       <h1 className={styles.heading} id={sectionHeadingId}>
         {theme.sectionHeading}
@@ -78,6 +84,7 @@ function ThemeShowcaseSection({
               isPlaying={isPlaying}
               onTogglePlayback={() => setIsPlaying((playing) => !playing)}
               spacing={orbitSpacing}
+              sideOffsetY={sideCassetteOffsetY}
               textMorphDuration={textMorphDuration}
               textMorphEase={textMorphEaseString}
               playbackPulseDuration={playbackPulseDuration}
@@ -86,24 +93,30 @@ function ThemeShowcaseSection({
         </div>
       </div>
 
-      <MerchantNav
-        merchants={merchants}
-        activeIndex={activeIndex}
-        onSelect={(index) => setActiveIndex(index)}
-      />
+      <div className={styles.navSlot}>
+        <MerchantNav
+          merchants={merchants}
+          activeIndex={activeIndex}
+          onSelect={(index) => setActiveIndex(index)}
+        />
+      </div>
 
       {showDebugControls ? (
         <ConfigPopover
           spacing={orbitSpacing}
+          sideCassetteOffsetY={sideCassetteOffsetY}
           textMorphDuration={textMorphDuration}
           textMorphEase={textMorphEase}
           textMorphEaseString={textMorphEaseString}
           playbackPulseDuration={playbackPulseDuration}
+          showGridOverlay={showGridOverlay}
           isOpen={isConfigOpen}
           onToggle={() => setIsConfigOpen((open) => !open)}
           onSpacingChange={(value) => setOrbitSpacing(value)}
+          onSideCassetteOffsetYChange={(value) => setSideCassetteOffsetY(value)}
           onTextMorphDurationChange={(value) => setTextMorphDuration(value)}
           onPlaybackPulseDurationChange={(value) => setPlaybackPulseDuration(value)}
+          onShowGridOverlayChange={(value) => setShowGridOverlay(value)}
           onTextMorphEaseChange={(index, value) =>
             setTextMorphEase((currentEase) =>
               currentEase.map((point, pointIndex) =>
