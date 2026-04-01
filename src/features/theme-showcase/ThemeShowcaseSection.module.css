@@ -63,7 +63,7 @@
   position: relative;
   grid-column: 3 / span 8;
   width: 100%;
-  margin: 154px auto 0;
+  margin: 128px auto 0;
 }
 
 .navSlot {
@@ -71,6 +71,19 @@
   grid-column: 3 / span 8;
   display: flex;
   justify-content: center;
+  margin-top: 12px;
+}
+
+.socialProofText {
+  grid-column: 3 / span 8;
+  margin: 40px 0 0;
+  color: var(--text);
+  opacity: 0.5;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .tag {
@@ -138,6 +151,11 @@
 
   .navSlot {
     display: block;
+    margin-top: 12px;
+  }
+
+  .socialProofText {
+    margin-top: 40px;
   }
 
   .cardBody {

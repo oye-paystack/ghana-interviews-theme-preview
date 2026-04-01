@@ -4,6 +4,7 @@ export const themeShowcaseTheme = {
   title: "Reliability is Paystack's most valuable asset",
   sectionHeading:
     "We heard a few things across our conversations and we'd like you to hear them too",
+  socialProofText: "We heard this from others too",
 };
 
 export const themeShowcaseMerchants = [
@@ -27,25 +28,6 @@ export const themeShowcaseMerchants = [
     ],
   },
   {
-    id: "warc",
-    name: "WARC",
-    navLabel: "WARC",
-    recordingLabel: "WARC - Ghana MI 18.03.26",
-    listenLabel: "Listen to Felipe",
-    iconKey: "plant",
-    playbackQuote: {
-      lead: "We obtained almost 97% of success.",
-      rest: " And we have, more or less, a 3% of failed transactions.",
-      speakerName: "Felipe",
-      speakerRole: "Technical Lead, WARC",
-    },
-    copy: [
-      "WARC used Paystack Transfers to pay thousands of farmers and reported roughly a ",
-      { highlight: "97%" },
-      " success rate in northern Ghana's tougher network conditions.",
-    ],
-  },
-  {
     id: "africa-world-airlines",
     name: "Africa World Airlines",
     navLabel: "Africa World Airlines",
@@ -62,6 +44,25 @@ export const themeShowcaseMerchants = [
       "AWA's payment volume through Paystack grew ",
       { highlight: "4x" },
       " in 2025. Eric, from AWA's IT team, was clear about why",
+    ],
+  },
+  {
+    id: "warc",
+    name: "WARC",
+    navLabel: "WARC",
+    recordingLabel: "WARC - Ghana MI 18.03.26",
+    listenLabel: "Listen to Felipe",
+    iconKey: "plant",
+    playbackQuote: {
+      lead: "We obtained almost 97% of success.",
+      rest: " And we have, more or less, a 3% of failed transactions.",
+      speakerName: "Felipe",
+      speakerRole: "Technical Lead, WARC",
+    },
+    copy: [
+      "WARC used Paystack Transfers to pay thousands of farmers and reported roughly a ",
+      { highlight: "97%" },
+      " success rate in northern Ghana's tougher network conditions.",
     ],
   },
 ];

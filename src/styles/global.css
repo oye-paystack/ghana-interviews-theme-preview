@@ -8,6 +8,33 @@
 }
 
 @font-face {
+  font-family: "PP Mori Black";
+  src: url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Black.woff2")
+      format("woff2"),
+    url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Black.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Mori Bold";
+  src: url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Bold.woff2")
+      format("woff2"),
+    url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Bold.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Mori Semibold";
+  src: url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Semibold.woff2")
+      format("woff2"),
+    url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Semibold.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
   font-family: "PP Monument Narrow";
   src: url("../../fonts/PP Monument Narrow - Medium v4.0/PPMonumentNarrow-Medium.woff2")
       format("woff2"),

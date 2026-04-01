@@ -98,18 +98,18 @@ describe("ThemeShowcaseSection", () => {
     );
     expect(screen.getByTestId("cassette-warc")).toHaveAttribute(
       "data-position",
-      "right",
+      "hidden-right",
     );
     expect(screen.getByTestId("cassette-africa-world-airlines")).toHaveAttribute(
       "data-position",
-      "hidden-right",
+      "right",
     );
 
     fireEvent.click(screen.getByRole("button", { name: /warc/i }));
 
     expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
       "data-position",
-      "left",
+      "hidden-left",
     );
     expect(screen.getByTestId("cassette-warc")).toHaveAttribute(
       "data-position",
@@ -117,7 +117,7 @@ describe("ThemeShowcaseSection", () => {
     );
     expect(screen.getByTestId("cassette-africa-world-airlines")).toHaveAttribute(
       "data-position",
-      "right",
+      "left",
     );
   });
 

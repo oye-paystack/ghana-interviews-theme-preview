@@ -93,6 +93,8 @@ function ThemeShowcaseSection({
         </div>
       </div>
 
+      <p className={styles.socialProofText}>{theme.socialProofText}</p>
+
       <div className={styles.navSlot}>
         <MerchantNav
           merchants={merchants}

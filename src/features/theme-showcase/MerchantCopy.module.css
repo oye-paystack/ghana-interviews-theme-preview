@@ -114,9 +114,9 @@
 
 .quoteSpeaker {
   color: var(--title);
-  font-family: var(--font-body);
-  font-size: 20px;
-  font-weight: 400;
+  font-family: "PP Mori Semibold", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
   line-height: 1.2;
 }
 
