@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import quoteMarksSrc from "../../../.figma-assets/64f7ba277478aec54c94539da41331f3f5c5d51d.svg";
+import quoteMarksSrc from "../../../Quotes.svg";
 import styles from "./MerchantCopy.module.css";
 
 function MerchantCopy({ merchant, isPlaying }) {
