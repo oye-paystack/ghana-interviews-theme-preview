@@ -5,7 +5,7 @@ import MerchantNav from "./MerchantNav";
 import PlayerStage from "./PlayerStage";
 import styles from "./ThemeShowcaseSection.module.css";
 
-const DEFAULT_ORBIT_SPACING = 392;
+const DEFAULT_ORBIT_SPACING = 360;
 const DEFAULT_SIDE_CASSETTE_OFFSET_Y = -12;
 const DEFAULT_TEXT_MORPH_DURATION = 400;
 const DEFAULT_TEXT_MORPH_EASE = [0.19, 1, 0.22, 1];

@@ -7,7 +7,7 @@
   width: min(100%, 1440px);
   margin: 0 auto;
   padding: 96px 24px 72px;
-  --orbit-spacing: 392px;
+  --orbit-spacing: 360px;
 }
 
 .section::before {
