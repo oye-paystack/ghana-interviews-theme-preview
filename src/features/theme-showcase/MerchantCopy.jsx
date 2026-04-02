@@ -61,7 +61,13 @@ function MerchantCopy({ merchant, isPlaying, audioRef = null }) {
         className={`${styles.layer} ${styles.quoteLayer} ${isPlaying ? styles.quoteLayerVisible : styles.quoteLayerHidden}`}
         aria-hidden={!isPlaying}
       >
-        <img className={styles.quoteMark} src={quoteMarksSrc} alt="" aria-hidden="true" />
+        <img
+          className={styles.quoteMark}
+          src={quoteMarksSrc}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+        />
 
         <div className={styles.quoteContent}>
           {quoteSegments ? (

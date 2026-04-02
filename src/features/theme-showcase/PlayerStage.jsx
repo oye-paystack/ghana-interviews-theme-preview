@@ -30,8 +30,20 @@ function PlayerStage({
       />
 
       <div className={styles.playerBody}>
-        <img className={styles.shell} src={playerShellSrc} alt="" aria-hidden="true" />
-        <img className={styles.grill} src={playerGrillSrc} alt="" aria-hidden="true" />
+        <img
+          className={styles.shell}
+          src={playerShellSrc}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+        />
+        <img
+          className={styles.grill}
+          src={playerGrillSrc}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+        />
         <div className={styles.window} aria-hidden="true" />
         <span
           className={`${styles.playbackIndicator} ${isPlaying ? styles.playbackIndicatorActive : ""}`}
