@@ -1,4 +1,4 @@
-export const sharonQuoteAudioSrc = "/audio/sharon-quote-tight.m4a";
+export const sharonQuoteAudioSrc = `${import.meta.env.BASE_URL}audio/sharon-quote-tight.m4a`;
 
 export const sharonQuoteSegments = [
   { start: 0.0, end: 1.2, text: "There were no integrations." },
