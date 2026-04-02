@@ -64,6 +64,25 @@
   --font-body: "PP Mori Regular", sans-serif;
   --font-display: "PP Monument Narrow", sans-serif;
   --scribble-font: "Bradley Hand", "Segoe Print", "Comic Sans MS", cursive;
+  --desktop-section-max-width: 1440px;
+  --desktop-section-padding-inline: 24px;
+  --desktop-grid-gutter: 16px;
+  --desktop-section-frame-width: min(100%, var(--desktop-section-max-width));
+  --desktop-grid-inner-width: calc(
+    var(--desktop-section-frame-width) - (var(--desktop-section-padding-inline) * 2)
+  );
+  --desktop-grid-column-width: calc(
+    (var(--desktop-grid-inner-width) - (var(--desktop-grid-gutter) * 11)) / 12
+  );
+  --desktop-section-offset-x: calc(
+    (100% - var(--desktop-section-frame-width)) / 2
+  );
+  --desktop-grid-start-x: calc(
+    var(--desktop-section-offset-x) + var(--desktop-section-padding-inline)
+  );
+  --desktop-nav-rail-width: calc(
+    (var(--desktop-grid-column-width) * 2) + var(--desktop-grid-gutter)
+  );
 }
 
 *,

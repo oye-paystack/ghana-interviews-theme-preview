@@ -1,9 +1,12 @@
 .popover {
   position: fixed;
-  top: 20px;
-  left: 20px;
+  bottom: 20px;
+  left: var(--desktop-grid-start-x);
   z-index: 30;
+  display: flex;
+  flex-direction: column-reverse;
   width: 310px;
+  overflow: hidden;
   border: 1px solid rgba(82, 56, 39, 0.12);
   border-radius: 14px;
   background: rgba(255, 249, 242, 0.88);
@@ -31,7 +34,18 @@
 }
 
 .body {
-  padding: 0 14px 14px;
+  max-height: min(60vh, 540px);
+  overflow: auto;
+  padding: 14px 14px 0;
+}
+
+.body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.body::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(82, 56, 39, 0.2);
 }
 
 .group {
@@ -102,4 +116,10 @@
   color: var(--title);
   font-family: var(--font-body);
   font-size: 13px;
+}
+
+@media (max-width: 1180px) {
+  .popover {
+    left: 20px;
+  }
 }

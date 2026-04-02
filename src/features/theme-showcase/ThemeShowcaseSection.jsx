@@ -61,6 +61,12 @@ function ThemeShowcaseSection({
       data-testid="theme-showcase-section"
       data-show-grid={showGridOverlay ? "true" : "false"}
     >
+      <div className={styles.gridOverlay} aria-hidden="true">
+        {Array.from({ length: 12 }).map((_, index) => (
+          <span className={styles.gridOverlayColumn} key={`grid-column-${index}`} />
+        ))}
+      </div>
+
       <h1 className={styles.heading} id={sectionHeadingId}>
         {theme.sectionHeading}
       </h1>
