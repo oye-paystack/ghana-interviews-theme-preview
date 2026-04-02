@@ -1,4 +1,5 @@
 import { memo, useEffect, useRef } from "react";
+import cassetteSrc from "../../../Cassette.svg";
 import cassetteMarkup from "../../../Cassette.svg?raw";
 import styles from "./CassetteArtwork.module.css";
 
@@ -25,7 +26,10 @@ function prepareReel(group) {
   group.style.willChange = "transform";
 }
 
-function CassetteArtwork({ isSpinning = false }) {
+function CassetteArtwork({
+  isInline = true,
+  isSpinning = false,
+}) {
   const artworkRef = useRef(null);
   const animationFrameRef = useRef(0);
   const angleRef = useRef(0);
@@ -33,6 +37,10 @@ function CassetteArtwork({ isSpinning = false }) {
   const targetSpeedRef = useRef(isSpinning ? TARGET_REEL_SPEED : 0);
 
   useEffect(() => {
+    if (!isInline) {
+      return undefined;
+    }
+
     const artwork = artworkRef.current;
     if (!artwork) {
       return undefined;
@@ -100,7 +108,11 @@ function CassetteArtwork({ isSpinning = false }) {
     }
 
     return stopAnimation;
-  }, [isSpinning]);
+  }, [isInline, isSpinning]);
+
+  if (!isInline) {
+    return <img className={styles.artworkImage} src={cassetteSrc} alt="" aria-hidden="true" />;
+  }
 
   return (
     <div

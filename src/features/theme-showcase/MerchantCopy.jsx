@@ -1,9 +1,36 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import quoteMarksSrc from "../../../Quotes.svg";
 import styles from "./MerchantCopy.module.css";
 
-function MerchantCopy({ merchant, isPlaying, playbackTime = 0 }) {
+function MerchantCopy({ merchant, isPlaying, audioRef = null }) {
+  const [playbackTime, setPlaybackTime] = useState(0);
   const quoteSegments = merchant.playbackQuote.segments ?? null;
+
+  useEffect(() => {
+    setPlaybackTime(0);
+  }, [merchant.id]);
+
+  useEffect(() => {
+    if (!quoteSegments || !audioRef?.current) {
+      return undefined;
+    }
+
+    const audio = audioRef.current;
+    const handleTimeUpdate = () => {
+      setPlaybackTime(audio.currentTime);
+    };
+    const handleEnded = () => {
+      setPlaybackTime(0);
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [audioRef, merchant.id, quoteSegments]);
 
   return (
     <div

@@ -4,6 +4,12 @@
   height: auto;
 }
 
+.artworkImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .artwork :global(svg) {
   display: block;
   width: 100%;

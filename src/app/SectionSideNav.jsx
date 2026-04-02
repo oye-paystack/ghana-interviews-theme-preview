@@ -17,8 +17,25 @@ function SectionSideNav() {
   const [activeItemId, setActiveItemId] = useState(defaultSideNavItemId);
   const wheelAccumulatorRef = useRef(0);
   const lastStepAtRef = useRef(0);
+  const edgeStateRef = useRef({
+    atTop: true,
+    atBottom: true,
+    noScrollablePage: true,
+  });
 
   useEffect(() => {
+    function updateEdgeState() {
+      const scrollElement = document.scrollingElement || document.documentElement;
+      const maxScroll = Math.max(0, scrollElement.scrollHeight - window.innerHeight);
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+
+      edgeStateRef.current = {
+        atTop: scrollY <= 1,
+        atBottom: scrollY >= maxScroll - 1,
+        noScrollablePage: maxScroll <= 1,
+      };
+    }
+
     function stepActiveItem(direction) {
       setActiveItemId((currentId) => {
         const currentIndex = flatItems.findIndex((item) => item.id === currentId);
@@ -29,14 +46,7 @@ function SectionSideNav() {
     }
 
     function onWheel(event) {
-      const maxScroll = Math.max(
-        0,
-        document.documentElement.scrollHeight - window.innerHeight,
-      );
-      const scrollY = window.scrollY || window.pageYOffset || 0;
-      const atTop = scrollY <= 1;
-      const atBottom = scrollY >= maxScroll - 1;
-      const noScrollablePage = maxScroll <= 1;
+      const { atTop, atBottom, noScrollablePage } = edgeStateRef.current;
       const shouldDriveActiveItem =
         noScrollablePage || (event.deltaY < 0 && atTop) || (event.deltaY > 0 && atBottom);
 
@@ -62,10 +72,16 @@ function SectionSideNav() {
       lastStepAtRef.current = now;
     }
 
+    updateEdgeState();
+
     window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("scroll", updateEdgeState, { passive: true });
+    window.addEventListener("resize", updateEdgeState, { passive: true });
 
     return () => {
       window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("scroll", updateEdgeState);
+      window.removeEventListener("resize", updateEdgeState);
     };
   }, [flatItems]);
 

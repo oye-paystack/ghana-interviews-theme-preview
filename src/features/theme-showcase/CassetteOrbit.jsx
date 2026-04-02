@@ -57,7 +57,10 @@ function CassetteOrbit({
             key={merchant.id}
             style={{ "--stack-order": index + 1 }}
           >
-            <CassetteArtwork isSpinning={isCenterCassette && isPlaying} />
+            <CassetteArtwork
+              isInline={isCenterCassette}
+              isSpinning={isCenterCassette && isPlaying}
+            />
             <div className={styles.cassetteLabel}>{merchant.recordingLabel}</div>
           </article>
         );
