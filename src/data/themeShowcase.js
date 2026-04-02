@@ -1,3 +1,8 @@
+import {
+  sharonQuoteAudioSrc,
+  sharonQuoteSegments,
+} from "./generated/sharonQuoteClip";
+
 export const themeShowcaseTheme = {
   id: "theme-showcase",
   indexLabel: "01",
@@ -15,9 +20,9 @@ export const themeShowcaseMerchants = [
     recordingLabel: "ACH - Ghana MI 11.03.26",
     listenLabel: "Listen to Sharon",
     iconKey: "piggyBank",
+    playbackAudioSrc: sharonQuoteAudioSrc,
     playbackQuote: {
-      lead: "There were no integrations.",
-      rest: " We manually create the virtual accounts numbers and have to whitelist them, and then have to manually upload to the app. So there was a lot of operational strain.",
+      segments: sharonQuoteSegments,
       speakerName: "Sharon",
       speakerRole: "Tech Lead, Achieve by Petra",
     },

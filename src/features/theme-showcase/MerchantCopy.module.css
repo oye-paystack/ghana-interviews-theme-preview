@@ -101,6 +101,21 @@
   color: #938376;
 }
 
+.quoteSegment {
+  transition:
+    color 160ms ease-out,
+    opacity 160ms ease-out;
+}
+
+.quoteSegmentActive,
+.quoteSegmentPlayed {
+  color: var(--title);
+}
+
+.quoteSegmentUpcoming {
+  color: #938376;
+}
+
 .quoteAttribution {
   display: flex;
   flex-direction: column;

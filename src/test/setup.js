@@ -20,6 +20,34 @@ if (!Element.prototype.getAnimations) {
   Element.prototype.getAnimations = () => [];
 }
 
+if (typeof HTMLMediaElement !== "undefined") {
+  Object.defineProperty(HTMLMediaElement.prototype, "paused", {
+    configurable: true,
+    get() {
+      return this._paused ?? true;
+    },
+  });
+
+  Object.defineProperty(HTMLMediaElement.prototype, "ended", {
+    configurable: true,
+    get() {
+      return this._ended ?? false;
+    },
+  });
+
+  HTMLMediaElement.prototype.play = function play() {
+    this._paused = false;
+    this._ended = false;
+    this.dispatchEvent(new Event("play"));
+    return Promise.resolve();
+  };
+
+  HTMLMediaElement.prototype.pause = function pause() {
+    this._paused = true;
+    this.dispatchEvent(new Event("pause"));
+  };
+}
+
 vi.mock("torph/react", () => ({
   TextMorph: ({ as = "span", children, className, style }) =>
     createElement(as, { className, style }, children),

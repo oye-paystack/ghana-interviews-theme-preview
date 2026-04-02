@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import cassetteMarkup from "../../../Cassette.svg?raw";
 import styles from "./CassetteArtwork.module.css";
 
@@ -112,4 +112,4 @@ function CassetteArtwork({ isSpinning = false }) {
   );
 }
 
-export default CassetteArtwork;
+export default memo(CassetteArtwork);

@@ -1,0 +1,614 @@
+{
+  "text": " there were no integrations. So what that means is we manually create the virtual accounts numbers and have to whitelist them and then have to manually upload to the app. And then once payments are also done, we have to manually identify them on a StanChat account and then also manually upload them to the app. So there was a lot of operational stream with StanChat.",
+  "segments": [
+    {
+      "id": 0,
+      "seek": 0,
+      "start": 0.0,
+      "end": 1.2,
+      "text": " there were no integrations.",
+      "tokens": [
+        50365,
+        456,
+        645,
+        572,
+        3572,
+        763,
+        13,
+        50433
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.2007542271767893,
+      "compression_ratio": 1.83,
+      "no_speech_prob": 0.046444594860076904,
+      "words": [
+        {
+          "word": " there",
+          "start": 0.0,
+          "end": 0.12,
+          "probability": 0.31787109375
+        },
+        {
+          "word": " were",
+          "start": 0.12,
+          "end": 0.22,
+          "probability": 0.86767578125
+        },
+        {
+          "word": " no",
+          "start": 0.22,
+          "end": 0.38,
+          "probability": 0.99658203125
+        },
+        {
+          "word": " integrations.",
+          "start": 0.38,
+          "end": 1.2,
+          "probability": 0.8583984375
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "seek": 0,
+      "start": 1.2,
+      "end": 3.62,
+      "text": " So what that means is we manually create",
+      "tokens": [
+        50433,
+        407,
+        437,
+        300,
+        1355,
+        307,
+        321,
+        16945,
+        1884,
+        50557
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.2007542271767893,
+      "compression_ratio": 1.83,
+      "no_speech_prob": 0.046444594860076904,
+      "words": [
+        {
+          "word": " So",
+          "start": 1.2,
+          "end": 1.4,
+          "probability": 0.912109375
+        },
+        {
+          "word": " what",
+          "start": 1.4,
+          "end": 1.5,
+          "probability": 0.86669921875
+        },
+        {
+          "word": " that",
+          "start": 1.5,
+          "end": 1.66,
+          "probability": 0.9970703125
+        },
+        {
+          "word": " means",
+          "start": 1.66,
+          "end": 1.96,
+          "probability": 0.9970703125
+        },
+        {
+          "word": " is",
+          "start": 1.96,
+          "end": 2.24,
+          "probability": 0.99609375
+        },
+        {
+          "word": " we",
+          "start": 2.24,
+          "end": 2.76,
+          "probability": 0.6787109375
+        },
+        {
+          "word": " manually",
+          "start": 2.76,
+          "end": 3.1,
+          "probability": 0.98876953125
+        },
+        {
+          "word": " create",
+          "start": 3.1,
+          "end": 3.62,
+          "probability": 0.79296875
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "seek": 0,
+      "start": 3.62,
+      "end": 6.44,
+      "text": " the virtual accounts numbers and have to whitelist them",
+      "tokens": [
+        50557,
+        264,
+        6374,
+        9402,
+        3547,
+        293,
+        362,
+        281,
+        315,
+        38906,
+        468,
+        552,
+        50715
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.2007542271767893,
+      "compression_ratio": 1.83,
+      "no_speech_prob": 0.046444594860076904,
+      "words": [
+        {
+          "word": " the",
+          "start": 3.62,
+          "end": 3.82,
+          "probability": 0.982421875
+        },
+        {
+          "word": " virtual",
+          "start": 3.82,
+          "end": 4.1,
+          "probability": 0.96337890625
+        },
+        {
+          "word": " accounts",
+          "start": 4.1,
+          "end": 4.48,
+          "probability": 0.70068359375
+        },
+        {
+          "word": " numbers",
+          "start": 4.48,
+          "end": 4.9,
+          "probability": 0.8828125
+        },
+        {
+          "word": " and",
+          "start": 4.9,
+          "end": 5.26,
+          "probability": 0.9580078125
+        },
+        {
+          "word": " have",
+          "start": 5.26,
+          "end": 5.42,
+          "probability": 0.99072265625
+        },
+        {
+          "word": " to",
+          "start": 5.42,
+          "end": 5.64,
+          "probability": 0.99560546875
+        },
+        {
+          "word": " whitelist",
+          "start": 5.64,
+          "end": 6.18,
+          "probability": 0.88232421875
+        },
+        {
+          "word": " them",
+          "start": 6.18,
+          "end": 6.44,
+          "probability": 0.9931640625
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "seek": 0,
+      "start": 7.0,
+      "end": 8.88,
+      "text": " and then have to manually upload to the app.",
+      "tokens": [
+        50715,
+        293,
+        550,
+        362,
+        281,
+        16945,
+        6580,
+        281,
+        264,
+        724,
+        13,
+        50839
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.2007542271767893,
+      "compression_ratio": 1.83,
+      "no_speech_prob": 0.046444594860076904,
+      "words": [
+        {
+          "word": " and",
+          "start": 6.78,
+          "end": 7.04,
+          "probability": 0.72705078125
+        },
+        {
+          "word": " then",
+          "start": 7.04,
+          "end": 7.18,
+          "probability": 0.97265625
+        },
+        {
+          "word": " have",
+          "start": 7.18,
+          "end": 7.32,
+          "probability": 0.99072265625
+        },
+        {
+          "word": " to",
+          "start": 7.32,
+          "end": 7.44,
+          "probability": 0.99560546875
+        },
+        {
+          "word": " manually",
+          "start": 7.44,
+          "end": 7.7,
+          "probability": 0.990234375
+        },
+        {
+          "word": " upload",
+          "start": 7.7,
+          "end": 8.12,
+          "probability": 0.99853515625
+        },
+        {
+          "word": " to",
+          "start": 8.12,
+          "end": 8.5,
+          "probability": 0.98291015625
+        },
+        {
+          "word": " the",
+          "start": 8.5,
+          "end": 8.64,
+          "probability": 0.9873046875
+        },
+        {
+          "word": " app.",
+          "start": 8.64,
+          "end": 8.88,
+          "probability": 0.99267578125
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "seek": 0,
+      "start": 9.12,
+      "end": 11.12,
+      "text": " And then once payments are also done,",
+      "tokens": [
+        50839,
+        400,
+        550,
+        1564,
+        14348,
+        366,
+        611,
+        1096,
+        11,
+        50933
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.2007542271767893,
+      "compression_ratio": 1.83,
+      "no_speech_prob": 0.046444594860076904,
+      "words": [
+        {
+          "word": " And",
+          "start": 9.12,
+          "end": 9.54,
+          "probability": 0.98095703125
+        },
+        {
+          "word": " then",
+          "start": 9.54,
+          "end": 9.66,
+          "probability": 0.990234375
+        },
+        {
+          "word": " once",
+          "start": 9.66,
+          "end": 9.9,
+          "probability": 0.990234375
+        },
+        {
+          "word": " payments",
+          "start": 9.9,
+          "end": 10.3,
+          "probability": 0.86767578125
+        },
+        {
+          "word": " are",
+          "start": 10.3,
+          "end": 10.62,
+          "probability": 0.97021484375
+        },
+        {
+          "word": " also",
+          "start": 10.62,
+          "end": 10.86,
+          "probability": 0.974609375
+        },
+        {
+          "word": " done,",
+          "start": 10.86,
+          "end": 11.12,
+          "probability": 0.99853515625
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "seek": 0,
+      "start": 11.24,
+      "end": 14.66,
+      "text": " we have to manually identify them on a StanChat account",
+      "tokens": [
+        50933,
+        321,
+        362,
+        281,
+        16945,
+        5876,
+        552,
+        322,
+        257,
+        10061,
+        41683,
+        2696,
+        51139
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.2007542271767893,
+      "compression_ratio": 1.83,
+      "no_speech_prob": 0.046444594860076904,
+      "words": [
+        {
+          "word": " we",
+          "start": 11.24,
+          "end": 11.34,
+          "probability": 0.994140625
+        },
+        {
+          "word": " have",
+          "start": 11.34,
+          "end": 11.5,
+          "probability": 0.99853515625
+        },
+        {
+          "word": " to",
+          "start": 11.5,
+          "end": 11.64,
+          "probability": 0.99951171875
+        },
+        {
+          "word": " manually",
+          "start": 11.64,
+          "end": 11.94,
+          "probability": 0.99560546875
+        },
+        {
+          "word": " identify",
+          "start": 11.94,
+          "end": 12.68,
+          "probability": 0.9892578125
+        },
+        {
+          "word": " them",
+          "start": 12.68,
+          "end": 13.18,
+          "probability": 0.99755859375
+        },
+        {
+          "word": " on",
+          "start": 13.18,
+          "end": 13.84,
+          "probability": 0.99365234375
+        },
+        {
+          "word": " a",
+          "start": 13.84,
+          "end": 13.92,
+          "probability": 0.71875
+        },
+        {
+          "word": " StanChat",
+          "start": 13.92,
+          "end": 14.36,
+          "probability": 0.6171875
+        },
+        {
+          "word": " account",
+          "start": 14.36,
+          "end": 14.66,
+          "probability": 0.98876953125
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "seek": 0,
+      "start": 14.66,
+      "end": 17.66,
+      "text": " and then also manually upload them to the app.",
+      "tokens": [
+        51139,
+        293,
+        550,
+        611,
+        16945,
+        6580,
+        552,
+        281,
+        264,
+        724,
+        13,
+        51269
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.2007542271767893,
+      "compression_ratio": 1.83,
+      "no_speech_prob": 0.046444594860076904,
+      "words": [
+        {
+          "word": " and",
+          "start": 14.66,
+          "end": 15.4,
+          "probability": 0.89013671875
+        },
+        {
+          "word": " then",
+          "start": 15.4,
+          "end": 15.64,
+          "probability": 0.99755859375
+        },
+        {
+          "word": " also",
+          "start": 15.64,
+          "end": 15.94,
+          "probability": 0.9990234375
+        },
+        {
+          "word": " manually",
+          "start": 15.94,
+          "end": 16.32,
+          "probability": 0.99755859375
+        },
+        {
+          "word": " upload",
+          "start": 16.32,
+          "end": 16.78,
+          "probability": 0.9990234375
+        },
+        {
+          "word": " them",
+          "start": 16.78,
+          "end": 17.14,
+          "probability": 0.9990234375
+        },
+        {
+          "word": " to",
+          "start": 17.14,
+          "end": 17.4,
+          "probability": 0.99951171875
+        },
+        {
+          "word": " the",
+          "start": 17.4,
+          "end": 17.48,
+          "probability": 0.9990234375
+        },
+        {
+          "word": " app.",
+          "start": 17.48,
+          "end": 17.66,
+          "probability": 0.9990234375
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "seek": 0,
+      "start": 17.84,
+      "end": 22.54,
+      "text": " So there was a lot of operational stream with StanChat.",
+      "tokens": [
+        51269,
+        407,
+        456,
+        390,
+        257,
+        688,
+        295,
+        16607,
+        4309,
+        365,
+        10061,
+        41683,
+        13,
+        51519
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.2007542271767893,
+      "compression_ratio": 1.83,
+      "no_speech_prob": 0.046444594860076904,
+      "words": [
+        {
+          "word": " So",
+          "start": 17.84,
+          "end": 18.1,
+          "probability": 0.99755859375
+        },
+        {
+          "word": " there",
+          "start": 18.1,
+          "end": 18.24,
+          "probability": 0.99365234375
+        },
+        {
+          "word": " was",
+          "start": 18.24,
+          "end": 18.38,
+          "probability": 0.9990234375
+        },
+        {
+          "word": " a",
+          "start": 18.38,
+          "end": 18.52,
+          "probability": 0.998046875
+        },
+        {
+          "word": " lot",
+          "start": 18.52,
+          "end": 18.64,
+          "probability": 0.99951171875
+        },
+        {
+          "word": " of",
+          "start": 18.64,
+          "end": 18.8,
+          "probability": 0.99951171875
+        },
+        {
+          "word": " operational",
+          "start": 18.8,
+          "end": 19.34,
+          "probability": 0.99755859375
+        },
+        {
+          "word": " stream",
+          "start": 19.34,
+          "end": 20.2,
+          "probability": 0.5830078125
+        },
+        {
+          "word": " with",
+          "start": 20.2,
+          "end": 21.26,
+          "probability": 0.99609375
+        },
+        {
+          "word": " StanChat.",
+          "start": 21.26,
+          "end": 22.54,
+          "probability": 0.9814453125
+        }
+      ]
+    }
+  ],
+  "language": "en"
+}

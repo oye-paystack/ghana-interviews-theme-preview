@@ -1,0 +1,520 @@
+{
+  "text": " legal team is fine with that the whole one let's think it's a whole other conversation we have to have with them but we also like pretty we're looking forward to have something like that available for our users so probably um have conversations about that with you guys okay okay lovely um because it's one of that thing they're looking into expanding",
+  "segments": [
+    {
+      "id": 0,
+      "seek": 0,
+      "start": 0.0,
+      "end": 5.6,
+      "text": " legal team is fine with that the whole one let's think it's a whole other conversation we have to",
+      "tokens": [
+        50365,
+        5089,
+        1469,
+        307,
+        2489,
+        365,
+        300,
+        264,
+        1379,
+        472,
+        718,
+        311,
+        519,
+        309,
+        311,
+        257,
+        1379,
+        661,
+        3761,
+        321,
+        362,
+        281,
+        50650
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.1728085604580966,
+      "compression_ratio": 1.7908163265306123,
+      "no_speech_prob": 0.09405718743801117,
+      "words": [
+        {
+          "word": " legal",
+          "start": 0.0,
+          "end": 0.2,
+          "probability": 0.65283203125
+        },
+        {
+          "word": " team",
+          "start": 0.2,
+          "end": 0.52,
+          "probability": 0.99755859375
+        },
+        {
+          "word": " is",
+          "start": 0.52,
+          "end": 0.84,
+          "probability": 0.98291015625
+        },
+        {
+          "word": " fine",
+          "start": 0.84,
+          "end": 1.12,
+          "probability": 0.99658203125
+        },
+        {
+          "word": " with",
+          "start": 1.12,
+          "end": 1.68,
+          "probability": 0.87060546875
+        },
+        {
+          "word": " that",
+          "start": 1.68,
+          "end": 2.08,
+          "probability": 0.990234375
+        },
+        {
+          "word": " the",
+          "start": 2.08,
+          "end": 2.52,
+          "probability": 0.5673828125
+        },
+        {
+          "word": " whole",
+          "start": 2.52,
+          "end": 3.24,
+          "probability": 0.99755859375
+        },
+        {
+          "word": " one",
+          "start": 3.24,
+          "end": 3.4,
+          "probability": 0.1983642578125
+        },
+        {
+          "word": " let's",
+          "start": 3.4,
+          "end": 3.68,
+          "probability": 0.662109375
+        },
+        {
+          "word": " think",
+          "start": 3.68,
+          "end": 3.84,
+          "probability": 0.68359375
+        },
+        {
+          "word": " it's",
+          "start": 3.84,
+          "end": 4.1,
+          "probability": 0.75830078125
+        },
+        {
+          "word": " a",
+          "start": 4.1,
+          "end": 4.12,
+          "probability": 0.99755859375
+        },
+        {
+          "word": " whole",
+          "start": 4.12,
+          "end": 4.32,
+          "probability": 0.98779296875
+        },
+        {
+          "word": " other",
+          "start": 4.32,
+          "end": 4.52,
+          "probability": 0.9619140625
+        },
+        {
+          "word": " conversation",
+          "start": 4.52,
+          "end": 5.04,
+          "probability": 0.99951171875
+        },
+        {
+          "word": " we",
+          "start": 5.04,
+          "end": 5.32,
+          "probability": 0.99609375
+        },
+        {
+          "word": " have",
+          "start": 5.32,
+          "end": 5.5,
+          "probability": 0.48193359375
+        },
+        {
+          "word": " to",
+          "start": 5.5,
+          "end": 5.6,
+          "probability": 0.98779296875
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "seek": 0,
+      "start": 5.6,
+      "end": 10.62,
+      "text": " have with them but we also like pretty we're looking forward to have something like that",
+      "tokens": [
+        50650,
+        362,
+        365,
+        552,
+        457,
+        321,
+        611,
+        411,
+        1238,
+        321,
+        434,
+        1237,
+        2128,
+        281,
+        362,
+        746,
+        411,
+        300,
+        50906
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.1728085604580966,
+      "compression_ratio": 1.7908163265306123,
+      "no_speech_prob": 0.09405718743801117,
+      "words": [
+        {
+          "word": " have",
+          "start": 5.6,
+          "end": 5.76,
+          "probability": 0.95654296875
+        },
+        {
+          "word": " with",
+          "start": 5.76,
+          "end": 5.98,
+          "probability": 0.99560546875
+        },
+        {
+          "word": " them",
+          "start": 5.98,
+          "end": 6.22,
+          "probability": 1.0
+        },
+        {
+          "word": " but",
+          "start": 6.22,
+          "end": 6.7,
+          "probability": 0.9931640625
+        },
+        {
+          "word": " we",
+          "start": 6.7,
+          "end": 6.82,
+          "probability": 1.0
+        },
+        {
+          "word": " also",
+          "start": 6.82,
+          "end": 6.96,
+          "probability": 0.88037109375
+        },
+        {
+          "word": " like",
+          "start": 6.96,
+          "end": 7.38,
+          "probability": 0.9990234375
+        },
+        {
+          "word": " pretty",
+          "start": 7.38,
+          "end": 7.96,
+          "probability": 0.99560546875
+        },
+        {
+          "word": " we're",
+          "start": 7.96,
+          "end": 8.74,
+          "probability": 0.9794921875
+        },
+        {
+          "word": " looking",
+          "start": 8.74,
+          "end": 8.98,
+          "probability": 1.0
+        },
+        {
+          "word": " forward",
+          "start": 8.98,
+          "end": 9.34,
+          "probability": 0.77978515625
+        },
+        {
+          "word": " to",
+          "start": 9.34,
+          "end": 9.58,
+          "probability": 1.0
+        },
+        {
+          "word": " have",
+          "start": 9.58,
+          "end": 9.74,
+          "probability": 0.99609375
+        },
+        {
+          "word": " something",
+          "start": 9.74,
+          "end": 10.14,
+          "probability": 1.0
+        },
+        {
+          "word": " like",
+          "start": 10.14,
+          "end": 10.42,
+          "probability": 0.927734375
+        },
+        {
+          "word": " that",
+          "start": 10.42,
+          "end": 10.62,
+          "probability": 0.99951171875
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "seek": 0,
+      "start": 10.62,
+      "end": 18.2,
+      "text": " available for our users so probably um have conversations about that with you guys okay",
+      "tokens": [
+        50906,
+        2435,
+        337,
+        527,
+        5022,
+        370,
+        1391,
+        1105,
+        362,
+        7315,
+        466,
+        300,
+        365,
+        291,
+        1074,
+        1392,
+        51280
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.1728085604580966,
+      "compression_ratio": 1.7908163265306123,
+      "no_speech_prob": 0.09405718743801117,
+      "words": [
+        {
+          "word": " available",
+          "start": 10.62,
+          "end": 11.04,
+          "probability": 0.86865234375
+        },
+        {
+          "word": " for",
+          "start": 11.04,
+          "end": 12.16,
+          "probability": 0.7490234375
+        },
+        {
+          "word": " our",
+          "start": 12.16,
+          "end": 12.36,
+          "probability": 0.7431640625
+        },
+        {
+          "word": " users",
+          "start": 12.36,
+          "end": 12.74,
+          "probability": 0.99951171875
+        },
+        {
+          "word": " so",
+          "start": 12.74,
+          "end": 13.18,
+          "probability": 0.9990234375
+        },
+        {
+          "word": " probably",
+          "start": 13.18,
+          "end": 13.58,
+          "probability": 0.80078125
+        },
+        {
+          "word": " um",
+          "start": 13.58,
+          "end": 14.24,
+          "probability": 0.51708984375
+        },
+        {
+          "word": " have",
+          "start": 14.24,
+          "end": 14.58,
+          "probability": 0.99853515625
+        },
+        {
+          "word": " conversations",
+          "start": 14.58,
+          "end": 15.06,
+          "probability": 0.9677734375
+        },
+        {
+          "word": " about",
+          "start": 15.06,
+          "end": 16.12,
+          "probability": 0.7275390625
+        },
+        {
+          "word": " that",
+          "start": 16.12,
+          "end": 16.54,
+          "probability": 0.9638671875
+        },
+        {
+          "word": " with",
+          "start": 16.54,
+          "end": 16.7,
+          "probability": 0.89453125
+        },
+        {
+          "word": " you",
+          "start": 16.7,
+          "end": 16.9,
+          "probability": 0.372314453125
+        },
+        {
+          "word": " guys",
+          "start": 16.9,
+          "end": 17.16,
+          "probability": 0.935546875
+        },
+        {
+          "word": " okay",
+          "start": 17.16,
+          "end": 18.2,
+          "probability": 0.98876953125
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "seek": 0,
+      "start": 18.2,
+      "end": 22.46,
+      "text": " okay lovely um because it's one of that thing they're looking into expanding",
+      "tokens": [
+        51280,
+        1392,
+        7496,
+        1105,
+        570,
+        309,
+        311,
+        472,
+        295,
+        300,
+        551,
+        436,
+        434,
+        1237,
+        666,
+        14702,
+        51501
+      ],
+      "temperature": 0.0,
+      "avg_logprob": -0.1728085604580966,
+      "compression_ratio": 1.7908163265306123,
+      "no_speech_prob": 0.09405718743801117,
+      "words": [
+        {
+          "word": " okay",
+          "start": 18.2,
+          "end": 18.64,
+          "probability": 1.0
+        },
+        {
+          "word": " lovely",
+          "start": 18.64,
+          "end": 19.08,
+          "probability": 0.9990234375
+        },
+        {
+          "word": " um",
+          "start": 19.08,
+          "end": 19.8,
+          "probability": 0.99609375
+        },
+        {
+          "word": " because",
+          "start": 19.8,
+          "end": 20.4,
+          "probability": 1.0
+        },
+        {
+          "word": " it's",
+          "start": 20.4,
+          "end": 20.64,
+          "probability": 0.8798828125
+        },
+        {
+          "word": " one",
+          "start": 20.64,
+          "end": 20.76,
+          "probability": 0.99853515625
+        },
+        {
+          "word": " of",
+          "start": 20.76,
+          "end": 20.86,
+          "probability": 0.609375
+        },
+        {
+          "word": " that",
+          "start": 20.86,
+          "end": 20.98,
+          "probability": 0.64306640625
+        },
+        {
+          "word": " thing",
+          "start": 20.98,
+          "end": 21.16,
+          "probability": 0.99169921875
+        },
+        {
+          "word": " they're",
+          "start": 21.16,
+          "end": 21.3,
+          "probability": 0.994140625
+        },
+        {
+          "word": " looking",
+          "start": 21.3,
+          "end": 21.54,
+          "probability": 0.9990234375
+        },
+        {
+          "word": " into",
+          "start": 21.54,
+          "end": 21.86,
+          "probability": 1.0
+        },
+        {
+          "word": " expanding",
+          "start": 21.86,
+          "end": 22.46,
+          "probability": 0.99951171875
+        }
+      ]
+    }
+  ],
+  "language": "en"
+}

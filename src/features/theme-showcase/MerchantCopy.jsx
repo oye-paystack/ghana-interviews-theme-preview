@@ -2,7 +2,9 @@ import { Fragment } from "react";
 import quoteMarksSrc from "../../../Quotes.svg";
 import styles from "./MerchantCopy.module.css";
 
-function MerchantCopy({ merchant, isPlaying }) {
+function MerchantCopy({ merchant, isPlaying, playbackTime = 0 }) {
+  const quoteSegments = merchant.playbackQuote.segments ?? null;
+
   return (
     <div
       className={styles.copy}
@@ -35,10 +37,36 @@ function MerchantCopy({ merchant, isPlaying }) {
         <img className={styles.quoteMark} src={quoteMarksSrc} alt="" aria-hidden="true" />
 
         <div className={styles.quoteContent}>
-          <p className={styles.quoteText}>
-            <span className={styles.quoteLead}>{merchant.playbackQuote.lead}</span>
-            <span className={styles.quoteRest}>{merchant.playbackQuote.rest}</span>
-          </p>
+          {quoteSegments ? (
+            <p className={styles.quoteText}>
+              {quoteSegments.map((segment, index) => {
+                const isActive =
+                  playbackTime >= segment.start && playbackTime < segment.end;
+                const hasPlayed = playbackTime >= segment.end;
+
+                return (
+                  <Fragment key={`${merchant.id}-quote-segment-${index}`}>
+                    <span
+                      className={`${styles.quoteSegment} ${
+                        isActive
+                          ? styles.quoteSegmentActive
+                          : hasPlayed
+                            ? styles.quoteSegmentPlayed
+                            : styles.quoteSegmentUpcoming
+                      }`}
+                    >
+                      {segment.text}
+                    </span>{" "}
+                  </Fragment>
+                );
+              })}
+            </p>
+          ) : (
+            <p className={styles.quoteText}>
+              <span className={styles.quoteLead}>{merchant.playbackQuote.lead}</span>
+              <span className={styles.quoteRest}>{merchant.playbackQuote.rest}</span>
+            </p>
+          )}
 
           <div className={styles.quoteAttribution}>
             <p className={styles.quoteSpeaker}>{merchant.playbackQuote.speakerName}</p>
