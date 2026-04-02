@@ -1,21 +1,29 @@
 .section {
   position: relative;
+  width: min(100%, var(--desktop-section-max-width));
+  margin: 0 auto;
+  min-height: calc(100vh + var(--theme-scroll-distance, 0px));
+  padding-inline: var(--desktop-section-padding-inline);
+  --orbit-spacing: 360px;
+}
+
+.stickyStage {
+  position: absolute;
+  inset: 0 var(--desktop-section-padding-inline) auto;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
   isolation: isolate;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--desktop-grid-gutter);
-  width: min(100%, var(--desktop-section-max-width));
-  margin: 0 auto;
-  padding: 96px var(--desktop-section-padding-inline) 72px;
-  --orbit-spacing: 360px;
+  align-content: start;
+  padding: 96px 0 72px;
 }
 
 .gridOverlay {
   position: absolute;
-  inset: 0 var(--desktop-section-padding-inline);
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--desktop-grid-gutter);
+  inset: 0;
   pointer-events: none;
   mix-blend-mode: multiply;
   z-index: 3;
@@ -48,21 +56,38 @@
 
 .card {
   position: relative;
-  grid-column: 3 / span 8;
   width: 100%;
-  margin: 128px auto 0;
+}
+
+.themeViewport {
+  grid-column: 3 / span 8;
+  margin-top: 128px;
+  overflow: visible;
+}
+
+.themeTrack {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  column-gap: var(--theme-slide-gap, 64px);
+  align-items: flex-start;
+  width: 100%;
+  will-change: transform;
+  transform: translate3d(0px, 0px, 0px);
+}
+
+.themeSlide {
+  min-width: 0;
 }
 
 .navSlot {
   position: relative;
-  grid-column: 3 / span 8;
   display: flex;
   justify-content: center;
   margin-top: 12px;
 }
 
 .socialProofText {
-  grid-column: 3 / span 8;
   margin: 40px 0 0;
   color: var(--text);
   opacity: 0.5;
@@ -118,21 +143,24 @@
 .playerPanel {
   position: relative;
   overflow: hidden;
-  background: var(--player-panel);
+  background: var(--theme-player-panel, var(--player-panel));
   border-radius: 0 8px 8px 0;
 }
 
 @media (max-width: 1180px) {
   .section {
-    display: block;
     padding-inline: 24px;
+  }
+
+  .stickyStage {
+    padding: 96px 0 72px;
   }
 
   .gridOverlay {
     display: none;
   }
 
-  .card {
+  .themeViewport {
     margin-top: 128px;
   }
 
@@ -162,14 +190,18 @@
 
 @media (max-width: 760px) {
   .section {
-    padding: 72px 16px 48px;
+    padding-inline: 16px;
+  }
+
+  .stickyStage {
+    padding: 72px 0 48px;
   }
 
   .heading {
     font-size: 28px;
   }
 
-  .card {
+  .themeViewport {
     margin-top: 88px;
   }
 

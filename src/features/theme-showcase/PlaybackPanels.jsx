@@ -12,9 +12,70 @@ function PlaybackPanels({
   textMorphDuration,
   textMorphEaseString,
   playbackPulseDuration,
+  isActiveSlide = true,
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+
+  useEffect(() => {
+    if (!isActiveSlide) {
+      return undefined;
+    }
+
+    function handleMediaKey(event) {
+      const mediaKeys = new Set(["MediaPlayPause", "MediaPlay", "MediaPause", "MediaStop"]);
+
+      if (!mediaKeys.has(event.code) && !mediaKeys.has(event.key)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    window.addEventListener("keydown", handleMediaKey, true);
+
+    if (typeof navigator !== "undefined" && "mediaSession" in navigator) {
+      const noop = () => {};
+
+      try {
+        navigator.mediaSession.setActionHandler("play", noop);
+        navigator.mediaSession.setActionHandler("pause", noop);
+        navigator.mediaSession.setActionHandler("stop", noop);
+      } catch {
+        // Ignore browsers that do not support overriding these handlers.
+      }
+
+      return () => {
+        window.removeEventListener("keydown", handleMediaKey, true);
+
+        try {
+          navigator.mediaSession.setActionHandler("play", null);
+          navigator.mediaSession.setActionHandler("pause", null);
+          navigator.mediaSession.setActionHandler("stop", null);
+        } catch {
+          // Ignore browsers that do not support clearing these handlers.
+        }
+      };
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleMediaKey, true);
+    };
+  }, [isActiveSlide]);
+
+  useEffect(() => {
+    if (isActiveSlide) {
+      return undefined;
+    }
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+
+    setIsPlaying(false);
+  }, [isActiveSlide]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -48,6 +109,10 @@ function PlaybackPanels({
   }, [activeMerchant.id]);
 
   async function handleTogglePlayback() {
+    if (!isActiveSlide) {
+      return;
+    }
+
     const audio = audioRef.current;
 
     if (activeMerchant.playbackAudioSrc && audio) {

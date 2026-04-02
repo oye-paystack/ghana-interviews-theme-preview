@@ -10,7 +10,36 @@ export const themeShowcaseTheme = {
   sectionHeading:
     "We heard a few things across our conversations and we'd like you to hear them too",
   socialProofText: "We heard this from others too",
+  playerPanelColor: "#657140",
 };
+
+export const themeShowcaseThemes = [
+  themeShowcaseTheme,
+  {
+    id: "theme-showcase-support",
+    indexLabel: "02",
+    title: "Merchants are growing faster than the support around them",
+    sectionHeading: themeShowcaseTheme.sectionHeading,
+    socialProofText: themeShowcaseTheme.socialProofText,
+    playerPanelColor: "#4A0113",
+  },
+  {
+    id: "theme-showcase-reconciliation",
+    indexLabel: "03",
+    title: "Reconciliation is still too manual, and it's costing merchant trust",
+    sectionHeading: themeShowcaseTheme.sectionHeading,
+    socialProofText: themeShowcaseTheme.socialProofText,
+    playerPanelColor: "#0C1A1D",
+  },
+  {
+    id: "theme-showcase-opaque",
+    indexLabel: "04",
+    title: "When payments fail, merchants are left without answers",
+    sectionHeading: themeShowcaseTheme.sectionHeading,
+    socialProofText: themeShowcaseTheme.socialProofText,
+    playerPanelColor: "#F76C4D",
+  },
+];
 
 export const themeShowcaseMerchants = [
   {

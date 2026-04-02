@@ -133,6 +133,18 @@ describe("ThemeShowcaseSection", () => {
     expect(screen.getByTestId("theme-showcase-section")).toHaveStyle("--orbit-spacing: 420px");
   });
 
+  test("updates the theme spacing readout and css variable", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+
+    const slider = screen.getByLabelText(/theme spacing/i);
+    fireEvent.change(slider, { target: { value: "96" } });
+
+    expect(screen.getByText("96px")).toBeInTheDocument();
+    expect(screen.getByTestId("theme-showcase-section")).toHaveStyle("--theme-slide-gap: 96px");
+  });
+
   test("updates the side cassette offset from the config popover", () => {
     renderThemeShowcase();
 

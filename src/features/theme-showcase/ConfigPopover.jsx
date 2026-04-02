@@ -7,10 +7,12 @@ function ConfigPopover({
   textMorphEase,
   textMorphEaseString,
   playbackPulseDuration,
+  themeSpacing,
   showGridOverlay,
   isOpen,
   onToggle,
   onSpacingChange,
+  onThemeSpacingChange,
   onSideCassetteOffsetYChange,
   onTextMorphDurationChange,
   onPlaybackPulseDurationChange,
@@ -55,6 +57,21 @@ function ConfigPopover({
             step="2"
             value={spacing}
             onChange={(event) => onSpacingChange(Number(event.currentTarget.value))}
+          />
+
+          <label className={styles.field} htmlFor="theme-spacing">
+            <span className={styles.label}>Theme spacing</span>
+            <span className={styles.value}>{themeSpacing}px</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="theme-spacing"
+            type="range"
+            min="0"
+            max="360"
+            step="4"
+            value={themeSpacing}
+            onChange={(event) => onThemeSpacingChange(Number(event.currentTarget.value))}
           />
 
           <label className={styles.field} htmlFor="side-cassette-offset-y">
