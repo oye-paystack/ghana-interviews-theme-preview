@@ -347,6 +347,7 @@ function ThemeShowcaseSection({
           showGridOverlay={showGridOverlay}
           isOpen={isConfigOpen}
           onToggle={() => setIsConfigOpen((open) => !open)}
+          onClose={() => setIsConfigOpen(false)}
           onSpacingChange={(value) => setOrbitSpacing(value)}
           onThemeSpacingChange={(value) => setThemeSpacing(value)}
           onThemeHoldDistanceChange={(value) => setThemeHoldDistance(value)}

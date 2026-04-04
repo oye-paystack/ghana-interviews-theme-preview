@@ -249,4 +249,15 @@ describe("ThemeShowcaseSection", () => {
     expect(screen.getByRole("heading", { name: /achieve by petra/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/orbit spacing/i)).toHaveValue("436");
   });
+
+  test("closes the config popover when clicking outside it", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+    expect(screen.getByLabelText(/orbit spacing/i)).toBeInTheDocument();
+
+    fireEvent.pointerDown(document.body);
+
+    expect(screen.queryByLabelText(/orbit spacing/i)).not.toBeInTheDocument();
+  });
 });

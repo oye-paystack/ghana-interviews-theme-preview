@@ -5,7 +5,8 @@
   z-index: 30;
   display: flex;
   flex-direction: column-reverse;
-  width: 310px;
+  width: fit-content;
+  max-width: 310px;
   overflow: hidden;
   border: 1px solid rgba(82, 56, 39, 0.12);
   border-radius: 14px;
@@ -15,6 +16,7 @@
 }
 
 .popoverOpen {
+  width: 310px;
   box-shadow: 0 12px 26px rgba(50, 34, 21, 0.12);
 }
 
@@ -22,7 +24,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  width: 100%;
+  width: fit-content;
   padding: 10px 14px;
   border: 0;
   background: transparent;

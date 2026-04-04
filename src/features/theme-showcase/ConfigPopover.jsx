@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import styles from "./ConfigPopover.module.css";
 
 function ConfigPopover({
@@ -12,6 +13,7 @@ function ConfigPopover({
   showGridOverlay,
   isOpen,
   onToggle,
+  onClose,
   onSpacingChange,
   onThemeSpacingChange,
   onThemeHoldDistanceChange,
@@ -21,8 +23,33 @@ function ConfigPopover({
   onShowGridOverlayChange,
   onTextMorphEaseChange,
 }) {
+  const popoverRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    function handlePointerDown(event) {
+      if (popoverRef.current?.contains(event.target)) {
+        return;
+      }
+
+      onClose();
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+    };
+  }, [isOpen, onClose]);
+
   return (
-    <aside className={`${styles.popover} ${isOpen ? styles.popoverOpen : ""}`}>
+    <aside
+      className={`${styles.popover} ${isOpen ? styles.popoverOpen : ""}`}
+      ref={popoverRef}
+    >
       <button
         className={styles.summaryButton}
         type="button"
