@@ -276,6 +276,18 @@ describe("ThemeShowcaseSection", () => {
     expect(section).toHaveAttribute("data-show-grid", "true");
   });
 
+  test("toggles the sticky guide from the config popover", () => {
+    renderThemeShowcase();
+
+    const section = screen.getByTestId("theme-showcase-section");
+    expect(section).toHaveAttribute("data-show-sticky-guide", "false");
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+    fireEvent.click(screen.getByLabelText(/show sticky line/i));
+
+    expect(section).toHaveAttribute("data-show-sticky-guide", "true");
+  });
+
   test("keeps section state when the config popover opens and closes", () => {
     renderThemeShowcase();
 

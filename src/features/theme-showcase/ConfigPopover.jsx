@@ -15,6 +15,7 @@ function ConfigPopover({
   currentCardExitCompleteAt,
   footerSwitchAt,
   showGridOverlay,
+  showStickyGuide,
   isOpen,
   onToggle,
   onClose,
@@ -29,6 +30,7 @@ function ConfigPopover({
   onTextMorphDurationChange,
   onPlaybackPulseDurationChange,
   onShowGridOverlayChange,
+  onShowStickyGuideChange,
   onTextMorphEaseChange,
 }) {
   const popoverRef = useRef(null);
@@ -78,6 +80,17 @@ function ConfigPopover({
               type="checkbox"
               checked={showGridOverlay}
               onChange={(event) => onShowGridOverlayChange(event.currentTarget.checked)}
+            />
+          </label>
+
+          <label className={styles.toggleField} htmlFor="show-sticky-guide">
+            <span className={styles.label}>Show sticky line</span>
+            <input
+              id="show-sticky-guide"
+              className={styles.checkbox}
+              type="checkbox"
+              checked={showStickyGuide}
+              onChange={(event) => onShowStickyGuideChange(event.currentTarget.checked)}
             />
           </label>
 

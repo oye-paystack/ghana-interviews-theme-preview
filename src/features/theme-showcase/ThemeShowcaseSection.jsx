@@ -74,6 +74,7 @@ function ThemeShowcaseSection({
   const [nextCardOffsetY, setNextCardOffsetY] = useState(0);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [showGridOverlay, setShowGridOverlay] = useState(false);
+  const [showStickyGuide, setShowStickyGuide] = useState(false);
   const [activeIndicesByThemeId, setActiveIndicesByThemeId] = useState(() =>
     Object.fromEntries(
       themeList.map((themeItem) => [themeItem.id, clampIndex(initialActiveIndex, merchants.length)]),
@@ -216,6 +217,7 @@ function ThemeShowcaseSection({
 
   const activeTheme = themeList[activeThemeIndex] ?? themeList[0];
   const nextTheme = themeList[activeThemeIndex + 1] ?? null;
+  const futureThemes = themeList.slice(activeThemeIndex + 2);
   const activeThemeContext = getThemeContext(activeTheme);
   const nextThemeContext = nextTheme ? getThemeContext(nextTheme) : null;
   const sectionHeadingId = `${themeList[0]?.id ?? "theme-showcase"}-heading`;
@@ -259,6 +261,7 @@ function ThemeShowcaseSection({
       aria-labelledby={sectionHeadingId}
       data-testid="theme-showcase-section"
       data-show-grid={showGridOverlay ? "true" : "false"}
+      data-show-sticky-guide={showStickyGuide ? "true" : "false"}
     >
       <div className={styles.stage}>
         <div className={styles.stickyGuide} aria-hidden="true" />
@@ -377,6 +380,55 @@ function ThemeShowcaseSection({
                 </div>
               </div>
             ) : null}
+
+            {futureThemes.map((futureTheme, futureThemeIndex) => {
+              const futureThemeContext = getThemeContext(futureTheme);
+              const stackedOffsetMultiplier = futureThemeIndex + 1;
+
+              return (
+                <div
+                  key={futureTheme.id}
+                  className={`${styles.cardLayer} ${styles.futureCardLayer}`}
+                  style={{
+                    "--future-card-y": `calc(var(--next-card-offset-y) + ${
+                      stackedOffsetMultiplier * parkedNextCardY
+                    }px)`,
+                    "--future-card-layer": 4 + futureThemeIndex,
+                  }}
+                >
+                  <div
+                    className={styles.card}
+                    style={{
+                      "--theme-player-panel": futureTheme.playerPanelColor,
+                    }}
+                  >
+                    <div
+                      className={styles.tag}
+                      aria-label={`Theme ${futureTheme.indexLabel} title`}
+                    >
+                      <span className={styles.tagIndex}>{futureTheme.indexLabel}</span>
+                      <span className={styles.tagText}>{futureTheme.title}</span>
+                    </div>
+
+                    <div className={styles.cardBody}>
+                      <PlaybackPanels
+                        key={`${futureTheme.id}-${futureThemeContext.activeMerchant.id}`}
+                        merchants={futureThemeContext.merchants}
+                        activeIndex={futureThemeContext.activeIndex}
+                        activeMerchant={futureThemeContext.activeMerchant}
+                        orbitSpacing={orbitSpacing}
+                        sideCassetteOffsetY={sideCassetteOffsetY}
+                        textMorphDuration={textMorphDuration}
+                        textMorphEaseString={textMorphEaseString}
+                        playbackPulseDuration={playbackPulseDuration}
+                        isActiveSlide={false}
+                        isPrimaryInstance={false}
+                      />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -396,6 +448,7 @@ function ThemeShowcaseSection({
           currentCardExitCompleteAt={currentCardExitCompleteAt}
           footerSwitchAt={footerSwitchAt}
           showGridOverlay={showGridOverlay}
+          showStickyGuide={showStickyGuide}
           isOpen={isConfigOpen}
           onToggle={() => setIsConfigOpen((open) => !open)}
           onClose={() => setIsConfigOpen(false)}
@@ -412,6 +465,7 @@ function ThemeShowcaseSection({
           onTextMorphDurationChange={(value) => setTextMorphDuration(value)}
           onPlaybackPulseDurationChange={(value) => setPlaybackPulseDuration(value)}
           onShowGridOverlayChange={(value) => setShowGridOverlay(value)}
+          onShowStickyGuideChange={(value) => setShowStickyGuide(value)}
           onTextMorphEaseChange={(index, value) =>
             setTextMorphEase((currentEase) =>
               currentEase.map((point, pointIndex) =>

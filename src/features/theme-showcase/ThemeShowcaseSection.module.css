@@ -26,6 +26,12 @@
   border-top: 2px dashed rgba(222, 71, 94, 0.9);
   pointer-events: none;
   z-index: 50;
+  opacity: 0;
+  transition: opacity 140ms ease-out;
+}
+
+.section[data-show-sticky-guide="true"] .stickyGuide {
+  opacity: 1;
 }
 
 .gridOverlay {
@@ -101,6 +107,12 @@
 .nextCardLayer {
   z-index: 3;
   transform: translateY(var(--next-card-offset-y));
+  pointer-events: none;
+}
+
+.futureCardLayer {
+  z-index: var(--future-card-layer, 4);
+  transform: translateY(var(--future-card-y));
   pointer-events: none;
 }
 
