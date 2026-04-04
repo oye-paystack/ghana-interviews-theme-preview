@@ -8,11 +8,13 @@ function ConfigPopover({
   textMorphEaseString,
   playbackPulseDuration,
   themeSpacing,
+  themeHoldDistance,
   showGridOverlay,
   isOpen,
   onToggle,
   onSpacingChange,
   onThemeSpacingChange,
+  onThemeHoldDistanceChange,
   onSideCassetteOffsetYChange,
   onTextMorphDurationChange,
   onPlaybackPulseDurationChange,
@@ -72,6 +74,21 @@ function ConfigPopover({
             step="4"
             value={themeSpacing}
             onChange={(event) => onThemeSpacingChange(Number(event.currentTarget.value))}
+          />
+
+          <label className={styles.field} htmlFor="theme-hold-distance">
+            <span className={styles.label}>Theme hold distance</span>
+            <span className={styles.value}>{themeHoldDistance}px</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="theme-hold-distance"
+            type="range"
+            min="0"
+            max="240"
+            step="4"
+            value={themeHoldDistance}
+            onChange={(event) => onThemeHoldDistanceChange(Number(event.currentTarget.value))}
           />
 
           <label className={styles.field} htmlFor="side-cassette-offset-y">

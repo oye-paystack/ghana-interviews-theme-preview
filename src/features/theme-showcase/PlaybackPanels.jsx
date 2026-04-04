@@ -13,6 +13,7 @@ function PlaybackPanels({
   textMorphEaseString,
   playbackPulseDuration,
   isActiveSlide = true,
+  isPrimaryInstance = true,
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
@@ -135,7 +136,12 @@ function PlaybackPanels({
   return (
     <>
       <section className={`${styles.panel} ${styles.copyPanel}`} aria-live="polite">
-        <MerchantCopy merchant={activeMerchant} isPlaying={isPlaying} audioRef={audioRef} />
+        <MerchantCopy
+          merchant={activeMerchant}
+          isPlaying={isPlaying}
+          audioRef={audioRef}
+          isPrimaryInstance={isPrimaryInstance}
+        />
       </section>
 
       <section className={`${styles.panel} ${styles.playerPanel}`} aria-label="Cassette player">
@@ -150,6 +156,7 @@ function PlaybackPanels({
           textMorphDuration={textMorphDuration}
           textMorphEase={textMorphEaseString}
           playbackPulseDuration={playbackPulseDuration}
+          isPrimaryInstance={isPrimaryInstance}
         />
         <audio
           key={activeMerchant.id}

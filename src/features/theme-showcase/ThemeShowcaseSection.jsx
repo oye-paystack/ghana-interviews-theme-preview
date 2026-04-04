@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ConfigPopover from "./ConfigPopover";
 import MerchantNav from "./MerchantNav";
 import PlaybackPanels from "./PlaybackPanels";
@@ -10,6 +10,9 @@ const DEFAULT_TEXT_MORPH_DURATION = 400;
 const DEFAULT_TEXT_MORPH_EASE = [0.19, 1, 0.22, 1];
 const DEFAULT_PLAYBACK_PULSE_DURATION = 3200;
 const DEFAULT_THEME_SPACING = 64;
+const DEFAULT_THEME_HOLD_DISTANCE = 88;
+const FINAL_THEME_DWELL = 120;
+const SHARED_FOOTER_BLOCK_HEIGHT = 120;
 
 function clampIndex(value, length) {
   if (length <= 0) {
@@ -17,6 +20,18 @@ function clampIndex(value, length) {
   }
 
   return Math.min(Math.max(value, 0), length - 1);
+}
+
+function getPageTop(element) {
+  let top = 0;
+  let node = element;
+
+  while (node) {
+    top += node.offsetTop;
+    node = node.offsetParent;
+  }
+
+  return top;
 }
 
 function ThemeShowcaseSection({
@@ -44,7 +59,9 @@ function ThemeShowcaseSection({
     DEFAULT_PLAYBACK_PULSE_DURATION,
   );
   const [themeSpacing, setThemeSpacing] = useState(DEFAULT_THEME_SPACING);
-  const [firstThemeSlideHeight, setFirstThemeSlideHeight] = useState(815);
+  const [themeHoldDistance, setThemeHoldDistance] = useState(DEFAULT_THEME_HOLD_DISTANCE);
+  const [cardHeight, setCardHeight] = useState(815);
+  const [nextCardOffsetY, setNextCardOffsetY] = useState(0);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [showGridOverlay, setShowGridOverlay] = useState(false);
   const [activeIndicesByThemeId, setActiveIndicesByThemeId] = useState(() =>
@@ -52,7 +69,8 @@ function ThemeShowcaseSection({
       themeList.map((themeItem) => [themeItem.id, clampIndex(initialActiveIndex, merchants.length)]),
     ),
   );
-  const slideRefs = useRef([]);
+  const browserRef = useRef(null);
+  const currentCardRef = useRef(null);
   const merchantsById = useMemo(
     () => Object.fromEntries(merchants.map((merchantItem) => [merchantItem.id, merchantItem])),
     [merchants],
@@ -73,89 +91,135 @@ function ThemeShowcaseSection({
   }, [themeList]);
 
   useEffect(() => {
-    function updateActiveTheme() {
-      const desktopStickyTop = Number.parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue("--desktop-side-nav-top"),
-      );
-      const stickyTop = Number.isFinite(desktopStickyTop) ? desktopStickyTop : 48;
-      let nextThemeIndex = 0;
+    const currentCard = currentCardRef.current;
 
-      slideRefs.current.forEach((slide, index) => {
-        if (!slide) {
-          return;
-        }
-
-        const { top } = slide.getBoundingClientRect();
-
-        if (top <= stickyTop + 1) {
-          nextThemeIndex = index;
-        }
-      });
-
-      setActiveThemeIndex((currentIndex) =>
-        currentIndex === nextThemeIndex ? currentIndex : nextThemeIndex,
-      );
-    }
-
-    updateActiveTheme();
-    window.addEventListener("scroll", updateActiveTheme, { passive: true });
-    window.addEventListener("resize", updateActiveTheme, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", updateActiveTheme);
-      window.removeEventListener("resize", updateActiveTheme);
-    };
-  }, [themeList]);
-
-  useEffect(() => {
-    const firstSlide = slideRefs.current[0];
-
-    if (!firstSlide) {
+    if (!currentCard) {
       return undefined;
     }
 
-    function updateFirstSlideHeight() {
-      const nextHeight = Math.round(firstSlide.offsetHeight);
+    function updateCardHeight() {
+      const nextHeight = Math.round(currentCard.offsetHeight);
 
-      setFirstThemeSlideHeight((currentHeight) =>
+      setCardHeight((currentHeight) =>
         currentHeight === nextHeight ? currentHeight : nextHeight,
       );
     }
 
-    updateFirstSlideHeight();
+    updateCardHeight();
 
     const resizeObserver =
       typeof ResizeObserver === "function"
-        ? new ResizeObserver(updateFirstSlideHeight)
+        ? new ResizeObserver(updateCardHeight)
         : null;
 
-    resizeObserver?.observe(firstSlide);
-    window.addEventListener("resize", updateFirstSlideHeight, { passive: true });
+    resizeObserver?.observe(currentCard);
+    window.addEventListener("resize", updateCardHeight, { passive: true });
 
     return () => {
       resizeObserver?.disconnect();
-      window.removeEventListener("resize", updateFirstSlideHeight);
+      window.removeEventListener("resize", updateCardHeight);
     };
-  }, [themeList]);
+  }, [activeThemeIndex, themeSpacing]);
+
+  const parkedNextCardY = cardHeight + SHARED_FOOTER_BLOCK_HEIGHT + themeSpacing;
+  const transitionDistance = themeHoldDistance + parkedNextCardY;
+  const totalPinnedDistance = Math.max(
+    0,
+    (themeList.length - 1) * transitionDistance + FINAL_THEME_DWELL,
+  );
+  const stickyStageHeight = parkedNextCardY;
+
+  useEffect(() => {
+    function updatePinnedStage() {
+      const browser = browserRef.current;
+
+      if (!browser) {
+        return;
+      }
+
+      const desktopStickyTop = Number.parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--desktop-side-nav-top"),
+      );
+      const stickyTop = Number.isFinite(desktopStickyTop) ? desktopStickyTop : 48;
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const pinStart = Math.max(0, getPageTop(browser) - stickyTop);
+      const localScroll = Math.max(0, Math.min(totalPinnedDistance, scrollY - pinStart));
+
+      if (themeList.length <= 1) {
+        setActiveThemeIndex(0);
+        setNextCardOffsetY(parkedNextCardY);
+        return;
+      }
+
+      const completedTransitions = Math.min(
+        Math.floor(localScroll / transitionDistance),
+        themeList.length - 1,
+      );
+
+      if (completedTransitions >= themeList.length - 1) {
+        setActiveThemeIndex(themeList.length - 1);
+        setNextCardOffsetY(parkedNextCardY);
+        return;
+      }
+
+      const progressWithinTransition = localScroll - completedTransitions * transitionDistance;
+      const nextOffset =
+        progressWithinTransition <= themeHoldDistance
+          ? parkedNextCardY
+          : Math.max(0, parkedNextCardY - (progressWithinTransition - themeHoldDistance));
+
+      setActiveThemeIndex((currentIndex) =>
+        currentIndex === completedTransitions ? currentIndex : completedTransitions,
+      );
+      setNextCardOffsetY((currentOffset) =>
+        Math.abs(currentOffset - nextOffset) > 0.5 ? nextOffset : currentOffset,
+      );
+    }
+
+    updatePinnedStage();
+    window.addEventListener("scroll", updatePinnedStage, { passive: true });
+    window.addEventListener("resize", updatePinnedStage, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", updatePinnedStage);
+      window.removeEventListener("resize", updatePinnedStage);
+    };
+  }, [parkedNextCardY, themeHoldDistance, themeList, totalPinnedDistance, transitionDistance]);
+
+  function getThemeContext(themeItem) {
+    const themeMerchants = (themeItem?.merchantIds ?? [])
+      .map((merchantId) => merchantsById[merchantId])
+      .filter(Boolean);
+    const resolvedThemeMerchants = themeMerchants.length ? themeMerchants : merchants;
+    const themeActiveIndex = clampIndex(
+      activeIndicesByThemeId[themeItem?.id] ?? 0,
+      resolvedThemeMerchants.length,
+    );
+    const themeActiveMerchant = resolvedThemeMerchants[themeActiveIndex];
+
+    return {
+      merchants: resolvedThemeMerchants,
+      activeIndex: themeActiveIndex,
+      activeMerchant: themeActiveMerchant,
+    };
+  }
 
   const activeTheme = themeList[activeThemeIndex] ?? themeList[0];
-  const resolvedActiveThemeMerchants = (activeTheme?.merchantIds ?? [])
-    .map((merchantId) => merchantsById[merchantId])
-    .filter(Boolean);
-  const activeThemeMerchants = resolvedActiveThemeMerchants.length
-    ? resolvedActiveThemeMerchants
-    : merchants;
-  const activeThemeMerchantIndex = clampIndex(
-    activeIndicesByThemeId[activeTheme?.id] ?? 0,
-    activeThemeMerchants.length,
-  );
+  const nextTheme = themeList[activeThemeIndex + 1] ?? null;
+  const activeThemeContext = getThemeContext(activeTheme);
+  const nextThemeContext = nextTheme ? getThemeContext(nextTheme) : null;
   const sectionHeadingId = `${themeList[0]?.id ?? "theme-showcase"}-heading`;
   const textMorphEaseString = `cubic-bezier(${textMorphEase.join(", ")})`;
 
   const sectionStyle = {
     "--orbit-spacing": `${orbitSpacing}px`,
     "--theme-slide-gap": `${themeSpacing}px`,
-    "--first-theme-slide-height": `${firstThemeSlideHeight}px`,
+    "--card-height": `${cardHeight}px`,
+    "--parked-next-card-y": `${parkedNextCardY}px`,
+    "--next-card-offset-y": `${nextCardOffsetY}px`,
+    "--sticky-stage-height": `${stickyStageHeight}px`,
+    "--pinned-scroll-distance": `${totalPinnedDistance}px`,
+    "--theme-hold-distance": `${themeHoldDistance}px`,
   };
 
   return (
@@ -179,78 +243,94 @@ function ThemeShowcaseSection({
           {themeList[0]?.sectionHeading}
         </h1>
 
-        <div className={styles.themeList}>
-          {themeList.map((themeItem, themeIndex) => {
-            const themeMerchants = (themeItem.merchantIds ?? [])
-              .map((merchantId) => merchantsById[merchantId])
-              .filter(Boolean);
-            const resolvedThemeMerchants = themeMerchants.length ? themeMerchants : merchants;
-            const themeActiveIndex = clampIndex(
-              activeIndicesByThemeId[themeItem.id] ?? 0,
-              resolvedThemeMerchants.length,
-            );
-            const themeActiveMerchant = resolvedThemeMerchants[themeActiveIndex];
-
-            return (
-              <Fragment key={themeItem.id}>
+        <div className={styles.themeBrowser} ref={browserRef}>
+          <div className={styles.stickyStage}>
+            {activeTheme ? (
+              <div className={`${styles.cardLayer} ${styles.currentCardLayer}`}>
                 <div
-                  className={styles.themeSlide}
-                  style={{ "--theme-layer": themeIndex + 1 }}
-                  ref={(element) => {
-                    slideRefs.current[themeIndex] = element;
+                  className={styles.card}
+                  ref={currentCardRef}
+                  style={{
+                    "--theme-player-panel": activeTheme.playerPanelColor,
                   }}
                 >
                   <div
-                    className={styles.card}
-                    style={{
-                      "--theme-player-panel": themeItem.playerPanelColor,
-                    }}
+                    className={styles.tag}
+                    aria-label={`Theme ${activeTheme.indexLabel} title`}
                   >
-                    <div
-                      className={styles.tag}
-                      aria-label={`Theme ${themeItem.indexLabel} title`}
-                    >
-                      <span className={styles.tagIndex}>{themeItem.indexLabel}</span>
-                      <span className={styles.tagText}>{themeItem.title}</span>
-                    </div>
+                    <span className={styles.tagIndex}>{activeTheme.indexLabel}</span>
+                    <span className={styles.tagText}>{activeTheme.title}</span>
+                  </div>
 
-                    <div className={styles.cardBody}>
-                      <PlaybackPanels
-                        merchants={resolvedThemeMerchants}
-                        activeIndex={themeActiveIndex}
-                        activeMerchant={themeActiveMerchant}
-                        orbitSpacing={orbitSpacing}
-                        sideCassetteOffsetY={sideCassetteOffsetY}
-                        textMorphDuration={textMorphDuration}
-                        textMorphEaseString={textMorphEaseString}
-                        playbackPulseDuration={playbackPulseDuration}
-                        isActiveSlide={themeIndex === activeThemeIndex}
-                      />
-                    </div>
+                  <div className={styles.cardBody}>
+                    <PlaybackPanels
+                      merchants={activeThemeContext.merchants}
+                      activeIndex={activeThemeContext.activeIndex}
+                      activeMerchant={activeThemeContext.activeMerchant}
+                      orbitSpacing={orbitSpacing}
+                      sideCassetteOffsetY={sideCassetteOffsetY}
+                      textMorphDuration={textMorphDuration}
+                      textMorphEaseString={textMorphEaseString}
+                      playbackPulseDuration={playbackPulseDuration}
+                      isActiveSlide
+                      isPrimaryInstance
+                    />
                   </div>
                 </div>
+              </div>
+            ) : null}
 
-                {themeIndex === 0 ? (
-                  <div className={styles.sharedFooter}>
-                    <p className={styles.socialProofText}>{activeTheme?.socialProofText}</p>
+            <div className={styles.sharedFooter}>
+              <p className={styles.socialProofText}>{activeTheme?.socialProofText}</p>
 
-                    <div className={styles.navSlot}>
-                      <MerchantNav
-                        merchants={activeThemeMerchants}
-                        activeIndex={activeThemeMerchantIndex}
-                        onSelect={(index) =>
-                          setActiveIndicesByThemeId((current) => ({
-                            ...current,
-                            [activeTheme.id]: index,
-                          }))
-                        }
-                      />
-                    </div>
+              <div className={styles.navSlot}>
+                <MerchantNav
+                  merchants={activeThemeContext.merchants}
+                  activeIndex={activeThemeContext.activeIndex}
+                  onSelect={(index) =>
+                    setActiveIndicesByThemeId((current) => ({
+                      ...current,
+                      [activeTheme.id]: index,
+                    }))
+                  }
+                />
+              </div>
+            </div>
+
+            {nextTheme && nextThemeContext ? (
+              <div className={`${styles.cardLayer} ${styles.nextCardLayer}`}>
+                <div
+                  className={styles.card}
+                  style={{
+                    "--theme-player-panel": nextTheme.playerPanelColor,
+                  }}
+                >
+                  <div
+                    className={styles.tag}
+                    aria-label={`Theme ${nextTheme.indexLabel} title`}
+                  >
+                    <span className={styles.tagIndex}>{nextTheme.indexLabel}</span>
+                    <span className={styles.tagText}>{nextTheme.title}</span>
                   </div>
-                ) : null}
-              </Fragment>
-            );
-          })}
+
+                  <div className={styles.cardBody}>
+                    <PlaybackPanels
+                      merchants={nextThemeContext.merchants}
+                      activeIndex={nextThemeContext.activeIndex}
+                      activeMerchant={nextThemeContext.activeMerchant}
+                      orbitSpacing={orbitSpacing}
+                      sideCassetteOffsetY={sideCassetteOffsetY}
+                      textMorphDuration={textMorphDuration}
+                      textMorphEaseString={textMorphEaseString}
+                      playbackPulseDuration={playbackPulseDuration}
+                      isActiveSlide={false}
+                      isPrimaryInstance={false}
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
 
@@ -263,11 +343,13 @@ function ThemeShowcaseSection({
           textMorphEaseString={textMorphEaseString}
           playbackPulseDuration={playbackPulseDuration}
           themeSpacing={themeSpacing}
+          themeHoldDistance={themeHoldDistance}
           showGridOverlay={showGridOverlay}
           isOpen={isConfigOpen}
           onToggle={() => setIsConfigOpen((open) => !open)}
           onSpacingChange={(value) => setOrbitSpacing(value)}
           onThemeSpacingChange={(value) => setThemeSpacing(value)}
+          onThemeHoldDistanceChange={(value) => setThemeHoldDistance(value)}
           onSideCassetteOffsetYChange={(value) => setSideCassetteOffsetY(value)}
           onTextMorphDurationChange={(value) => setTextMorphDuration(value)}
           onPlaybackPulseDurationChange={(value) => setPlaybackPulseDuration(value)}

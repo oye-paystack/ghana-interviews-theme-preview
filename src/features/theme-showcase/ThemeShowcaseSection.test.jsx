@@ -145,6 +145,20 @@ describe("ThemeShowcaseSection", () => {
     expect(screen.getByTestId("theme-showcase-section")).toHaveStyle("--theme-slide-gap: 96px");
   });
 
+  test("updates the theme hold distance readout and css variable", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+
+    const slider = screen.getByLabelText(/theme hold distance/i);
+    fireEvent.change(slider, { target: { value: "132" } });
+
+    expect(screen.getByText("132px")).toBeInTheDocument();
+    expect(screen.getByTestId("theme-showcase-section")).toHaveStyle(
+      "--theme-hold-distance: 132px",
+    );
+  });
+
   test("updates the side cassette offset from the config popover", () => {
     renderThemeShowcase();
 

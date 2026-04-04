@@ -16,6 +16,7 @@ function PlayerStage({
   textMorphDuration,
   textMorphEase,
   playbackPulseDuration,
+  isPrimaryInstance = true,
 }) {
   const buttonLabel = isPlaying ? "Stop playback" : activeMerchant.listenLabel;
 
@@ -50,7 +51,7 @@ function PlayerStage({
           style={{ "--playback-pulse-duration": `${playbackPulseDuration}ms` }}
           data-playing={isPlaying ? "true" : "false"}
           data-pulse-duration={playbackPulseDuration}
-          data-testid="playback-indicator"
+          data-testid={isPrimaryInstance ? "playback-indicator" : undefined}
           aria-hidden="true"
         />
         <span className={styles.playback}>PLAYBACK</span>

@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import quoteMarksSrc from "../../../Quotes.svg";
 import styles from "./MerchantCopy.module.css";
 
-function MerchantCopy({ merchant, isPlaying, audioRef = null }) {
+function MerchantCopy({ merchant, isPlaying, audioRef = null, isPrimaryInstance = true }) {
   const [playbackTime, setPlaybackTime] = useState(0);
   const quoteSegments = merchant.playbackQuote.segments ?? null;
 
@@ -36,7 +36,7 @@ function MerchantCopy({ merchant, isPlaying, audioRef = null }) {
     <div
       className={styles.copy}
       data-playing={isPlaying ? "true" : "false"}
-      data-testid="merchant-copy"
+      data-testid={isPrimaryInstance ? "merchant-copy" : undefined}
     >
       <div
         className={`${styles.layer} ${styles.summaryLayer} ${isPlaying ? styles.summaryLayerHidden : styles.layerVisible}`}
