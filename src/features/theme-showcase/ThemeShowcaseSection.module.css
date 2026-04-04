@@ -89,6 +89,10 @@
 
 .currentCardLayer {
   z-index: 2;
+  transform-origin: bottom center;
+  transform: scale(var(--current-card-scale, 1));
+  opacity: var(--current-card-opacity, 1);
+  filter: blur(var(--current-card-blur, 0px));
 }
 
 .nextCardLayer {

@@ -10,6 +10,10 @@ function ConfigPopover({
   playbackPulseDuration,
   themeSpacing,
   themeHoldDistance,
+  currentCardExitScale,
+  currentCardExitBlur,
+  currentCardExitCompleteAt,
+  footerSwitchAt,
   showGridOverlay,
   isOpen,
   onToggle,
@@ -17,6 +21,10 @@ function ConfigPopover({
   onSpacingChange,
   onThemeSpacingChange,
   onThemeHoldDistanceChange,
+  onCurrentCardExitScaleChange,
+  onCurrentCardExitBlurChange,
+  onCurrentCardExitCompleteAtChange,
+  onFooterSwitchAtChange,
   onSideCassetteOffsetYChange,
   onTextMorphDurationChange,
   onPlaybackPulseDurationChange,
@@ -116,6 +124,74 @@ function ConfigPopover({
             step="4"
             value={themeHoldDistance}
             onChange={(event) => onThemeHoldDistanceChange(Number(event.currentTarget.value))}
+          />
+
+          <label className={styles.field} htmlFor="current-card-exit-scale">
+            <span className={styles.label}>Current card exit scale</span>
+            <span className={styles.value}>{currentCardExitScale.toFixed(2)}</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="current-card-exit-scale"
+            type="range"
+            min="0.7"
+            max="1"
+            step="0.01"
+            value={currentCardExitScale}
+            onChange={(event) =>
+              onCurrentCardExitScaleChange(Number(event.currentTarget.value))
+            }
+          />
+
+          <label className={styles.field} htmlFor="current-card-exit-blur">
+            <span className={styles.label}>Current card exit blur</span>
+            <span className={styles.value}>{currentCardExitBlur}px</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="current-card-exit-blur"
+            type="range"
+            min="0"
+            max="24"
+            step="1"
+            value={currentCardExitBlur}
+            onChange={(event) =>
+              onCurrentCardExitBlurChange(Number(event.currentTarget.value))
+            }
+          />
+
+          <label className={styles.field} htmlFor="current-card-exit-complete-at">
+            <span className={styles.label}>Exit complete at</span>
+            <span className={styles.value}>
+              {Math.round(currentCardExitCompleteAt * 100)}%
+            </span>
+          </label>
+          <input
+            className={styles.slider}
+            id="current-card-exit-complete-at"
+            type="range"
+            min="0.3"
+            max="1"
+            step="0.01"
+            value={currentCardExitCompleteAt}
+            onChange={(event) =>
+              onCurrentCardExitCompleteAtChange(Number(event.currentTarget.value))
+            }
+          />
+
+          <label className={styles.field} htmlFor="footer-switch-at">
+            <span className={styles.label}>Footer switch at</span>
+            <span className={styles.value}>{Math.round(footerSwitchAt * 100)}%</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="footer-switch-at"
+            type="range"
+            min="0.5"
+            max="1"
+            step="0.01"
+            value={footerSwitchAt}
+            onChange={(event) => onFooterSwitchAtChange(Number(event.currentTarget.value))}
           />
 
           <label className={styles.field} htmlFor="side-cassette-offset-y">

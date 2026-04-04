@@ -159,6 +159,50 @@ describe("ThemeShowcaseSection", () => {
     );
   });
 
+  test("updates current card exit controls from the config popover", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+
+    fireEvent.change(screen.getByLabelText(/current card exit scale/i), {
+      target: { value: "0.85" },
+    });
+    fireEvent.change(screen.getByLabelText(/current card exit blur/i), {
+      target: { value: "14" },
+    });
+    fireEvent.change(screen.getByLabelText(/exit complete at/i), {
+      target: { value: "0.62" },
+    });
+
+    expect(screen.getByText("0.85")).toBeInTheDocument();
+    expect(screen.getByText("14px")).toBeInTheDocument();
+    expect(screen.getByText("62%")).toBeInTheDocument();
+    expect(screen.getByTestId("theme-showcase-section")).toHaveStyle(
+      "--current-card-exit-scale: 0.85",
+    );
+    expect(screen.getByTestId("theme-showcase-section")).toHaveStyle(
+      "--current-card-exit-blur: 14px",
+    );
+    expect(screen.getByTestId("theme-showcase-section")).toHaveStyle(
+      "--current-card-exit-complete-at: 62%",
+    );
+  });
+
+  test("updates footer switch threshold from the config popover", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+
+    fireEvent.change(screen.getByLabelText(/footer switch at/i), {
+      target: { value: "0.88" },
+    });
+
+    expect(screen.getByText("88%")).toBeInTheDocument();
+    expect(screen.getByTestId("theme-showcase-section")).toHaveStyle(
+      "--footer-switch-at: 88%",
+    );
+  });
+
   test("updates the side cassette offset from the config popover", () => {
     renderThemeShowcase();
 

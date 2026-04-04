@@ -11,6 +11,10 @@ const DEFAULT_TEXT_MORPH_EASE = [0.19, 1, 0.22, 1];
 const DEFAULT_PLAYBACK_PULSE_DURATION = 3200;
 const DEFAULT_THEME_SPACING = 64;
 const DEFAULT_THEME_HOLD_DISTANCE = 88;
+const DEFAULT_EXIT_SCALE = 0.95;
+const DEFAULT_EXIT_BLUR = 3;
+const DEFAULT_EXIT_COMPLETE_AT = 0.77;
+const DEFAULT_FOOTER_SWITCH_AT = 0.92;
 const FINAL_THEME_DWELL = 120;
 const SHARED_FOOTER_BLOCK_HEIGHT = 120;
 
@@ -60,6 +64,12 @@ function ThemeShowcaseSection({
   );
   const [themeSpacing, setThemeSpacing] = useState(DEFAULT_THEME_SPACING);
   const [themeHoldDistance, setThemeHoldDistance] = useState(DEFAULT_THEME_HOLD_DISTANCE);
+  const [currentCardExitScale, setCurrentCardExitScale] = useState(DEFAULT_EXIT_SCALE);
+  const [currentCardExitBlur, setCurrentCardExitBlur] = useState(DEFAULT_EXIT_BLUR);
+  const [currentCardExitCompleteAt, setCurrentCardExitCompleteAt] = useState(
+    DEFAULT_EXIT_COMPLETE_AT,
+  );
+  const [footerSwitchAt, setFooterSwitchAt] = useState(DEFAULT_FOOTER_SWITCH_AT);
   const [cardHeight, setCardHeight] = useState(815);
   const [nextCardOffsetY, setNextCardOffsetY] = useState(0);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
@@ -210,6 +220,22 @@ function ThemeShowcaseSection({
   const nextThemeContext = nextTheme ? getThemeContext(nextTheme) : null;
   const sectionHeadingId = `${themeList[0]?.id ?? "theme-showcase"}-heading`;
   const textMorphEaseString = `cubic-bezier(${textMorphEase.join(", ")})`;
+  const nextCardRiseProgress =
+    nextTheme && parkedNextCardY > 0
+      ? Math.max(0, Math.min(1, (parkedNextCardY - nextCardOffsetY) / parkedNextCardY))
+      : 0;
+  const footerThemeIndex =
+    nextTheme && nextCardRiseProgress >= footerSwitchAt ? activeThemeIndex + 1 : activeThemeIndex;
+  const footerTheme = themeList[footerThemeIndex] ?? activeTheme;
+  const footerThemeContext = getThemeContext(footerTheme);
+  const currentCardExitProgress = Math.max(
+    0,
+    Math.min(1, nextCardRiseProgress / currentCardExitCompleteAt),
+  );
+  const currentCardScale =
+    1 - currentCardExitProgress * (1 - currentCardExitScale);
+  const currentCardOpacity = 1 - currentCardExitProgress;
+  const currentCardBlur = currentCardExitProgress * currentCardExitBlur;
 
   const sectionStyle = {
     "--orbit-spacing": `${orbitSpacing}px`,
@@ -220,6 +246,10 @@ function ThemeShowcaseSection({
     "--sticky-stage-height": `${stickyStageHeight}px`,
     "--pinned-scroll-distance": `${totalPinnedDistance}px`,
     "--theme-hold-distance": `${themeHoldDistance}px`,
+    "--current-card-exit-scale": currentCardExitScale,
+    "--current-card-exit-blur": `${currentCardExitBlur}px`,
+    "--current-card-exit-complete-at": `${Math.round(currentCardExitCompleteAt * 100)}%`,
+    "--footer-switch-at": `${Math.round(footerSwitchAt * 100)}%`,
   };
 
   return (
@@ -246,7 +276,14 @@ function ThemeShowcaseSection({
         <div className={styles.themeBrowser} ref={browserRef}>
           <div className={styles.stickyStage}>
             {activeTheme ? (
-              <div className={`${styles.cardLayer} ${styles.currentCardLayer}`}>
+              <div
+                className={`${styles.cardLayer} ${styles.currentCardLayer}`}
+                style={{
+                  "--current-card-scale": currentCardScale,
+                  "--current-card-opacity": currentCardOpacity,
+                  "--current-card-blur": `${currentCardBlur}px`,
+                }}
+              >
                 <div
                   className={styles.card}
                   ref={currentCardRef}
@@ -281,16 +318,16 @@ function ThemeShowcaseSection({
             ) : null}
 
             <div className={styles.sharedFooter}>
-              <p className={styles.socialProofText}>{activeTheme?.socialProofText}</p>
+              <p className={styles.socialProofText}>{footerTheme?.socialProofText}</p>
 
               <div className={styles.navSlot}>
                 <MerchantNav
-                  merchants={activeThemeContext.merchants}
-                  activeIndex={activeThemeContext.activeIndex}
+                  merchants={footerThemeContext.merchants}
+                  activeIndex={footerThemeContext.activeIndex}
                   onSelect={(index) =>
                     setActiveIndicesByThemeId((current) => ({
                       ...current,
-                      [activeTheme.id]: index,
+                      [footerTheme.id]: index,
                     }))
                   }
                 />
@@ -344,6 +381,10 @@ function ThemeShowcaseSection({
           playbackPulseDuration={playbackPulseDuration}
           themeSpacing={themeSpacing}
           themeHoldDistance={themeHoldDistance}
+          currentCardExitScale={currentCardExitScale}
+          currentCardExitBlur={currentCardExitBlur}
+          currentCardExitCompleteAt={currentCardExitCompleteAt}
+          footerSwitchAt={footerSwitchAt}
           showGridOverlay={showGridOverlay}
           isOpen={isConfigOpen}
           onToggle={() => setIsConfigOpen((open) => !open)}
@@ -351,6 +392,12 @@ function ThemeShowcaseSection({
           onSpacingChange={(value) => setOrbitSpacing(value)}
           onThemeSpacingChange={(value) => setThemeSpacing(value)}
           onThemeHoldDistanceChange={(value) => setThemeHoldDistance(value)}
+          onCurrentCardExitScaleChange={(value) => setCurrentCardExitScale(value)}
+          onCurrentCardExitBlurChange={(value) => setCurrentCardExitBlur(value)}
+          onCurrentCardExitCompleteAtChange={(value) =>
+            setCurrentCardExitCompleteAt(value)
+          }
+          onFooterSwitchAtChange={(value) => setFooterSwitchAt(value)}
           onSideCassetteOffsetYChange={(value) => setSideCassetteOffsetY(value)}
           onTextMorphDurationChange={(value) => setTextMorphDuration(value)}
           onPlaybackPulseDurationChange={(value) => setPlaybackPulseDuration(value)}
