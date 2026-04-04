@@ -1,4 +1,5 @@
 import { AirplaneTilt, PiggyBank, Plant } from "@phosphor-icons/react";
+import { TextMorph } from "torph/react";
 import styles from "./MerchantNav.module.css";
 
 const iconMap = {
@@ -25,13 +26,15 @@ function MerchantNav({
             aria-label={merchant.name}
             aria-pressed={isActive}
             data-active={isActive}
-            key={merchant.id}
+            key={`merchant-slot-${index}`}
             onClick={() => onSelect(index)}
           >
             <span className={styles.iconSlot} aria-hidden="true">
               <Icon className={styles.iconGlyph} weight="duotone" />
             </span>
-            <span className={styles.segmentLabel}>{merchant.navLabel ?? merchant.name}</span>
+            <TextMorph as="span" className={styles.segmentLabel}>
+              {merchant.navLabel ?? merchant.name}
+            </TextMorph>
           </button>
         );
       })}

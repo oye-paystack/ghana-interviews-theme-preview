@@ -1,6 +1,6 @@
 .nav {
   position: fixed;
-  top: 48px;
+  top: var(--desktop-side-nav-top);
   left: var(--desktop-grid-start-x);
   z-index: 20;
   display: flex;

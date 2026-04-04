@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import ConfigPopover from "./ConfigPopover";
 import MerchantNav from "./MerchantNav";
 import PlaybackPanels from "./PlaybackPanels";
@@ -33,9 +33,6 @@ function ThemeShowcaseSection({
 
     return theme ? [theme] : [];
   }, [theme, themes]);
-  const [activeIndex, setActiveIndex] = useState(() =>
-    clampIndex(initialActiveIndex, merchants.length),
-  );
   const [activeThemeIndex, setActiveThemeIndex] = useState(0);
   const [orbitSpacing, setOrbitSpacing] = useState(DEFAULT_ORBIT_SPACING);
   const [sideCassetteOffsetY, setSideCassetteOffsetY] = useState(
@@ -47,118 +44,131 @@ function ThemeShowcaseSection({
     DEFAULT_PLAYBACK_PULSE_DURATION,
   );
   const [themeSpacing, setThemeSpacing] = useState(DEFAULT_THEME_SPACING);
+  const [firstThemeSlideHeight, setFirstThemeSlideHeight] = useState(815);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [showGridOverlay, setShowGridOverlay] = useState(false);
-  const [themeScrollDistance, setThemeScrollDistance] = useState(0);
-  const sectionRef = useRef(null);
-  const slideViewportRef = useRef(null);
-  const trackRef = useRef(null);
-  const frameRef = useRef(0);
-  const themeStepRef = useRef(0);
-  const maxThemeDistanceRef = useRef(0);
-
-  const activeMerchant = merchants[activeIndex];
-  const sectionHeadingId = `${themeList[0]?.id ?? "theme-showcase"}-heading`;
-  const textMorphEaseString = `cubic-bezier(${textMorphEase.join(", ")})`;
-
-  const sectionStyle = {
-    "--orbit-spacing": `${orbitSpacing}px`,
-    "--theme-scroll-distance": `${themeScrollDistance}px`,
-    "--theme-slide-gap": `${themeSpacing}px`,
-  };
+  const [activeIndicesByThemeId, setActiveIndicesByThemeId] = useState(() =>
+    Object.fromEntries(
+      themeList.map((themeItem) => [themeItem.id, clampIndex(initialActiveIndex, merchants.length)]),
+    ),
+  );
+  const slideRefs = useRef([]);
+  const merchantsById = useMemo(
+    () => Object.fromEntries(merchants.map((merchantItem) => [merchantItem.id, merchantItem])),
+    [merchants],
+  );
 
   useEffect(() => {
-    const section = sectionRef.current;
-    const viewport = slideViewportRef.current;
-    const track = trackRef.current;
+    setActiveIndicesByThemeId((current) => {
+      const next = { ...current };
 
-    if (!section || !viewport || !track) {
-      return undefined;
-    }
+      themeList.forEach((themeItem) => {
+        if (typeof next[themeItem.id] !== "number") {
+          next[themeItem.id] = 0;
+        }
+      });
 
-    function updateMetrics() {
-      if (themeList.length <= 1) {
-        themeStepRef.current = 0;
-        maxThemeDistanceRef.current = 0;
-        setThemeScrollDistance(0);
-        track.style.transform = "translate3d(0px, 0px, 0px)";
-        setActiveThemeIndex(0);
-        return;
-      }
+      return next;
+    });
+  }, [themeList]);
 
-      const viewportWidth = viewport.clientWidth;
-      const themeStep = viewportWidth + themeSpacing;
-      const totalDistance = Math.max(0, track.scrollWidth - viewportWidth);
-
-      themeStepRef.current = themeStep;
-      maxThemeDistanceRef.current = totalDistance;
-      setThemeScrollDistance(totalDistance);
-    }
-
-    function updateTrackPosition() {
-      const maxDistance = maxThemeDistanceRef.current;
-
-      if (maxDistance <= 0) {
-        track.style.transform = "translate3d(0px, 0px, 0px)";
-        return;
-      }
-
-      const sectionTop = section.getBoundingClientRect().top;
-      const progress = Math.min(Math.max(-sectionTop, 0), maxDistance);
-
-      track.style.transform = `translate3d(-${progress}px, 0px, 0px)`;
-
-      const nextThemeIndex = clampIndex(
-        Math.round(progress / themeStepRef.current),
-        themeList.length,
+  useEffect(() => {
+    function updateActiveTheme() {
+      const desktopStickyTop = Number.parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--desktop-side-nav-top"),
       );
+      const stickyTop = Number.isFinite(desktopStickyTop) ? desktopStickyTop : 48;
+      let nextThemeIndex = 0;
+
+      slideRefs.current.forEach((slide, index) => {
+        if (!slide) {
+          return;
+        }
+
+        const { top } = slide.getBoundingClientRect();
+
+        if (top <= stickyTop + 1) {
+          nextThemeIndex = index;
+        }
+      });
 
       setActiveThemeIndex((currentIndex) =>
         currentIndex === nextThemeIndex ? currentIndex : nextThemeIndex,
       );
     }
 
-    function requestPositionUpdate() {
-      if (frameRef.current) {
-        cancelAnimationFrame(frameRef.current);
-      }
-
-      frameRef.current = requestAnimationFrame(() => {
-        updateTrackPosition();
-        frameRef.current = 0;
-      });
-    }
-
-    function handleResize() {
-      updateMetrics();
-      requestPositionUpdate();
-    }
-
-    updateMetrics();
-    updateTrackPosition();
-    window.addEventListener("scroll", requestPositionUpdate, { passive: true });
-    window.addEventListener("resize", handleResize, { passive: true });
+    updateActiveTheme();
+    window.addEventListener("scroll", updateActiveTheme, { passive: true });
+    window.addEventListener("resize", updateActiveTheme, { passive: true });
 
     return () => {
-      if (frameRef.current) {
-        cancelAnimationFrame(frameRef.current);
-      }
-
-      window.removeEventListener("scroll", requestPositionUpdate);
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", updateActiveTheme);
+      window.removeEventListener("resize", updateActiveTheme);
     };
-  }, [themeList, themeSpacing]);
+  }, [themeList]);
+
+  useEffect(() => {
+    const firstSlide = slideRefs.current[0];
+
+    if (!firstSlide) {
+      return undefined;
+    }
+
+    function updateFirstSlideHeight() {
+      const nextHeight = Math.round(firstSlide.offsetHeight);
+
+      setFirstThemeSlideHeight((currentHeight) =>
+        currentHeight === nextHeight ? currentHeight : nextHeight,
+      );
+    }
+
+    updateFirstSlideHeight();
+
+    const resizeObserver =
+      typeof ResizeObserver === "function"
+        ? new ResizeObserver(updateFirstSlideHeight)
+        : null;
+
+    resizeObserver?.observe(firstSlide);
+    window.addEventListener("resize", updateFirstSlideHeight, { passive: true });
+
+    return () => {
+      resizeObserver?.disconnect();
+      window.removeEventListener("resize", updateFirstSlideHeight);
+    };
+  }, [themeList]);
+
+  const activeTheme = themeList[activeThemeIndex] ?? themeList[0];
+  const resolvedActiveThemeMerchants = (activeTheme?.merchantIds ?? [])
+    .map((merchantId) => merchantsById[merchantId])
+    .filter(Boolean);
+  const activeThemeMerchants = resolvedActiveThemeMerchants.length
+    ? resolvedActiveThemeMerchants
+    : merchants;
+  const activeThemeMerchantIndex = clampIndex(
+    activeIndicesByThemeId[activeTheme?.id] ?? 0,
+    activeThemeMerchants.length,
+  );
+  const sectionHeadingId = `${themeList[0]?.id ?? "theme-showcase"}-heading`;
+  const textMorphEaseString = `cubic-bezier(${textMorphEase.join(", ")})`;
+
+  const sectionStyle = {
+    "--orbit-spacing": `${orbitSpacing}px`,
+    "--theme-slide-gap": `${themeSpacing}px`,
+    "--first-theme-slide-height": `${firstThemeSlideHeight}px`,
+  };
 
   return (
     <section
-      ref={sectionRef}
       className={styles.section}
       style={sectionStyle}
       aria-labelledby={sectionHeadingId}
       data-testid="theme-showcase-section"
       data-show-grid={showGridOverlay ? "true" : "false"}
     >
-      <div className={styles.stickyStage}>
+      <div className={styles.stage}>
+        <div className={styles.stickyGuide} aria-hidden="true" />
+
         <div className={styles.gridOverlay} aria-hidden="true">
           {Array.from({ length: 12 }).map((_, index) => (
             <span className={styles.gridOverlayColumn} key={`grid-column-${index}`} />
@@ -169,58 +179,78 @@ function ThemeShowcaseSection({
           {themeList[0]?.sectionHeading}
         </h1>
 
-        <div
-          className={styles.themeViewport}
-          ref={slideViewportRef}
-          data-active-theme-index={activeThemeIndex}
-        >
-          <div className={styles.themeTrack} ref={trackRef}>
-            {themeList.map((themeItem, themeIndex) => {
-              const isActiveTheme = themeIndex === activeThemeIndex;
+        <div className={styles.themeList}>
+          {themeList.map((themeItem, themeIndex) => {
+            const themeMerchants = (themeItem.merchantIds ?? [])
+              .map((merchantId) => merchantsById[merchantId])
+              .filter(Boolean);
+            const resolvedThemeMerchants = themeMerchants.length ? themeMerchants : merchants;
+            const themeActiveIndex = clampIndex(
+              activeIndicesByThemeId[themeItem.id] ?? 0,
+              resolvedThemeMerchants.length,
+            );
+            const themeActiveMerchant = resolvedThemeMerchants[themeActiveIndex];
 
-              return (
+            return (
+              <Fragment key={themeItem.id}>
                 <div
                   className={styles.themeSlide}
-                  key={themeItem.id}
-                  aria-hidden={isActiveTheme ? undefined : "true"}
+                  style={{ "--theme-layer": themeIndex + 1 }}
+                  ref={(element) => {
+                    slideRefs.current[themeIndex] = element;
+                  }}
                 >
                   <div
                     className={styles.card}
-                    style={{ "--theme-player-panel": themeItem.playerPanelColor }}
+                    style={{
+                      "--theme-player-panel": themeItem.playerPanelColor,
+                    }}
                   >
-                    <div className={styles.tag} aria-label={`Theme ${themeItem.indexLabel} title`}>
+                    <div
+                      className={styles.tag}
+                      aria-label={`Theme ${themeItem.indexLabel} title`}
+                    >
                       <span className={styles.tagIndex}>{themeItem.indexLabel}</span>
                       <span className={styles.tagText}>{themeItem.title}</span>
                     </div>
 
                     <div className={styles.cardBody}>
                       <PlaybackPanels
-                        merchants={merchants}
-                        activeIndex={activeIndex}
-                        activeMerchant={activeMerchant}
+                        merchants={resolvedThemeMerchants}
+                        activeIndex={themeActiveIndex}
+                        activeMerchant={themeActiveMerchant}
                         orbitSpacing={orbitSpacing}
                         sideCassetteOffsetY={sideCassetteOffsetY}
                         textMorphDuration={textMorphDuration}
                         textMorphEaseString={textMorphEaseString}
                         playbackPulseDuration={playbackPulseDuration}
-                        isActiveSlide={isActiveTheme}
+                        isActiveSlide={themeIndex === activeThemeIndex}
                       />
                     </div>
                   </div>
-
-                  <p className={styles.socialProofText}>{themeItem.socialProofText}</p>
-
-                  <div className={styles.navSlot}>
-                    <MerchantNav
-                      merchants={merchants}
-                      activeIndex={activeIndex}
-                      onSelect={(index) => setActiveIndex(index)}
-                    />
-                  </div>
                 </div>
-              );
-            })}
-          </div>
+
+                {themeIndex === 0 ? (
+                  <div className={styles.sharedFooter}>
+                    <p className={styles.socialProofText}>{activeTheme?.socialProofText}</p>
+
+                    <div className={styles.navSlot}>
+                      <MerchantNav
+                        merchants={activeThemeMerchants}
+                        activeIndex={activeThemeMerchantIndex}
+                        onSelect={(index) =>
+                          setActiveIndicesByThemeId((current) => ({
+                            ...current,
+                            [activeTheme.id]: index,
+                          }))
+                        }
+                      />
+                    </div>
+                  </div>
+                ) : null}
+              </Fragment>
+            );
+          })}
         </div>
       </div>
 

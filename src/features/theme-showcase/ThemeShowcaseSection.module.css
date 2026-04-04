@@ -2,23 +2,30 @@
   position: relative;
   width: min(100%, var(--desktop-section-max-width));
   margin: 0 auto;
-  min-height: calc(100vh + var(--theme-scroll-distance, 0px));
   padding-inline: var(--desktop-section-padding-inline);
   --orbit-spacing: 360px;
+  --shared-footer-block-height: 120px;
 }
 
-.stickyStage {
-  position: absolute;
-  inset: 0 var(--desktop-section-padding-inline) auto;
-  min-height: 100vh;
-  position: sticky;
-  top: 0;
+.stage {
+  position: relative;
   isolation: isolate;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--desktop-grid-gutter);
   align-content: start;
   padding: 96px 0 72px;
+}
+
+.stickyGuide {
+  position: fixed;
+  top: var(--desktop-side-nav-top);
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 2px dashed rgba(222, 71, 94, 0.9);
+  pointer-events: none;
+  z-index: 50;
 }
 
 .gridOverlay {
@@ -59,25 +66,37 @@
   width: 100%;
 }
 
-.themeViewport {
+.themeList {
   grid-column: 3 / span 8;
   margin-top: 128px;
-  overflow: visible;
-}
-
-.themeTrack {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 100%;
-  column-gap: var(--theme-slide-gap, 64px);
-  align-items: flex-start;
-  width: 100%;
-  will-change: transform;
-  transform: translate3d(0px, 0px, 0px);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: calc(100vh - var(--desktop-side-nav-top) - 96px);
 }
 
 .themeSlide {
   min-width: 0;
+  position: sticky;
+  top: var(--desktop-side-nav-top);
+  z-index: var(--theme-layer, 1);
+}
+
+.themeSlide + .themeSlide {
+  margin-top: calc(var(--shared-footer-block-height) + 80px);
+}
+
+.sharedFooter + .themeSlide {
+  margin-top: 80px;
+}
+
+.sharedFooter {
+  position: sticky;
+  top: calc(var(--desktop-side-nav-top) + var(--first-theme-slide-height, 815px));
+  z-index: 0;
+  display: grid;
+  justify-items: center;
+  min-height: var(--shared-footer-block-height);
+  pointer-events: none;
 }
 
 .navSlot {
@@ -85,6 +104,7 @@
   display: flex;
   justify-content: center;
   margin-top: 12px;
+  pointer-events: auto;
 }
 
 .socialProofText {
@@ -152,7 +172,7 @@
     padding-inline: 24px;
   }
 
-  .stickyStage {
+  .stage {
     padding: 96px 0 72px;
   }
 
@@ -160,8 +180,24 @@
     display: none;
   }
 
-  .themeViewport {
+  .stickyGuide {
+    display: none;
+  }
+
+  .themeList {
     margin-top: 128px;
+    padding-bottom: 72px;
+  }
+
+  .sharedFooter {
+    position: relative;
+    top: auto;
+    margin-top: 40px;
+  }
+
+  .themeSlide {
+    position: relative;
+    top: auto;
   }
 
   .navSlot {
@@ -193,7 +229,7 @@
     padding-inline: 16px;
   }
 
-  .stickyStage {
+  .stage {
     padding: 72px 0 48px;
   }
 
@@ -201,8 +237,20 @@
     font-size: 28px;
   }
 
-  .themeViewport {
+  .themeList {
     margin-top: 88px;
+    padding-bottom: 48px;
+  }
+
+  .sharedFooter {
+    position: relative;
+    top: auto;
+    margin-top: 32px;
+  }
+
+  .themeSlide {
+    position: relative;
+    top: auto;
   }
 
   .tag {

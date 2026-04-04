@@ -1,7 +1,7 @@
 import AppShell from "./app/AppShell";
 import SectionSideNav from "./app/SectionSideNav";
 import {
-  themeShowcaseMerchants,
+  allThemeShowcaseMerchants,
   themeShowcaseThemes,
 } from "./data/themeShowcase";
 import ThemeShowcaseSection from "./features/theme-showcase/ThemeShowcaseSection";
@@ -12,7 +12,7 @@ function App() {
       <SectionSideNav />
       <ThemeShowcaseSection
         themes={themeShowcaseThemes}
-        merchants={themeShowcaseMerchants}
+        merchants={allThemeShowcaseMerchants}
         initialActiveIndex={0}
         showDebugControls={!import.meta.env.PROD}
       />

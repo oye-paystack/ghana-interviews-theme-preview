@@ -83,6 +83,7 @@
   --desktop-nav-rail-width: calc(
     (var(--desktop-grid-column-width) * 2) + var(--desktop-grid-gutter)
   );
+  --desktop-side-nav-top: 48px;
 }
 
 *,
