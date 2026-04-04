@@ -14,11 +14,22 @@ function PlaybackPanels({
   playbackPulseDuration,
   isActiveSlide = true,
   isPrimaryInstance = true,
+  showPlaybackButton = true,
+  playbackAudioRef = null,
+  playbackState = null,
+  onTogglePlayback = null,
 }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
+  const [internalIsPlaying, setInternalIsPlaying] = useState(false);
+  const internalAudioRef = useRef(null);
+  const audioRef = playbackAudioRef ?? internalAudioRef;
+  const isControlled = playbackState !== null;
+  const isPlaying = isControlled ? playbackState : internalIsPlaying;
 
   useEffect(() => {
+    if (isControlled) {
+      return undefined;
+    }
+
     if (!isActiveSlide) {
       return undefined;
     }
@@ -63,9 +74,13 @@ function PlaybackPanels({
     return () => {
       window.removeEventListener("keydown", handleMediaKey, true);
     };
-  }, [isActiveSlide]);
+  }, [isActiveSlide, isControlled]);
 
   useEffect(() => {
+    if (isControlled) {
+      return undefined;
+    }
+
     if (isActiveSlide) {
       return undefined;
     }
@@ -75,28 +90,36 @@ function PlaybackPanels({
       audioRef.current.currentTime = 0;
     }
 
-    setIsPlaying(false);
-  }, [isActiveSlide]);
+    setInternalIsPlaying(false);
+  }, [isActiveSlide, isControlled]);
 
   useEffect(() => {
+    if (isControlled) {
+      return undefined;
+    }
+
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
 
-    setIsPlaying(false);
-  }, [activeMerchant.id]);
+    setInternalIsPlaying(false);
+  }, [activeMerchant.id, audioRef, isControlled]);
 
   useEffect(() => {
+    if (isControlled) {
+      return undefined;
+    }
+
     const audio = audioRef.current;
 
     if (!audio) {
       return undefined;
     }
 
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-    const handleEnded = () => setIsPlaying(false);
+    const handlePlay = () => setInternalIsPlaying(true);
+    const handlePause = () => setInternalIsPlaying(false);
+    const handleEnded = () => setInternalIsPlaying(false);
 
     audio.addEventListener("play", handlePlay);
     audio.addEventListener("pause", handlePause);
@@ -107,9 +130,9 @@ function PlaybackPanels({
       audio.removeEventListener("pause", handlePause);
       audio.removeEventListener("ended", handleEnded);
     };
-  }, [activeMerchant.id]);
+  }, [activeMerchant.id, audioRef, isControlled]);
 
-  async function handleTogglePlayback() {
+  async function handleInternalTogglePlayback() {
     if (!isActiveSlide) {
       return;
     }
@@ -130,7 +153,7 @@ function PlaybackPanels({
       return;
     }
 
-    setIsPlaying((playing) => !playing);
+    setInternalIsPlaying((playing) => !playing);
   }
 
   return (
@@ -150,21 +173,25 @@ function PlaybackPanels({
           activeIndex={activeIndex}
           activeMerchant={activeMerchant}
           isPlaying={isPlaying}
-          onTogglePlayback={handleTogglePlayback}
+          isActiveSlide={isActiveSlide}
+          onTogglePlayback={onTogglePlayback ?? handleInternalTogglePlayback}
           spacing={orbitSpacing}
           sideOffsetY={sideCassetteOffsetY}
           textMorphDuration={textMorphDuration}
           textMorphEase={textMorphEaseString}
           playbackPulseDuration={playbackPulseDuration}
           isPrimaryInstance={isPrimaryInstance}
+          showPlaybackButton={showPlaybackButton}
         />
-        <audio
-          key={activeMerchant.id}
-          ref={audioRef}
-          src={activeMerchant.playbackAudioSrc}
-          preload="metadata"
-          aria-hidden="true"
-        />
+        {playbackAudioRef ? null : (
+          <audio
+            key={activeMerchant.id}
+            ref={audioRef}
+            src={activeMerchant.playbackAudioSrc}
+            preload="metadata"
+            aria-hidden="true"
+          />
+        )}
       </section>
     </>
   );

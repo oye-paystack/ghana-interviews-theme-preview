@@ -277,6 +277,7 @@ function ThemeShowcaseSection({
           <div className={styles.stickyStage}>
             {activeTheme ? (
               <div
+                key={activeTheme.id}
                 className={`${styles.cardLayer} ${styles.currentCardLayer}`}
                 style={{
                   "--current-card-scale": currentCardScale,
@@ -301,6 +302,7 @@ function ThemeShowcaseSection({
 
                   <div className={styles.cardBody}>
                     <PlaybackPanels
+                      key={`${activeTheme.id}-${activeThemeContext.activeMerchant.id}`}
                       merchants={activeThemeContext.merchants}
                       activeIndex={activeThemeContext.activeIndex}
                       activeMerchant={activeThemeContext.activeMerchant}
@@ -335,7 +337,10 @@ function ThemeShowcaseSection({
             </div>
 
             {nextTheme && nextThemeContext ? (
-              <div className={`${styles.cardLayer} ${styles.nextCardLayer}`}>
+              <div
+                key={nextTheme.id}
+                className={`${styles.cardLayer} ${styles.nextCardLayer}`}
+              >
                 <div
                   className={styles.card}
                   style={{
@@ -352,6 +357,7 @@ function ThemeShowcaseSection({
 
                   <div className={styles.cardBody}>
                     <PlaybackPanels
+                      key={`${nextTheme.id}-${nextThemeContext.activeMerchant.id}`}
                       merchants={nextThemeContext.merchants}
                       activeIndex={nextThemeContext.activeIndex}
                       activeMerchant={nextThemeContext.activeMerchant}

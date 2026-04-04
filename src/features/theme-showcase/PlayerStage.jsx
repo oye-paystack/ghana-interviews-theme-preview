@@ -5,6 +5,46 @@ import playerGrillSrc from "../../../Grill.png";
 import CassetteOrbit from "./CassetteOrbit";
 import styles from "./PlayerStage.module.css";
 
+function PlaybackButton({
+  isPlaying,
+  buttonLabel,
+  onTogglePlayback,
+  textMorphDuration,
+  textMorphEase,
+  className = "",
+}) {
+  const buttonClassName = className
+    ? `${styles.listenPill} ${className}`
+    : styles.listenPill;
+
+  return (
+    <button
+      className={buttonClassName}
+      type="button"
+      aria-pressed={isPlaying}
+      data-text-morph-duration={textMorphDuration}
+      data-text-morph-ease={textMorphEase}
+      onClick={onTogglePlayback}
+    >
+      <span className={styles.listenPillIcon} aria-hidden="true">
+        {isPlaying ? (
+          <Stop className={styles.listenPillGlyph} weight="fill" />
+        ) : (
+          <Play className={styles.listenPillGlyph} weight="fill" />
+        )}
+      </span>
+      <TextMorph
+        as="span"
+        className={styles.listenPillLabel}
+        duration={textMorphDuration}
+        ease={textMorphEase}
+      >
+        {buttonLabel}
+      </TextMorph>
+    </button>
+  );
+}
+
 function PlayerStage({
   merchants,
   activeIndex,
@@ -17,6 +57,7 @@ function PlayerStage({
   textMorphEase,
   playbackPulseDuration,
   isPrimaryInstance = true,
+  showPlaybackButton = true,
 }) {
   const buttonLabel = isPlaying ? "Stop playback" : activeMerchant.listenLabel;
 
@@ -56,33 +97,20 @@ function PlayerStage({
         />
         <span className={styles.playback}>PLAYBACK</span>
 
-        <button
-          className={styles.listenPill}
-          type="button"
-          aria-pressed={isPlaying}
-          data-text-morph-duration={textMorphDuration}
-          data-text-morph-ease={textMorphEase}
-          onClick={onTogglePlayback}
-        >
-          <span className={styles.listenPillIcon} aria-hidden="true">
-            {isPlaying ? (
-              <Stop className={styles.listenPillGlyph} weight="fill" />
-            ) : (
-              <Play className={styles.listenPillGlyph} weight="fill" />
-            )}
-          </span>
-          <TextMorph
-            as="span"
-            className={styles.listenPillLabel}
-            duration={textMorphDuration}
-            ease={textMorphEase}
-          >
-            {buttonLabel}
-          </TextMorph>
-        </button>
+        {showPlaybackButton ? (
+          <PlaybackButton
+            isPlaying={isPlaying}
+            buttonLabel={buttonLabel}
+            onTogglePlayback={onTogglePlayback}
+            textMorphDuration={textMorphDuration}
+            textMorphEase={textMorphEase}
+            className={styles.listenPillDocked}
+          />
+        ) : null}
       </div>
     </div>
   );
 }
 
+export { PlaybackButton };
 export default PlayerStage;
