@@ -12,7 +12,7 @@ const DEFAULT_PLAYBACK_PULSE_DURATION = 3200;
 const DEFAULT_THEME_SPACING = 64;
 const DEFAULT_THEME_HOLD_DISTANCE = 88;
 const DEFAULT_EXIT_SCALE = 0.95;
-const DEFAULT_EXIT_BLUR = 3;
+const DEFAULT_EXIT_BLUR = 0;
 const DEFAULT_EXIT_COMPLETE_AT = 0.77;
 const DEFAULT_FOOTER_SWITCH_AT = 0.92;
 const FINAL_THEME_DWELL = 120;
@@ -278,11 +278,15 @@ function ThemeShowcaseSection({
             {activeTheme ? (
               <div
                 key={activeTheme.id}
-                className={`${styles.cardLayer} ${styles.currentCardLayer}`}
+                className={`${styles.cardLayer} ${styles.currentCardLayer} ${
+                  currentCardBlur > 0 ? styles.currentCardLayerBlurred : ""
+                }`}
                 style={{
                   "--current-card-scale": currentCardScale,
                   "--current-card-opacity": currentCardOpacity,
-                  "--current-card-blur": `${currentCardBlur}px`,
+                  ...(currentCardBlur > 0
+                    ? { "--current-card-blur": `${currentCardBlur}px` }
+                    : {}),
                 }}
               >
                 <div

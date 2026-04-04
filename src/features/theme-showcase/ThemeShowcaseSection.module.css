@@ -92,7 +92,10 @@
   transform-origin: bottom center;
   transform: scale(var(--current-card-scale, 1));
   opacity: var(--current-card-opacity, 1);
-  filter: blur(var(--current-card-blur, 0px));
+}
+
+.currentCardLayerBlurred {
+  filter: blur(var(--current-card-blur));
 }
 
 .nextCardLayer {
