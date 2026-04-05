@@ -17,6 +17,7 @@ const DEFAULT_EXIT_COMPLETE_AT = 0.77;
 const DEFAULT_FOOTER_SWITCH_AT = 0.92;
 const FINAL_THEME_DWELL = 120;
 const SHARED_FOOTER_BLOCK_HEIGHT = 120;
+const INITIAL_CARD_HEIGHT = 815;
 
 function clampIndex(value, length) {
   if (length <= 0) {
@@ -70,11 +71,14 @@ function ThemeShowcaseSection({
     DEFAULT_EXIT_COMPLETE_AT,
   );
   const [footerSwitchAt, setFooterSwitchAt] = useState(DEFAULT_FOOTER_SWITCH_AT);
-  const [cardHeight, setCardHeight] = useState(815);
-  const [nextCardOffsetY, setNextCardOffsetY] = useState(0);
+  const [cardHeight, setCardHeight] = useState(INITIAL_CARD_HEIGHT);
+  const [nextCardOffsetY, setNextCardOffsetY] = useState(
+    INITIAL_CARD_HEIGHT + SHARED_FOOTER_BLOCK_HEIGHT + DEFAULT_THEME_SPACING,
+  );
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [showGridOverlay, setShowGridOverlay] = useState(false);
   const [showStickyGuide, setShowStickyGuide] = useState(false);
+  const [hasPinnedStageInitialized, setHasPinnedStageInitialized] = useState(false);
   const [activeIndicesByThemeId, setActiveIndicesByThemeId] = useState(() =>
     Object.fromEntries(
       themeList.map((themeItem) => [themeItem.id, clampIndex(initialActiveIndex, merchants.length)]),
@@ -147,6 +151,8 @@ function ThemeShowcaseSection({
       if (!browser) {
         return;
       }
+
+      setHasPinnedStageInitialized((current) => (current ? current : true));
 
       const desktopStickyTop = Number.parseFloat(
         getComputedStyle(document.documentElement).getPropertyValue("--desktop-side-nav-top"),
@@ -223,7 +229,7 @@ function ThemeShowcaseSection({
   const sectionHeadingId = `${themeList[0]?.id ?? "theme-showcase"}-heading`;
   const textMorphEaseString = `cubic-bezier(${textMorphEase.join(", ")})`;
   const nextCardRiseProgress =
-    nextTheme && parkedNextCardY > 0
+    hasPinnedStageInitialized && nextTheme && parkedNextCardY > 0
       ? Math.max(0, Math.min(1, (parkedNextCardY - nextCardOffsetY) / parkedNextCardY))
       : 0;
   const footerThemeIndex =
