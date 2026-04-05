@@ -309,7 +309,7 @@ function ThemeShowcaseSection({
 
                   <div className={styles.cardBody}>
                     <PlaybackPanels
-                      key={`${activeTheme.id}-${activeThemeContext.activeMerchant.id}`}
+                      key={activeTheme.id}
                       merchants={activeThemeContext.merchants}
                       activeIndex={activeThemeContext.activeIndex}
                       activeMerchant={activeThemeContext.activeMerchant}
@@ -364,7 +364,7 @@ function ThemeShowcaseSection({
 
                   <div className={styles.cardBody}>
                     <PlaybackPanels
-                      key={`${nextTheme.id}-${nextThemeContext.activeMerchant.id}`}
+                      key={nextTheme.id}
                       merchants={nextThemeContext.merchants}
                       activeIndex={nextThemeContext.activeIndex}
                       activeMerchant={nextThemeContext.activeMerchant}
@@ -412,7 +412,7 @@ function ThemeShowcaseSection({
 
                     <div className={styles.cardBody}>
                       <PlaybackPanels
-                        key={`${futureTheme.id}-${futureThemeContext.activeMerchant.id}`}
+                        key={futureTheme.id}
                         merchants={futureThemeContext.merchants}
                         activeIndex={futureThemeContext.activeIndex}
                         activeMerchant={futureThemeContext.activeMerchant}
