@@ -14,6 +14,9 @@ function ConfigPopover({
   currentCardExitBlur,
   currentCardExitCompleteAt,
   footerSwitchAt,
+  overviewSceneOffsetX,
+  overviewSceneOffsetY,
+  overviewSceneScale,
   showGridOverlay,
   showStickyGuide,
   isOpen,
@@ -26,6 +29,9 @@ function ConfigPopover({
   onCurrentCardExitBlurChange,
   onCurrentCardExitCompleteAtChange,
   onFooterSwitchAtChange,
+  onOverviewSceneOffsetXChange,
+  onOverviewSceneOffsetYChange,
+  onOverviewSceneScaleChange,
   onSideCassetteOffsetYChange,
   onTextMorphDurationChange,
   onPlaybackPulseDurationChange,
@@ -221,6 +227,57 @@ function ConfigPopover({
             value={sideCassetteOffsetY}
             onChange={(event) =>
               onSideCassetteOffsetYChange(Number(event.currentTarget.value))
+            }
+          />
+
+          <label className={styles.field} htmlFor="overview-scene-offset-x">
+            <span className={styles.label}>Overview scene X</span>
+            <span className={styles.value}>{overviewSceneOffsetX}px</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="overview-scene-offset-x"
+            type="range"
+            min="-240"
+            max="240"
+            step="4"
+            value={overviewSceneOffsetX}
+            onChange={(event) =>
+              onOverviewSceneOffsetXChange(Number(event.currentTarget.value))
+            }
+          />
+
+          <label className={styles.field} htmlFor="overview-scene-offset-y">
+            <span className={styles.label}>Overview scene Y</span>
+            <span className={styles.value}>{overviewSceneOffsetY}px</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="overview-scene-offset-y"
+            type="range"
+            min="-240"
+            max="240"
+            step="4"
+            value={overviewSceneOffsetY}
+            onChange={(event) =>
+              onOverviewSceneOffsetYChange(Number(event.currentTarget.value))
+            }
+          />
+
+          <label className={styles.field} htmlFor="overview-scene-scale">
+            <span className={styles.label}>Overview scene scale</span>
+            <span className={styles.value}>{overviewSceneScale.toFixed(2)}</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="overview-scene-scale"
+            type="range"
+            min="0.5"
+            max="1.5"
+            step="0.01"
+            value={overviewSceneScale}
+            onChange={(event) =>
+              onOverviewSceneScaleChange(Number(event.currentTarget.value))
             }
           />
 

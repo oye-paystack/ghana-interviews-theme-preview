@@ -1,16 +1,33 @@
+import { useState } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import { themeShowcaseMerchants, themeShowcaseTheme } from "../../data/themeShowcase";
 import ThemeShowcaseSection from "./ThemeShowcaseSection";
 
 function renderThemeShowcase() {
+  function TestHarness() {
+    const [overviewSceneOffsetX, setOverviewSceneOffsetX] = useState(0);
+    const [overviewSceneOffsetY, setOverviewSceneOffsetY] = useState(0);
+    const [overviewSceneScale, setOverviewSceneScale] = useState(1);
+
+    return (
+      <ThemeShowcaseSection
+        theme={themeShowcaseTheme}
+        merchants={themeShowcaseMerchants}
+        initialActiveIndex={0}
+        showDebugControls
+        overviewSceneOffsetX={overviewSceneOffsetX}
+        overviewSceneOffsetY={overviewSceneOffsetY}
+        overviewSceneScale={overviewSceneScale}
+        onOverviewSceneOffsetXChange={setOverviewSceneOffsetX}
+        onOverviewSceneOffsetYChange={setOverviewSceneOffsetY}
+        onOverviewSceneScaleChange={setOverviewSceneScale}
+      />
+    );
+  }
+
   return render(
-    <ThemeShowcaseSection
-      theme={themeShowcaseTheme}
-      merchants={themeShowcaseMerchants}
-      initialActiveIndex={0}
-      showDebugControls
-    />,
+    <TestHarness />,
   );
 }
 
@@ -217,6 +234,26 @@ describe("ThemeShowcaseSection", () => {
       "data-side-offset-y",
       "24",
     );
+  });
+
+  test("updates overview scene controls from the config popover", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+
+    fireEvent.change(screen.getByLabelText(/overview scene x/i), {
+      target: { value: "48" },
+    });
+    fireEvent.change(screen.getByLabelText(/overview scene y/i), {
+      target: { value: "-24" },
+    });
+    fireEvent.change(screen.getByLabelText(/overview scene scale/i), {
+      target: { value: "1.15" },
+    });
+
+    expect(screen.getByText("48px")).toBeInTheDocument();
+    expect(screen.getByText("-24px")).toBeInTheDocument();
+    expect(screen.getByText("1.15")).toBeInTheDocument();
   });
 
   test("updates text morph controls from the config popover", () => {

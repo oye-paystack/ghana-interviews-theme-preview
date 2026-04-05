@@ -45,6 +45,12 @@ function ThemeShowcaseSection({
   merchants,
   initialActiveIndex = 0,
   showDebugControls = true,
+  overviewSceneOffsetX = 0,
+  overviewSceneOffsetY = 0,
+  overviewSceneScale = 1,
+  onOverviewSceneOffsetXChange = () => {},
+  onOverviewSceneOffsetYChange = () => {},
+  onOverviewSceneScaleChange = () => {},
 }) {
   const themeList = useMemo(() => {
     if (themes?.length) {
@@ -453,6 +459,9 @@ function ThemeShowcaseSection({
           currentCardExitBlur={currentCardExitBlur}
           currentCardExitCompleteAt={currentCardExitCompleteAt}
           footerSwitchAt={footerSwitchAt}
+          overviewSceneOffsetX={overviewSceneOffsetX}
+          overviewSceneOffsetY={overviewSceneOffsetY}
+          overviewSceneScale={overviewSceneScale}
           showGridOverlay={showGridOverlay}
           showStickyGuide={showStickyGuide}
           isOpen={isConfigOpen}
@@ -467,6 +476,9 @@ function ThemeShowcaseSection({
             setCurrentCardExitCompleteAt(value)
           }
           onFooterSwitchAtChange={(value) => setFooterSwitchAt(value)}
+          onOverviewSceneOffsetXChange={onOverviewSceneOffsetXChange}
+          onOverviewSceneOffsetYChange={onOverviewSceneOffsetYChange}
+          onOverviewSceneScaleChange={onOverviewSceneScaleChange}
           onSideCassetteOffsetYChange={(value) => setSideCassetteOffsetY(value)}
           onTextMorphDurationChange={(value) => setTextMorphDuration(value)}
           onPlaybackPulseDurationChange={(value) => setPlaybackPulseDuration(value)}
