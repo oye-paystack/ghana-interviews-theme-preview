@@ -9,6 +9,7 @@ function renderThemeShowcase() {
     const [overviewSceneOffsetX, setOverviewSceneOffsetX] = useState(0);
     const [overviewSceneOffsetY, setOverviewSceneOffsetY] = useState(0);
     const [overviewSceneScale, setOverviewSceneScale] = useState(1);
+    const [showOverviewSceneFrame, setShowOverviewSceneFrame] = useState(false);
 
     return (
       <ThemeShowcaseSection
@@ -19,9 +20,11 @@ function renderThemeShowcase() {
         overviewSceneOffsetX={overviewSceneOffsetX}
         overviewSceneOffsetY={overviewSceneOffsetY}
         overviewSceneScale={overviewSceneScale}
+        showOverviewSceneFrame={showOverviewSceneFrame}
         onOverviewSceneOffsetXChange={setOverviewSceneOffsetX}
         onOverviewSceneOffsetYChange={setOverviewSceneOffsetY}
         onOverviewSceneScaleChange={setOverviewSceneScale}
+        onShowOverviewSceneFrameChange={setShowOverviewSceneFrame}
       />
     );
   }
@@ -254,6 +257,19 @@ describe("ThemeShowcaseSection", () => {
     expect(screen.getByText("48px")).toBeInTheDocument();
     expect(screen.getByText("-24px")).toBeInTheDocument();
     expect(screen.getByText("1.15")).toBeInTheDocument();
+  });
+
+  test("toggles the overview scene frame control", () => {
+    renderThemeShowcase();
+
+    fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
+
+    const toggle = screen.getByLabelText(/show overview frame/i);
+    expect(toggle).not.toBeChecked();
+
+    fireEvent.click(toggle);
+
+    expect(toggle).toBeChecked();
   });
 
   test("updates text morph controls from the config popover", () => {

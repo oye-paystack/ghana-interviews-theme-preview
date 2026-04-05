@@ -48,9 +48,11 @@ function ThemeShowcaseSection({
   overviewSceneOffsetX = 0,
   overviewSceneOffsetY = 0,
   overviewSceneScale = 1,
+  showOverviewSceneFrame = false,
   onOverviewSceneOffsetXChange = () => {},
   onOverviewSceneOffsetYChange = () => {},
   onOverviewSceneScaleChange = () => {},
+  onShowOverviewSceneFrameChange = () => {},
 }) {
   const themeList = useMemo(() => {
     if (themes?.length) {
@@ -462,6 +464,7 @@ function ThemeShowcaseSection({
           overviewSceneOffsetX={overviewSceneOffsetX}
           overviewSceneOffsetY={overviewSceneOffsetY}
           overviewSceneScale={overviewSceneScale}
+          showOverviewSceneFrame={showOverviewSceneFrame}
           showGridOverlay={showGridOverlay}
           showStickyGuide={showStickyGuide}
           isOpen={isConfigOpen}
@@ -479,6 +482,7 @@ function ThemeShowcaseSection({
           onOverviewSceneOffsetXChange={onOverviewSceneOffsetXChange}
           onOverviewSceneOffsetYChange={onOverviewSceneOffsetYChange}
           onOverviewSceneScaleChange={onOverviewSceneScaleChange}
+          onShowOverviewSceneFrameChange={onShowOverviewSceneFrameChange}
           onSideCassetteOffsetYChange={(value) => setSideCassetteOffsetY(value)}
           onTextMorphDurationChange={(value) => setTextMorphDuration(value)}
           onPlaybackPulseDurationChange={(value) => setPlaybackPulseDuration(value)}

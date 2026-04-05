@@ -17,6 +17,7 @@ function ConfigPopover({
   overviewSceneOffsetX,
   overviewSceneOffsetY,
   overviewSceneScale,
+  showOverviewSceneFrame,
   showGridOverlay,
   showStickyGuide,
   isOpen,
@@ -32,6 +33,7 @@ function ConfigPopover({
   onOverviewSceneOffsetXChange,
   onOverviewSceneOffsetYChange,
   onOverviewSceneScaleChange,
+  onShowOverviewSceneFrameChange,
   onSideCassetteOffsetYChange,
   onTextMorphDurationChange,
   onPlaybackPulseDurationChange,
@@ -97,6 +99,19 @@ function ConfigPopover({
               type="checkbox"
               checked={showStickyGuide}
               onChange={(event) => onShowStickyGuideChange(event.currentTarget.checked)}
+            />
+          </label>
+
+          <label className={styles.toggleField} htmlFor="show-overview-scene-frame">
+            <span className={styles.label}>Show overview frame</span>
+            <input
+              id="show-overview-scene-frame"
+              className={styles.checkbox}
+              type="checkbox"
+              checked={showOverviewSceneFrame}
+              onChange={(event) =>
+                onShowOverviewSceneFrameChange(event.currentTarget.checked)
+              }
             />
           </label>
 

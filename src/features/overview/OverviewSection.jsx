@@ -10,6 +10,7 @@ function OverviewSection({
   sceneOffsetX = 0,
   sceneOffsetY = 0,
   sceneScale = 1,
+  showSceneFrame = false,
 }) {
   const sceneFrameStyle = {
     "--overview-scene-offset-x": `${sceneOffsetX}px`,
@@ -70,7 +71,10 @@ function OverviewSection({
         </div>
 
         <div className={styles.sceneColumn} aria-hidden="true">
-          <div className={styles.sceneFrame} style={sceneFrameStyle}>
+          <div
+            className={`${styles.sceneFrame} ${showSceneFrame ? styles.sceneFrameVisible : ""}`}
+            style={sceneFrameStyle}
+          >
             <UnicornScene
               projectId={DEV_PROJECT_ID}
               sdkUrl="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.1.6/dist/unicornStudio.umd.js"

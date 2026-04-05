@@ -12,6 +12,7 @@ function App() {
   const [overviewSceneOffsetX, setOverviewSceneOffsetX] = useState(200);
   const [overviewSceneOffsetY, setOverviewSceneOffsetY] = useState(-20);
   const [overviewSceneScale, setOverviewSceneScale] = useState(1.5);
+  const [showOverviewSceneFrame, setShowOverviewSceneFrame] = useState(false);
 
   return (
     <AppShell>
@@ -20,6 +21,7 @@ function App() {
         sceneOffsetX={overviewSceneOffsetX}
         sceneOffsetY={overviewSceneOffsetY}
         sceneScale={overviewSceneScale}
+        showSceneFrame={showOverviewSceneFrame}
       />
       <ThemeShowcaseSection
         themes={themeShowcaseThemes}
@@ -29,9 +31,11 @@ function App() {
         overviewSceneOffsetX={overviewSceneOffsetX}
         overviewSceneOffsetY={overviewSceneOffsetY}
         overviewSceneScale={overviewSceneScale}
+        showOverviewSceneFrame={showOverviewSceneFrame}
         onOverviewSceneOffsetXChange={setOverviewSceneOffsetX}
         onOverviewSceneOffsetYChange={setOverviewSceneOffsetY}
         onOverviewSceneScaleChange={setOverviewSceneScale}
+        onShowOverviewSceneFrameChange={setShowOverviewSceneFrame}
       />
     </AppShell>
   );

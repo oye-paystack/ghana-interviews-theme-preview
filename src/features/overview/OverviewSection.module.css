@@ -39,6 +39,10 @@
   transform-origin: center;
 }
 
+.sceneFrameVisible {
+  border: 1px solid rgba(255, 249, 242, 0.28);
+}
+
 .stats,
 .statement {
   margin: 0;
