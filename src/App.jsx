@@ -4,12 +4,14 @@ import {
   allThemeShowcaseMerchants,
   themeShowcaseThemes,
 } from "./data/themeShowcase";
+import OverviewSection from "./features/overview/OverviewSection";
 import ThemeShowcaseSection from "./features/theme-showcase/ThemeShowcaseSection";
 
 function App() {
   return (
     <AppShell>
       <SectionSideNav />
+      <OverviewSection />
       <ThemeShowcaseSection
         themes={themeShowcaseThemes}
         merchants={allThemeShowcaseMerchants}

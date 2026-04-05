@@ -5,7 +5,6 @@ export const sideNavGroups = [
     items: [
       { id: "what-we-did", label: "What we did" },
       { id: "why", label: "Why" },
-      { id: "who-we-spoke-to", label: "Who we spoke to" },
     ],
   },
   {
@@ -36,4 +35,4 @@ export const sideNavGroups = [
   },
 ];
 
-export const defaultSideNavItemId = "reliable-by-default";
+export const defaultSideNavItemId = "what-we-did";

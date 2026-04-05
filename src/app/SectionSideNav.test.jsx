@@ -8,18 +8,18 @@ afterEach(() => {
 });
 
 describe("SectionSideNav", () => {
-  test("renders the nav groups with the first theme item active by default", () => {
+  test("renders the overview group active by default", () => {
     render(<SectionSideNav />);
 
     expect(screen.getByRole("button", { name: /overview/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /^themes$/i })).toHaveClass(
+    expect(screen.getByRole("button", { name: /overview/i })).toHaveClass(
       styles.groupLabelActive,
     );
-    expect(screen.getByRole("button", { name: /reliable by default/i })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: /what we did/i })).toHaveAttribute(
       "aria-current",
       "true",
     );
-    expect(screen.queryByRole("button", { name: /what we did/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /reliable by default/i })).not.toBeInTheDocument();
   });
 
   test("updates the active item when a nav item is clicked", () => {
@@ -55,7 +55,7 @@ describe("SectionSideNav", () => {
 
     fireEvent.wheel(window, { deltaY: 120 });
 
-    expect(screen.getByRole("button", { name: /growing past us/i })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: /^why$/i })).toHaveAttribute(
       "aria-current",
       "true",
     );

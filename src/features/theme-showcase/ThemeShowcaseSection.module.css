@@ -35,8 +35,14 @@
 }
 
 .gridOverlay {
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  top: 0;
+  left: var(--desktop-grid-start-x);
+  width: var(--desktop-grid-inner-width);
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--desktop-grid-gutter);
   pointer-events: none;
   mix-blend-mode: multiply;
   z-index: 3;

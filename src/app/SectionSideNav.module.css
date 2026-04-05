@@ -7,6 +7,8 @@
   flex-direction: column;
   gap: 16px;
   width: var(--desktop-nav-rail-width);
+  color: #fff9f2;
+  mix-blend-mode: difference;
 }
 
 .group {
@@ -20,7 +22,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #74543f;
+  color: inherit;
   cursor: pointer;
   font-family: "PP Mori Semibold", sans-serif;
   font-size: 14px;
@@ -30,7 +32,7 @@
 }
 
 .groupLabelActive {
-  color: var(--title);
+  color: inherit;
 }
 
 .groupItems {
@@ -45,7 +47,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #74543f;
+  color: inherit;
   cursor: pointer;
   font-family: var(--font-body);
   font-size: 14px;
@@ -55,7 +57,7 @@
 }
 
 .itemActive {
-  color: var(--title);
+  color: inherit;
   font-family: "PP Mori Semibold", sans-serif;
   font-weight: 600;
 }
