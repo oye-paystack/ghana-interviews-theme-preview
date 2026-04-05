@@ -9,9 +9,9 @@ import OverviewSection from "./features/overview/OverviewSection";
 import ThemeShowcaseSection from "./features/theme-showcase/ThemeShowcaseSection";
 
 function App() {
-  const [overviewSceneOffsetX, setOverviewSceneOffsetX] = useState(200);
-  const [overviewSceneOffsetY, setOverviewSceneOffsetY] = useState(-20);
-  const [overviewSceneScale, setOverviewSceneScale] = useState(1.5);
+  const [overviewSceneOffsetX, setOverviewSceneOffsetX] = useState(92);
+  const [overviewSceneOffsetY, setOverviewSceneOffsetY] = useState(-44);
+  const [overviewSceneScale, setOverviewSceneScale] = useState(1.2);
   const [showOverviewSceneFrame, setShowOverviewSceneFrame] = useState(false);
 
   return (
