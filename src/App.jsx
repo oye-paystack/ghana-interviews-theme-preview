@@ -6,6 +6,7 @@ import {
   themeShowcaseThemes,
 } from "./data/themeShowcase";
 import OverviewSection from "./features/overview/OverviewSection";
+import MerchantCardsSection from "./features/theme-showcase/MerchantCardsSection";
 import ThemeShowcaseSection from "./features/theme-showcase/ThemeShowcaseSection";
 
 function App() {
@@ -13,16 +14,18 @@ function App() {
   const [overviewSceneOffsetY, setOverviewSceneOffsetY] = useState(-44);
   const [overviewSceneScale, setOverviewSceneScale] = useState(1.2);
   const [showOverviewSceneFrame, setShowOverviewSceneFrame] = useState(false);
+  const [showSideNav, setShowSideNav] = useState(false);
 
   return (
     <AppShell>
-      <SectionSideNav />
+      {showSideNav ? <SectionSideNav /> : null}
       <OverviewSection
         sceneOffsetX={overviewSceneOffsetX}
         sceneOffsetY={overviewSceneOffsetY}
         sceneScale={overviewSceneScale}
         showSceneFrame={showOverviewSceneFrame}
       />
+      <MerchantCardsSection merchants={allThemeShowcaseMerchants} />
       <ThemeShowcaseSection
         themes={themeShowcaseThemes}
         merchants={allThemeShowcaseMerchants}
@@ -32,10 +35,12 @@ function App() {
         overviewSceneOffsetY={overviewSceneOffsetY}
         overviewSceneScale={overviewSceneScale}
         showOverviewSceneFrame={showOverviewSceneFrame}
+        showSideNav={showSideNav}
         onOverviewSceneOffsetXChange={setOverviewSceneOffsetX}
         onOverviewSceneOffsetYChange={setOverviewSceneOffsetY}
         onOverviewSceneScaleChange={setOverviewSceneScale}
         onShowOverviewSceneFrameChange={setShowOverviewSceneFrame}
+        onShowSideNavChange={setShowSideNav}
       />
     </AppShell>
   );

@@ -18,6 +18,7 @@ function ConfigPopover({
   overviewSceneOffsetY,
   overviewSceneScale,
   showOverviewSceneFrame,
+  showSideNav,
   showGridOverlay,
   showStickyGuide,
   isOpen,
@@ -34,6 +35,7 @@ function ConfigPopover({
   onOverviewSceneOffsetYChange,
   onOverviewSceneScaleChange,
   onShowOverviewSceneFrameChange,
+  onShowSideNavChange,
   onSideCassetteOffsetYChange,
   onTextMorphDurationChange,
   onPlaybackPulseDurationChange,
@@ -112,6 +114,17 @@ function ConfigPopover({
               onChange={(event) =>
                 onShowOverviewSceneFrameChange(event.currentTarget.checked)
               }
+            />
+          </label>
+
+          <label className={styles.toggleField} htmlFor="show-side-nav">
+            <span className={styles.label}>Show side nav</span>
+            <input
+              id="show-side-nav"
+              className={styles.checkbox}
+              type="checkbox"
+              checked={showSideNav}
+              onChange={(event) => onShowSideNavChange(event.currentTarget.checked)}
             />
           </label>
 
