@@ -53,7 +53,7 @@ function OverviewSection({
 
           <div className={`${styles.block} ${styles.secondaryBlock}`}>
             <h2 className={styles.statement}>
-              <span className={styles.accent}>Ghana</span> is growing fast.
+              Ghana is growing <span className={styles.accent}>fast.</span>
             </h2>
 
             <div className={styles.copy}>
