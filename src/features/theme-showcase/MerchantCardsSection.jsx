@@ -1,4 +1,4 @@
-import MerchantCardsGrid from "./MerchantCardsGrid";
+import LegacyMerchantCardsSection from "./LegacyMerchantCardsSection";
 import styles from "./MerchantCardsSection.module.css";
 
 function MerchantCardsSection({ merchants }) {
@@ -16,7 +16,7 @@ function MerchantCardsSection({ merchants }) {
           </p>
         </div>
 
-        <MerchantCardsGrid merchants={merchants} />
+        <LegacyMerchantCardsSection merchants={merchants} />
       </div>
     </section>
   );
