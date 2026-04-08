@@ -11,8 +11,7 @@ function MerchantCardsSection({ hoverPreviewSize = 260, merchants }) {
             Eight teams whose day-to-day realities shape the story that follows.
           </h2>
           <p className={styles.copy}>
-            Each card maps to a merchant interview from the Ghana research trip, using the
-            visual system from Figma before the deeper theme-by-theme breakdown begins.
+            Hover over a merchant&apos;s card to see their 2025 wrapped.
           </p>
         </div>
 

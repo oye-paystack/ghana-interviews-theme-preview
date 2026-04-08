@@ -32,7 +32,7 @@ function App() {
   const [overviewSceneScale, setOverviewSceneScale] = useState(1.2);
   const [showOverviewSceneFrame, setShowOverviewSceneFrame] = useState(false);
   const [showSideNav, setShowSideNav] = useState(false);
-  const [merchantHoverPreviewSize, setMerchantHoverPreviewSize] = useState(260);
+  const [merchantHoverPreviewSize, setMerchantHoverPreviewSize] = useState(760);
 
   return (
     <AppShell>
