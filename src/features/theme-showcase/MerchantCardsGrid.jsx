@@ -9,7 +9,7 @@ import {
   ShoppingCart,
 } from "@phosphor-icons/react";
 import { Squircle } from "@cornerkit/react";
-import { Ticker } from "motion-plus/react";
+import { Cursor, Ticker } from "motion-plus/react";
 import {
   animate,
   motion,
@@ -37,13 +37,32 @@ const HOVER_TRANSITION_SECONDS = 0.8;
 const DESKTOP_GAP = 24;
 const MOBILE_GAP = 16;
 const MOBILE_BREAKPOINT = 760;
+const wrappedImageByMerchantId = {
+  warc: new URL("../../../wrapped images/WARC GHANA LIMITED wrapped.png", import.meta.url).href,
+  telecel: new URL("../../../wrapped images/TELECEL GHANA wrapped.png", import.meta.url).href,
+  "dajo-unimarket": new URL("../../../wrapped images/SWIFTDATA wrapped.png", import.meta.url)
+    .href,
+  "africa-world-airlines": new URL(
+    "../../../wrapped images/AFRICA WORLD AIRLINES wrapped.png",
+    import.meta.url,
+  ).href,
+  seesail: new URL("../../../wrapped images/Seesail wrapped.png", import.meta.url).href,
+  "achieve-by-petra": new URL("../../../wrapped images/PETRA ONLINE wrapped.png", import.meta.url)
+    .href,
+  "golly-express": new URL("../../../wrapped images/GOLLY EXPRESS wrapped.png", import.meta.url)
+    .href,
+  "peadato-group": new URL("../../../wrapped images/PEADATO STORE wrapped.png", import.meta.url)
+    .href,
+};
 
-function MerchantCard({ merchant }) {
+function MerchantCard({ merchant, onHoverEnd, onHoverStart }) {
   const Icon = iconMap[merchant.cardIconKey] ?? Plant;
 
   return (
     <motion.div
       className={styles.cardShell}
+      onHoverEnd={onHoverEnd}
+      onHoverStart={onHoverStart}
       transition={{ duration: 0.2, ease: "easeOut" }}
       whileHover={{ y: -6 }}
     >
@@ -87,7 +106,7 @@ function MerchantCard({ merchant }) {
   );
 }
 
-function MerchantCardsGrid({ merchants = [] }) {
+function MerchantCardsGrid({ hoverPreviewSize = 260, merchants = [] }) {
   const prefersReducedMotion = useReducedMotion();
   const offset = useMotionValue(0);
   const speedFactor = useMotionValue(1);
@@ -96,6 +115,7 @@ function MerchantCardsGrid({ merchants = [] }) {
   const isSettlingRef = useRef(false);
   const isHoveredRef = useRef(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [activePreviewMerchantId, setActivePreviewMerchantId] = useState(null);
   const [gap, setGap] = useState(() =>
     typeof window !== "undefined" && window.innerWidth <= MOBILE_BREAKPOINT
       ? MOBILE_GAP
@@ -112,10 +132,26 @@ function MerchantCardsGrid({ merchants = [] }) {
   );
   const items = useMemo(
     () => orderedMerchants.map((merchant) => (
-      <MerchantCard key={merchant.id} merchant={merchant} />
+      <MerchantCard
+        key={merchant.id}
+        merchant={merchant}
+        onHoverEnd={() => {
+          setActivePreviewMerchantId((currentId) =>
+            currentId === merchant.id ? null : currentId,
+          );
+        }}
+        onHoverStart={() => {
+          if (!prefersReducedMotion && !isDraggingRef.current) {
+            setActivePreviewMerchantId(merchant.id);
+          }
+        }}
+      />
     )),
-    [orderedMerchants],
+    [orderedMerchants, prefersReducedMotion],
   );
+  const activePreviewSrc = activePreviewMerchantId
+    ? wrappedImageByMerchantId[activePreviewMerchantId]
+    : null;
 
   const animateSpeedFactor = (nextFactor) => {
     hoverAnimationRef.current?.stop();
@@ -165,6 +201,7 @@ function MerchantCardsGrid({ merchants = [] }) {
     isDraggingRef.current = false;
     isSettlingRef.current = false;
     setIsDragging(false);
+    setActivePreviewMerchantId(null);
 
     if (!prefersReducedMotion) {
       animateSpeedFactor(isHoveredRef.current ? 0 : 1);
@@ -180,6 +217,32 @@ function MerchantCardsGrid({ merchants = [] }) {
 
   return (
     <div className={styles.wrap}>
+      {!prefersReducedMotion && activePreviewSrc ? (
+        <Cursor
+          follow
+          className={styles.hoverCursor}
+          center={{ x: 0, y: 0.5 }}
+          offset={{ x: 24, y: -12 }}
+          spring={{ damping: 34, mass: 0.4, stiffness: 340 }}
+          style={{ borderRadius: 18 }}
+        >
+          <motion.div
+            animate={{ opacity: 1, scale: 1 }}
+            className={styles.hoverPreview}
+            exit={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            style={{ width: hoverPreviewSize }}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              className={styles.hoverPreviewImage}
+              draggable={false}
+              src={activePreviewSrc}
+            />
+          </motion.div>
+        </Cursor>
+      ) : null}
       <div
         aria-label="Merchant cards overview"
         className={`${styles.viewport} ${isDragging ? styles.viewportDragging : ""}`}
@@ -231,6 +294,7 @@ function MerchantCardsGrid({ merchants = [] }) {
             isDraggingRef.current = true;
             isSettlingRef.current = false;
             setIsDragging(true);
+            setActivePreviewMerchantId(null);
             hoverAnimationRef.current?.stop();
             speedFactor.set(0);
           }}

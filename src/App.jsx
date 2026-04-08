@@ -32,6 +32,7 @@ function App() {
   const [overviewSceneScale, setOverviewSceneScale] = useState(1.2);
   const [showOverviewSceneFrame, setShowOverviewSceneFrame] = useState(false);
   const [showSideNav, setShowSideNav] = useState(false);
+  const [merchantHoverPreviewSize, setMerchantHoverPreviewSize] = useState(260);
 
   return (
     <AppShell>
@@ -43,7 +44,10 @@ function App() {
         showSceneFrame={showOverviewSceneFrame}
       />
       <Suspense fallback={<SectionFallback minHeight={720} />}>
-        <MerchantCardsSection merchants={allThemeShowcaseMerchants} />
+        <MerchantCardsSection
+          hoverPreviewSize={merchantHoverPreviewSize}
+          merchants={allThemeShowcaseMerchants}
+        />
       </Suspense>
       <Suspense fallback={<SectionFallback minHeight={1200} />}>
         <ThemeShowcaseSection
@@ -56,11 +60,13 @@ function App() {
           overviewSceneScale={overviewSceneScale}
           showOverviewSceneFrame={showOverviewSceneFrame}
           showSideNav={showSideNav}
+          merchantHoverPreviewSize={merchantHoverPreviewSize}
           onOverviewSceneOffsetXChange={setOverviewSceneOffsetX}
           onOverviewSceneOffsetYChange={setOverviewSceneOffsetY}
           onOverviewSceneScaleChange={setOverviewSceneScale}
           onShowOverviewSceneFrameChange={setShowOverviewSceneFrame}
           onShowSideNavChange={setShowSideNav}
+          onMerchantHoverPreviewSizeChange={setMerchantHoverPreviewSize}
         />
       </Suspense>
     </AppShell>

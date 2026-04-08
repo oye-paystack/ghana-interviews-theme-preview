@@ -1,7 +1,7 @@
 import MerchantCardsGrid from "./MerchantCardsGrid";
 
-function LegacyMerchantCardsSection({ merchants }) {
-  return <MerchantCardsGrid merchants={merchants} />;
+function LegacyMerchantCardsSection({ hoverPreviewSize = 260, merchants }) {
+  return <MerchantCardsGrid hoverPreviewSize={hoverPreviewSize} merchants={merchants} />;
 }
 
 export default LegacyMerchantCardsSection;

@@ -19,6 +19,7 @@ function ConfigPopover({
   overviewSceneScale,
   showOverviewSceneFrame,
   showSideNav,
+  merchantHoverPreviewSize,
   showGridOverlay,
   showStickyGuide,
   isOpen,
@@ -36,6 +37,7 @@ function ConfigPopover({
   onOverviewSceneScaleChange,
   onShowOverviewSceneFrameChange,
   onShowSideNavChange,
+  onMerchantHoverPreviewSizeChange,
   onSideCassetteOffsetYChange,
   onTextMorphDurationChange,
   onPlaybackPulseDurationChange,
@@ -127,6 +129,23 @@ function ConfigPopover({
               onChange={(event) => onShowSideNavChange(event.currentTarget.checked)}
             />
           </label>
+
+          <label className={styles.field} htmlFor="merchant-hover-preview-size">
+            <span className={styles.label}>Merchant hover image size</span>
+            <span className={styles.value}>{merchantHoverPreviewSize}px</span>
+          </label>
+          <input
+            className={styles.slider}
+            id="merchant-hover-preview-size"
+            type="range"
+            min="80"
+            max="960"
+            step="4"
+            value={merchantHoverPreviewSize}
+            onChange={(event) =>
+              onMerchantHoverPreviewSizeChange(Number(event.currentTarget.value))
+            }
+          />
 
           <label className={styles.field} htmlFor="orbit-spacing">
             <span className={styles.label}>Orbit spacing</span>

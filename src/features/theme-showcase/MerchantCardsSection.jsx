@@ -1,7 +1,7 @@
 import LegacyMerchantCardsSection from "./LegacyMerchantCardsSection";
 import styles from "./MerchantCardsSection.module.css";
 
-function MerchantCardsSection({ merchants }) {
+function MerchantCardsSection({ hoverPreviewSize = 260, merchants }) {
   return (
     <section className={styles.section} aria-labelledby="merchant-cards-heading">
       <div className={styles.stage}>
@@ -16,7 +16,10 @@ function MerchantCardsSection({ merchants }) {
           </p>
         </div>
 
-        <LegacyMerchantCardsSection merchants={merchants} />
+        <LegacyMerchantCardsSection
+          hoverPreviewSize={hoverPreviewSize}
+          merchants={merchants}
+        />
       </div>
     </section>
   );
