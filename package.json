@@ -7,11 +7,15 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "textures:webp": "node scripts/convert-merchant-textures.mjs",
+    "textures:crop": "node scripts/bake-merchant-texture-crops.mjs"
   },
   "dependencies": {
     "@cornerkit/react": "^1.0.1",
     "@phosphor-icons/react": "^2.1.10",
+    "motion": "^12.38.0",
+    "motion-plus": "https://api.motion.dev/registry.tgz?package=motion-plus&version=2.0.2&token=694a95dea8b4655f156c83e71100ffe9c2e2860ac89670a2a5c5cf242e87a452",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "torph": "^0.0.9",
@@ -22,6 +26,7 @@
     "@testing-library/react": "^16.3.2",
     "@vitejs/plugin-react": "^6.0.1",
     "jsdom": "^29.0.1",
+    "sharp": "^0.34.5",
     "vite": "^8.0.3",
     "vitest": "^4.1.2"
   }
