@@ -1,4 +1,5 @@
 import { Play, Stop } from "@phosphor-icons/react";
+import { TextMorph } from "torph/react";
 import playerShellSrc from "../../../Player Translucent.svg";
 import playerGrillSrc from "../../../Grill.png";
 import CassetteOrbit from "./CassetteOrbit";
@@ -7,6 +8,8 @@ import styles from "./PlayerStage.module.css";
 function PlaybackButton({
   isPlaying,
   buttonLabel,
+  textMorphDuration,
+  textMorphEase,
   onTogglePlayback,
   className = "",
 }) {
@@ -19,6 +22,8 @@ function PlaybackButton({
       className={buttonClassName}
       type="button"
       aria-pressed={isPlaying}
+      data-text-morph-duration={textMorphDuration}
+      data-text-morph-ease={textMorphEase}
       onClick={onTogglePlayback}
     >
       <span className={styles.listenPillIcon} aria-hidden="true">
@@ -28,7 +33,14 @@ function PlaybackButton({
           <Play className={styles.listenPillGlyph} weight="fill" />
         )}
       </span>
-      <span className={styles.listenPillLabel}>{buttonLabel}</span>
+      <TextMorph
+        as="span"
+        className={styles.listenPillLabel}
+        duration={textMorphDuration}
+        ease={textMorphEase}
+      >
+        {buttonLabel}
+      </TextMorph>
     </button>
   );
 }
@@ -90,6 +102,8 @@ function PlayerStage({
           <PlaybackButton
             isPlaying={isPlaying}
             buttonLabel={buttonLabel}
+            textMorphDuration={textMorphDuration}
+            textMorphEase={textMorphEase}
             onTogglePlayback={onTogglePlayback}
             className={styles.listenPillDocked}
           />
