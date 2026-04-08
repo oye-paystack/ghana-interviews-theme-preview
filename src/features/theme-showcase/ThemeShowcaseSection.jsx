@@ -18,6 +18,7 @@ const DEFAULT_FOOTER_SWITCH_AT = 0.92;
 const FINAL_THEME_DWELL = 120;
 const SHARED_FOOTER_BLOCK_HEIGHT = 120;
 const INITIAL_CARD_HEIGHT = 815;
+const DEFAULT_STICKY_TOP = 48;
 
 function clampIndex(value, length) {
   if (length <= 0) {
@@ -25,18 +26,6 @@ function clampIndex(value, length) {
   }
 
   return Math.min(Math.max(value, 0), length - 1);
-}
-
-function getPageTop(element) {
-  let top = 0;
-  let node = element;
-
-  while (node) {
-    top += node.offsetTop;
-    node = node.offsetParent;
-  }
-
-  return top;
 }
 
 function ThemeShowcaseSection({
@@ -96,6 +85,11 @@ function ThemeShowcaseSection({
   );
   const browserRef = useRef(null);
   const currentCardRef = useRef(null);
+  const pinMetricsRef = useRef({
+    pinStart: 0,
+    stickyTop: DEFAULT_STICKY_TOP,
+  });
+  const scrollFrameRef = useRef(0);
   const merchantsById = useMemo(
     () => Object.fromEntries(merchants.map((merchantItem) => [merchantItem.id, merchantItem])),
     [merchants],
@@ -130,18 +124,11 @@ function ThemeShowcaseSection({
       );
     }
 
-    updateCardHeight();
-
-    const resizeObserver =
-      typeof ResizeObserver === "function"
-        ? new ResizeObserver(updateCardHeight)
-        : null;
-
-    resizeObserver?.observe(currentCard);
+    const rafId = window.requestAnimationFrame(updateCardHeight);
     window.addEventListener("resize", updateCardHeight, { passive: true });
 
     return () => {
-      resizeObserver?.disconnect();
+      window.cancelAnimationFrame(rafId);
       window.removeEventListener("resize", updateCardHeight);
     };
   }, [activeThemeIndex, themeSpacing]);
@@ -155,21 +142,30 @@ function ThemeShowcaseSection({
   const stickyStageHeight = parkedNextCardY;
 
   useEffect(() => {
-    function updatePinnedStage() {
+    function syncPinMetrics() {
       const browser = browserRef.current;
 
       if (!browser) {
         return;
       }
 
-      setHasPinnedStageInitialized((current) => (current ? current : true));
-
       const desktopStickyTop = Number.parseFloat(
         getComputedStyle(document.documentElement).getPropertyValue("--desktop-side-nav-top"),
       );
-      const stickyTop = Number.isFinite(desktopStickyTop) ? desktopStickyTop : 48;
+      const stickyTop = Number.isFinite(desktopStickyTop) ? desktopStickyTop : DEFAULT_STICKY_TOP;
+      const browserTop = browser.getBoundingClientRect().top + window.scrollY;
+
+      pinMetricsRef.current = {
+        stickyTop,
+        pinStart: Math.max(0, browserTop - stickyTop),
+      };
+    }
+
+    function updatePinnedStage() {
+      setHasPinnedStageInitialized((current) => (current ? current : true));
+
       const scrollY = window.scrollY || window.pageYOffset || 0;
-      const pinStart = Math.max(0, getPageTop(browser) - stickyTop);
+      const { pinStart } = pinMetricsRef.current;
       const localScroll = Math.max(0, Math.min(totalPinnedDistance, scrollY - pinStart));
 
       if (themeList.length <= 1) {
@@ -203,13 +199,35 @@ function ThemeShowcaseSection({
       );
     }
 
+    function queuePinnedStageUpdate() {
+      if (scrollFrameRef.current) {
+        return;
+      }
+
+      scrollFrameRef.current = window.requestAnimationFrame(() => {
+        scrollFrameRef.current = 0;
+        updatePinnedStage();
+      });
+    }
+
+    function handleResize() {
+      syncPinMetrics();
+      queuePinnedStageUpdate();
+    }
+
+    syncPinMetrics();
     updatePinnedStage();
-    window.addEventListener("scroll", updatePinnedStage, { passive: true });
-    window.addEventListener("resize", updatePinnedStage, { passive: true });
+    window.addEventListener("scroll", queuePinnedStageUpdate, { passive: true });
+    window.addEventListener("resize", handleResize, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", updatePinnedStage);
-      window.removeEventListener("resize", updatePinnedStage);
+      if (scrollFrameRef.current) {
+        window.cancelAnimationFrame(scrollFrameRef.current);
+        scrollFrameRef.current = 0;
+      }
+
+      window.removeEventListener("scroll", queuePinnedStageUpdate);
+      window.removeEventListener("resize", handleResize);
     };
   }, [parkedNextCardY, themeHoldDistance, themeList, totalPinnedDistance, transitionDistance]);
 
