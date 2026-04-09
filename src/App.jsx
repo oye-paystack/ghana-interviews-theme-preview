@@ -13,6 +13,7 @@ const MerchantCardsSection = lazy(() =>
 const ThemeShowcaseSection = lazy(() =>
   import("./features/theme-showcase/ThemeShowcaseSection"),
 );
+const RoadmapSection = lazy(() => import("./features/roadmap/RoadmapSection"));
 
 function SectionFallback({ minHeight = 0 }) {
   return (
@@ -33,6 +34,7 @@ function App() {
   const [showOverviewSceneFrame, setShowOverviewSceneFrame] = useState(false);
   const [showSideNav, setShowSideNav] = useState(false);
   const [merchantHoverPreviewSize, setMerchantHoverPreviewSize] = useState(760);
+  const [showRoadmapLabelMotion, setShowRoadmapLabelMotion] = useState(true);
 
   return (
     <AppShell>
@@ -61,13 +63,18 @@ function App() {
           showOverviewSceneFrame={showOverviewSceneFrame}
           showSideNav={showSideNav}
           merchantHoverPreviewSize={merchantHoverPreviewSize}
+          showRoadmapLabelMotion={showRoadmapLabelMotion}
           onOverviewSceneOffsetXChange={setOverviewSceneOffsetX}
           onOverviewSceneOffsetYChange={setOverviewSceneOffsetY}
           onOverviewSceneScaleChange={setOverviewSceneScale}
           onShowOverviewSceneFrameChange={setShowOverviewSceneFrame}
           onShowSideNavChange={setShowSideNav}
           onMerchantHoverPreviewSizeChange={setMerchantHoverPreviewSize}
+          onShowRoadmapLabelMotionChange={setShowRoadmapLabelMotion}
         />
+      </Suspense>
+      <Suspense fallback={<SectionFallback minHeight={960} />}>
+        <RoadmapSection showLabelMotion={showRoadmapLabelMotion} />
       </Suspense>
     </AppShell>
   );

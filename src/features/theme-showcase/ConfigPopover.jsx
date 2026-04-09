@@ -20,6 +20,7 @@ function ConfigPopover({
   showOverviewSceneFrame,
   showSideNav,
   merchantHoverPreviewSize,
+  showRoadmapLabelMotion,
   showGridOverlay,
   showStickyGuide,
   isOpen,
@@ -38,6 +39,7 @@ function ConfigPopover({
   onShowOverviewSceneFrameChange,
   onShowSideNavChange,
   onMerchantHoverPreviewSizeChange,
+  onShowRoadmapLabelMotionChange,
   onSideCassetteOffsetYChange,
   onTextMorphDurationChange,
   onPlaybackPulseDurationChange,
@@ -127,6 +129,19 @@ function ConfigPopover({
               type="checkbox"
               checked={showSideNav}
               onChange={(event) => onShowSideNavChange(event.currentTarget.checked)}
+            />
+          </label>
+
+          <label className={styles.toggleField} htmlFor="show-roadmap-label-motion">
+            <span className={styles.label}>Show roadmap label motion</span>
+            <input
+              id="show-roadmap-label-motion"
+              className={styles.checkbox}
+              type="checkbox"
+              checked={showRoadmapLabelMotion}
+              onChange={(event) =>
+                onShowRoadmapLabelMotionChange(event.currentTarget.checked)
+              }
             />
           </label>
 

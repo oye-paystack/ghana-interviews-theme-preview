@@ -40,12 +40,14 @@ function ThemeShowcaseSection({
   showOverviewSceneFrame = false,
   showSideNav = false,
   merchantHoverPreviewSize = 260,
+  showRoadmapLabelMotion = true,
   onOverviewSceneOffsetXChange = () => {},
   onOverviewSceneOffsetYChange = () => {},
   onOverviewSceneScaleChange = () => {},
   onShowOverviewSceneFrameChange = () => {},
   onShowSideNavChange = () => {},
   onMerchantHoverPreviewSizeChange = () => {},
+  onShowRoadmapLabelMotionChange = () => {},
 }) {
   const themeList = useMemo(() => {
     if (themes?.length) {
@@ -489,6 +491,7 @@ function ThemeShowcaseSection({
           showOverviewSceneFrame={showOverviewSceneFrame}
           showSideNav={showSideNav}
           merchantHoverPreviewSize={merchantHoverPreviewSize}
+          showRoadmapLabelMotion={showRoadmapLabelMotion}
           showGridOverlay={showGridOverlay}
           showStickyGuide={showStickyGuide}
           isOpen={isConfigOpen}
@@ -509,6 +512,7 @@ function ThemeShowcaseSection({
           onShowOverviewSceneFrameChange={onShowOverviewSceneFrameChange}
           onShowSideNavChange={onShowSideNavChange}
           onMerchantHoverPreviewSizeChange={onMerchantHoverPreviewSizeChange}
+          onShowRoadmapLabelMotionChange={onShowRoadmapLabelMotionChange}
           onSideCassetteOffsetYChange={(value) => setSideCassetteOffsetY(value)}
           onTextMorphDurationChange={(value) => setTextMorphDuration(value)}
           onPlaybackPulseDurationChange={(value) => setPlaybackPulseDuration(value)}
