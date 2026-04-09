@@ -91,14 +91,10 @@
 
 .rowInlineLabel .bar {
   grid-column: 1;
-  align-items: center;
+  align-items: flex-start;
   gap: 24px;
   padding-left: 12px;
   padding-right: 4px;
-}
-
-.rowInlineLabel[data-expanded="true"] .bar {
-  align-items: flex-start;
 }
 
 .bar:focus-visible {
@@ -143,6 +139,7 @@
   white-space: nowrap;
   flex: 0 0 auto;
   width: var(--inline-label-width, auto);
+  padding-top: 4px;
 }
 
 .cellLabel {

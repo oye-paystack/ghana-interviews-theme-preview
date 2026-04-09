@@ -27,6 +27,7 @@ const DETAIL_ENTRANCE_DELAY = BAR_TRANSITION.visualDuration;
 const COLLAPSED_CELL_INNER_WIDTH = COLLAPSED_CELL_WIDTH - 24;
 const OUTSIDE_LABEL_COLUMN_WIDTH = 154;
 const OUTSIDE_LABEL_GAP = 20;
+const CHART_GAP = 28;
 
 function getInlineLabelWidth(label) {
   if (typeof document === "undefined") {
@@ -233,9 +234,16 @@ function RoadmapBar({
   );
 }
 
+function getChartMinHeight() {
+  const count = roadmapItems.length;
+  const gaps = Math.max(count - 1, 0) * CHART_GAP;
+  return EXPANDED_BAR_HEIGHT + (count - 1) * COLLAPSED_BAR_HEIGHT + gaps;
+}
+
 function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
   const [expandedItemId, setExpandedItemId] = useState(defaultExpandedRoadmapItemId);
   const chartReferenceWidth = getChartReferenceWidth(showInlineLabels);
+  const chartMinHeight = getChartMinHeight();
 
   function handleToggle(itemId) {
     setExpandedItemId((currentId) => (currentId === itemId ? null : itemId));
@@ -257,7 +265,7 @@ function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
 
         <div
           className={styles.chart}
-          style={{ "--chart-reference-width": `${chartReferenceWidth}px` }}
+          style={{ "--chart-reference-width": `${chartReferenceWidth}px`, minHeight: chartMinHeight }}
         >
           {roadmapItems.map((item) => (
             <RoadmapBar
