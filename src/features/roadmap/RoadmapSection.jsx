@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
+import { TextMorph } from "torph/react";
 import {
   defaultExpandedRoadmapItemId,
   roadmapItems,
@@ -27,33 +28,52 @@ function getBarWidth(cellCount, isExpanded) {
   return (cellWidth * cellCount) + (Math.max(cellCount - 1, 0) * BAR_GAP) + BAR_PADDING;
 }
 
-function RoadmapCellLabel({ isExpanded, showMotion, text }) {
+function RoadmapCellLabel({ detailText, isExpanded, showMotion, shortText }) {
   const labelRef = useRef(null);
-  const [labelWidth, setLabelWidth] = useState(0);
+  const shortMeasureRef = useRef(null);
+  const [shortLabelWidth, setShortLabelWidth] = useState(0);
+  const text = isExpanded ? detailText : shortText;
+  const shouldMorphText = shortText !== detailText;
 
   useLayoutEffect(() => {
-    if (!labelRef.current) {
+    if (!shortMeasureRef.current) {
       return;
     }
 
-    const nextWidth = labelRef.current.getBoundingClientRect().width;
-    setLabelWidth(nextWidth);
-  }, [text]);
+    const nextWidth = shortMeasureRef.current.getBoundingClientRect().width;
+    setShortLabelWidth(nextWidth);
+  }, [shortText]);
 
-  const collapsedOffset = Math.max((COLLAPSED_CELL_INNER_WIDTH - labelWidth) / 2, 0);
+  const collapsedOffset = Math.max((COLLAPSED_CELL_INNER_WIDTH - shortLabelWidth) / 2, 0);
 
   return (
-    <motion.span
-      ref={labelRef}
-      className={`${styles.cellLabel} ${
-        isExpanded ? styles.cellLabelExpanded : styles.cellLabelCollapsed
-      }`}
-      style={showMotion ? { alignSelf: "flex-start" } : undefined}
-      animate={showMotion ? { x: isExpanded ? 0 : collapsedOffset } : { x: 0 }}
-      transition={showMotion ? BAR_TRANSITION : { duration: 0 }}
-    >
-      {text}
-    </motion.span>
+    <>
+      <span ref={shortMeasureRef} className={styles.cellLabelMeasure} aria-hidden="true">
+        {shortText}
+      </span>
+      <motion.span
+        ref={labelRef}
+        className={`${styles.cellLabel} ${
+          isExpanded ? styles.cellLabelExpanded : styles.cellLabelCollapsed
+        }`}
+        style={showMotion ? { alignSelf: "flex-start" } : undefined}
+        animate={showMotion ? { x: isExpanded ? 0 : collapsedOffset } : { x: 0 }}
+        transition={showMotion ? BAR_TRANSITION : { duration: 0 }}
+      >
+        {shouldMorphText ? (
+          <TextMorph
+            as="span"
+            className={styles.cellLabelText}
+            duration={360}
+            ease={{ stiffness: 180, damping: 22, mass: 0.9 }}
+          >
+            {text}
+          </TextMorph>
+        ) : (
+          text
+        )}
+      </motion.span>
+    </>
   );
 }
 
@@ -95,9 +115,10 @@ function RoadmapBar({ item, isExpanded, onToggle, showLabelMotion }) {
             transition={BAR_TRANSITION}
           >
             <RoadmapCellLabel
+              detailText={merchant.detailLabel}
               isExpanded={isExpanded}
               showMotion={showLabelMotion}
-              text={isExpanded ? merchant.detailLabel : merchant.shortLabel}
+              shortText={merchant.shortLabel}
             />
             <AnimatePresence initial={false}>
               {isExpanded ? (

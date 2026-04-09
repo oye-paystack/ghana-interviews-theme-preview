@@ -119,6 +119,21 @@
   line-height: 25px;
 }
 
+.cellLabelText {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.cellLabelMeasure {
+  position: absolute;
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  font-family: "PP Mori Semibold", sans-serif;
+  font-size: 12px;
+  line-height: 25px;
+}
+
 .cellLabelCollapsed {
   align-self: center;
   white-space: nowrap;
