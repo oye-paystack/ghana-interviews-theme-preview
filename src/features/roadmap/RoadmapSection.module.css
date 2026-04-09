@@ -45,8 +45,7 @@
 
 .chart {
   grid-column: 3 / span 8;
-  width: 100%;
-  max-width: 809px;
+  width: min(100%, var(--chart-reference-width, 809px));
   margin: 96px auto 0;
   display: flex;
   flex-direction: column;
@@ -60,11 +59,15 @@
   column-gap: 20px;
 }
 
+.rowInlineLabel {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .label {
   margin: 0;
   padding-top: 8px;
   color: var(--title);
-  font-family: "PP Mori Bold", sans-serif;
+  font-family: "PP Mori Semibold", sans-serif;
   font-size: 16px;
   line-height: 25px;
 }
@@ -84,6 +87,18 @@
   display: flex;
   align-items: flex-start;
   gap: 4px;
+}
+
+.rowInlineLabel .bar {
+  grid-column: 1;
+  align-items: center;
+  gap: 24px;
+  padding-left: 12px;
+  padding-right: 4px;
+}
+
+.rowInlineLabel[data-expanded="true"] .bar {
+  align-items: flex-start;
 }
 
 .bar:focus-visible {
@@ -113,9 +128,26 @@
   flex: 0 0 auto;
 }
 
+.cellGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+.barLabelText {
+  color: #ffffff;
+  font-family: "PP Mori Semibold", sans-serif;
+  font-size: 14px;
+  line-height: 25px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  width: var(--inline-label-width, auto);
+}
+
 .cellLabel {
   color: #ebf0db;
-  font-family: "PP Mori Semibold", sans-serif;
+  font-family: "PP Mori Medium", sans-serif;
   font-size: 12px;
   line-height: 25px;
 }
@@ -130,7 +162,7 @@
   visibility: hidden;
   white-space: nowrap;
   pointer-events: none;
-  font-family: "PP Mori Semibold", sans-serif;
+  font-family: "PP Mori Medium", sans-serif;
   font-size: 12px;
   line-height: 25px;
 }
@@ -202,6 +234,10 @@
   .rowExpanded {
     grid-template-columns: 1fr;
     row-gap: 10px;
+  }
+
+  .rowInlineLabel {
+    row-gap: 0;
   }
 
   .barCollapsed,

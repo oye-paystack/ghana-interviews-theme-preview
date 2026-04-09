@@ -35,6 +35,7 @@ function App() {
   const [showSideNav, setShowSideNav] = useState(false);
   const [merchantHoverPreviewSize, setMerchantHoverPreviewSize] = useState(760);
   const [showRoadmapLabelMotion, setShowRoadmapLabelMotion] = useState(true);
+  const [showRoadmapInlineLabels, setShowRoadmapInlineLabels] = useState(false);
 
   return (
     <AppShell>
@@ -64,6 +65,7 @@ function App() {
           showSideNav={showSideNav}
           merchantHoverPreviewSize={merchantHoverPreviewSize}
           showRoadmapLabelMotion={showRoadmapLabelMotion}
+          showRoadmapInlineLabels={showRoadmapInlineLabels}
           onOverviewSceneOffsetXChange={setOverviewSceneOffsetX}
           onOverviewSceneOffsetYChange={setOverviewSceneOffsetY}
           onOverviewSceneScaleChange={setOverviewSceneScale}
@@ -71,10 +73,14 @@ function App() {
           onShowSideNavChange={setShowSideNav}
           onMerchantHoverPreviewSizeChange={setMerchantHoverPreviewSize}
           onShowRoadmapLabelMotionChange={setShowRoadmapLabelMotion}
+          onShowRoadmapInlineLabelsChange={setShowRoadmapInlineLabels}
         />
       </Suspense>
       <Suspense fallback={<SectionFallback minHeight={960} />}>
-        <RoadmapSection showLabelMotion={showRoadmapLabelMotion} />
+        <RoadmapSection
+          showInlineLabels={showRoadmapInlineLabels}
+          showLabelMotion={showRoadmapLabelMotion}
+        />
       </Suspense>
     </AppShell>
   );

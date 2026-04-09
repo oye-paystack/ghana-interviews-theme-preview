@@ -30,20 +30,80 @@ export const roadmapItems = [
     ],
   },
   {
+    id: "in-person",
+    label: "In-person",
+    merchants: [
+      {
+        shortLabel: "Seesail",
+        detailLabel: "Seesail",
+        detail:
+          "Turn a phone into a lightweight POS for fairs, merchants, and on-the-ground collections.",
+      },
+      {
+        shortLabel: "Peadato",
+        detailLabel: "Peadato",
+        detail:
+          "Replace physical outlet cash handling with a cleaner in-person payment flow.",
+      },
+      {
+        shortLabel: "AWA",
+        detailLabel: "Africa World Airlines",
+        detail:
+          "Handle airport and desk-side payments with better visibility for staff.",
+      },
+    ],
+  },
+  {
     id: "virtual-accounts",
     label: "Virtual accounts",
+    merchants: [
+      {
+        shortLabel: "Achieve",
+        detailLabel: "Achieve by Petra",
+        detail:
+          "Assign dedicated transfer accounts to each user instead of manually matching inbound payments.",
+      },
+      {
+        shortLabel: "Telecel",
+        detailLabel: "Telecel",
+        detail:
+          "Use account-like collection rails for recurring deductions and fallback when USSD is down.",
+      },
+    ],
+  },
+  {
+    id: "international",
+    label: "International",
+    merchants: [
+      {
+        shortLabel: "Achieve",
+        detailLabel: "Achieve by Petra",
+        detail:
+          "Let customers outside Ghana fund accounts and complete transfers without local bank friction.",
+      },
+      {
+        shortLabel: "Seesail",
+        detailLabel: "Seesail",
+        detail:
+          "Accept payments from diaspora and overseas buyers using methods they already trust.",
+      },
+    ],
+  },
+  {
+    id: "recurring-momo",
+    label: "Recurring MoMo",
     merchants: [
       {
         shortLabel: "Telecel",
         detailLabel: "Telecel",
         detail:
-          "Spin up account numbers for enterprise collections and reconcile them faster.",
+          "Enable repeat broadband and service charges through Mobile Money mandates.",
       },
       {
-        shortLabel: "WARC",
-        detailLabel: "WARC",
+        shortLabel: "Seesail",
+        detailLabel: "Seesail",
         detail:
-          "Assign dedicated accounts to farmer and distributor payments instead of chasing references.",
+          "Bill merchants on a recurring schedule without manual payment follow-up.",
       },
     ],
   },
@@ -55,91 +115,7 @@ export const roadmapItems = [
         shortLabel: "Seesail",
         detailLabel: "Seesail",
         detail:
-          "Unlock working capital to fund inventory before merchant demand peaks.",
-      },
-      {
-        shortLabel: "Achieve",
-        detailLabel: "Achieve",
-        detail:
-          "Offer faster access to capital products tied to a user's payment history.",
-      },
-      {
-        shortLabel: "Peadato",
-        detailLabel: "Peadato",
-        detail:
-          "Finance multiple business lines without relying on separate lenders.",
-      },
-    ],
-  },
-  {
-    id: "in-person",
-    label: "In-person",
-    merchants: [
-      {
-        shortLabel: "Dajo Unimarket",
-        detailLabel: "Dajo Unimarket",
-        detail:
-          "Take payments at pickup or in-store with the same system used online.",
-      },
-      {
-        shortLabel: "Golly Express",
-        detailLabel: "Golly Express",
-        detail:
-          "Collect warehouse and delivery payments in person without cash leakage.",
-      },
-      {
-        shortLabel: "AWA",
-        detailLabel: "Africa World Airlines",
-        detail:
-          "Handle airport and desk-side payments with better visibility for staff.",
-      },
-    ],
-  },
-  {
-    id: "international",
-    label: "International",
-    merchants: [
-      {
-        shortLabel: "Peadato",
-        detailLabel: "Peadato",
-        detail:
-          "Accept cards and transfers from customers paying in from outside Ghana.",
-      },
-      {
-        shortLabel: "Dajo Unimarket",
-        detailLabel: "Dajo Unimarket",
-        detail:
-          "Support shoppers buying for friends and family from abroad.",
-      },
-    ],
-  },
-  {
-    id: "recurring-momo",
-    label: "Recurring MoMo",
-    merchants: [
-      {
-        shortLabel: "AWA",
-        detailLabel: "Africa World Airlines",
-        detail:
-          "Set up repeat Mobile Money charges for frequent flyers and travel plans.",
-      },
-      {
-        shortLabel: "Golly Express",
-        detailLabel: "Golly Express",
-        detail:
-          "Collect subscription-style storage and forwarding fees automatically.",
-      },
-      {
-        shortLabel: "Seesail",
-        detailLabel: "Seesail",
-        detail:
-          "Bill merchants on a recurring schedule without manual payment follow-up.",
-      },
-      {
-        shortLabel: "Telecel",
-        detailLabel: "Telecel",
-        detail:
-          "Enable repeat top-ups and service charges through MoMo mandates.",
+          "Unlock working capital to settle suppliers faster when merchant demand spikes.",
       },
     ],
   },

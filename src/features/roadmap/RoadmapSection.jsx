@@ -11,6 +11,9 @@ const COLLAPSED_CELL_WIDTH = 120;
 const EXPANDED_CELL_WIDTH = 153.25;
 const BAR_GAP = 4;
 const BAR_PADDING = 8;
+const INLINE_BAR_LEFT_PADDING = 12;
+const INLINE_BAR_RIGHT_PADDING = 4;
+const INLINE_LABEL_GAP = 24;
 const COLLAPSED_BAR_HEIGHT = 41;
 const EXPANDED_BAR_HEIGHT = 164;
 const COLLAPSED_CELL_HEIGHT = 33;
@@ -22,10 +25,68 @@ const BAR_TRANSITION = {
 };
 const DETAIL_ENTRANCE_DELAY = BAR_TRANSITION.visualDuration;
 const COLLAPSED_CELL_INNER_WIDTH = COLLAPSED_CELL_WIDTH - 24;
+const OUTSIDE_LABEL_COLUMN_WIDTH = 154;
+const OUTSIDE_LABEL_GAP = 20;
 
-function getBarWidth(cellCount, isExpanded) {
+function getInlineLabelWidth(label) {
+  if (typeof document === "undefined") {
+    return 0;
+  }
+
+  const canvas = getInlineLabelWidth.canvas ?? document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  getInlineLabelWidth.canvas = canvas;
+
+  if (!context) {
+    return 0;
+  }
+
+  context.font = '600 14px "PP Mori Semibold", sans-serif';
+  return Math.ceil(context.measureText(label).width);
+}
+
+function getSharedInlineLabelWidth() {
+  return roadmapItems.reduce(
+    (maxWidth, item) => Math.max(maxWidth, getInlineLabelWidth(item.label)),
+    0,
+  );
+}
+
+function getChartReferenceWidth(showInlineLabels) {
+  const sharedInlineLabelWidth = showInlineLabels ? getSharedInlineLabelWidth() : 0;
+  const widestBarWidth = roadmapItems.reduce(
+    (maxWidth, item) =>
+      Math.max(
+        maxWidth,
+        getBarWidth(item.merchants.length, true, showInlineLabels, sharedInlineLabelWidth),
+      ),
+    0,
+  );
+
+  if (showInlineLabels) {
+    return widestBarWidth;
+  }
+
+  return OUTSIDE_LABEL_COLUMN_WIDTH + OUTSIDE_LABEL_GAP + widestBarWidth;
+}
+
+function getBarWidth(cellCount, isExpanded, includeInlineLabel = false, inlineLabelWidth = 0) {
   const cellWidth = isExpanded ? EXPANDED_CELL_WIDTH : COLLAPSED_CELL_WIDTH;
-  return (cellWidth * cellCount) + (Math.max(cellCount - 1, 0) * BAR_GAP) + BAR_PADDING;
+  const merchantContentWidth =
+    (cellWidth * cellCount) + (Math.max(cellCount - 1, 0) * BAR_GAP);
+
+  if (!includeInlineLabel) {
+    return merchantContentWidth + BAR_PADDING;
+  }
+
+  return (
+    merchantContentWidth
+    + inlineLabelWidth
+    + INLINE_BAR_LEFT_PADDING
+    + INLINE_BAR_RIGHT_PADDING
+    + INLINE_LABEL_GAP
+  );
 }
 
 function RoadmapCellLabel({ detailText, isExpanded, showMotion, shortText }) {
@@ -77,25 +138,42 @@ function RoadmapCellLabel({ detailText, isExpanded, showMotion, shortText }) {
   );
 }
 
-function RoadmapBar({ item, isExpanded, onToggle, showLabelMotion }) {
-  const targetWidth = getBarWidth(item.merchants.length, isExpanded);
+function RoadmapBar({
+  item,
+  isExpanded,
+  onToggle,
+  showInlineLabels,
+  showLabelMotion,
+}) {
+  const inlineLabelWidth = showInlineLabels ? getSharedInlineLabelWidth() : 0;
+  const targetWidth = getBarWidth(
+    item.merchants.length,
+    isExpanded,
+    showInlineLabels,
+    inlineLabelWidth,
+  );
 
   return (
     <motion.div
       initial={false}
       layout="position"
-      className={styles.row}
+      className={`${styles.row} ${showInlineLabels ? styles.rowInlineLabel : ""}`}
       data-expanded={isExpanded ? "true" : "false"}
     >
-      <p className={styles.label}>
-        {item.label}
-      </p>
+      {showInlineLabels ? <p className={styles.visuallyHidden}>{item.label}</p> : (
+        <p className={styles.label}>
+          {item.label}
+        </p>
+      )}
 
       <motion.button
         type="button"
         className={`${styles.bar} ${isExpanded ? styles.barExpanded : styles.barCollapsed}`}
         aria-expanded={isExpanded}
-        style={{ willChange: "width, height" }}
+        style={{
+          willChange: "width, height",
+          ...(showInlineLabels ? { "--inline-label-width": `${inlineLabelWidth}px` } : {}),
+        }}
         animate={{
           width: targetWidth,
           height: isExpanded ? EXPANDED_BAR_HEIGHT : COLLAPSED_BAR_HEIGHT,
@@ -103,55 +181,63 @@ function RoadmapBar({ item, isExpanded, onToggle, showLabelMotion }) {
         transition={BAR_TRANSITION}
         onClick={() => onToggle(item.id)}
       >
-        {item.merchants.map((merchant) => (
-          <motion.span
-            className={styles.cell}
-            key={`${item.id}-${merchant.detailLabel}`}
-            initial={false}
-            animate={{
-              width: isExpanded ? EXPANDED_CELL_WIDTH : COLLAPSED_CELL_WIDTH,
-              height: isExpanded ? EXPANDED_CELL_HEIGHT : COLLAPSED_CELL_HEIGHT,
-            }}
-            transition={BAR_TRANSITION}
-          >
-            <RoadmapCellLabel
-              detailText={merchant.detailLabel}
-              isExpanded={isExpanded}
-              showMotion={showLabelMotion}
-              shortText={merchant.shortLabel}
-            />
-            <AnimatePresence initial={false}>
-              {isExpanded ? (
-                <motion.span
-                  key={`${item.id}-${merchant.detailLabel}-detail`}
-                  className={styles.cellDetail}
-                  initial={{ opacity: 0, y: -6, filter: "blur(2px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{
-                    opacity: 0,
-                    y: -6,
-                    filter: "blur(2px)",
-                    transition: { duration: 0.1, ease: "easeOut" },
-                  }}
-                  transition={{
-                    duration: 0.18,
-                    delay: DETAIL_ENTRANCE_DELAY,
-                    ease: "easeOut",
-                  }}
-                >
-                  {merchant.detail}
-                </motion.span>
-              ) : null}
-            </AnimatePresence>
-          </motion.span>
-        ))}
+        {showInlineLabels ? (
+          <span className={styles.barLabelText}>
+            {item.label}
+          </span>
+        ) : null}
+        <span className={styles.cellGroup}>
+          {item.merchants.map((merchant) => (
+            <motion.span
+              className={styles.cell}
+              key={`${item.id}-${merchant.detailLabel}`}
+              initial={false}
+              animate={{
+                width: isExpanded ? EXPANDED_CELL_WIDTH : COLLAPSED_CELL_WIDTH,
+                height: isExpanded ? EXPANDED_CELL_HEIGHT : COLLAPSED_CELL_HEIGHT,
+              }}
+              transition={BAR_TRANSITION}
+            >
+              <RoadmapCellLabel
+                detailText={merchant.detailLabel}
+                isExpanded={isExpanded}
+                showMotion={showLabelMotion}
+                shortText={merchant.shortLabel}
+              />
+              <AnimatePresence initial={false}>
+                {isExpanded ? (
+                  <motion.span
+                    key={`${item.id}-${merchant.detailLabel}-detail`}
+                    className={styles.cellDetail}
+                    initial={{ opacity: 0, y: -6, filter: "blur(2px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    exit={{
+                      opacity: 0,
+                      y: -6,
+                      filter: "blur(2px)",
+                      transition: { duration: 0.1, ease: "easeOut" },
+                    }}
+                    transition={{
+                      duration: 0.18,
+                      delay: DETAIL_ENTRANCE_DELAY,
+                      ease: "easeOut",
+                    }}
+                  >
+                    {merchant.detail}
+                  </motion.span>
+                ) : null}
+              </AnimatePresence>
+            </motion.span>
+          ))}
+        </span>
       </motion.button>
     </motion.div>
   );
 }
 
-function RoadmapSection({ showLabelMotion = true }) {
+function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
   const [expandedItemId, setExpandedItemId] = useState(defaultExpandedRoadmapItemId);
+  const chartReferenceWidth = getChartReferenceWidth(showInlineLabels);
 
   function handleToggle(itemId) {
     setExpandedItemId((currentId) => (currentId === itemId ? null : itemId));
@@ -180,13 +266,17 @@ function RoadmapSection({ showLabelMotion = true }) {
             },
           }}
         >
-          <div className={styles.chart}>
+          <div
+            className={styles.chart}
+            style={{ "--chart-reference-width": `${chartReferenceWidth}px` }}
+          >
             {roadmapItems.map((item) => (
               <RoadmapBar
                 item={item}
                 isExpanded={expandedItemId === item.id}
                 key={item.id}
                 onToggle={handleToggle}
+                showInlineLabels={showInlineLabels}
                 showLabelMotion={showLabelMotion}
               />
             ))}
