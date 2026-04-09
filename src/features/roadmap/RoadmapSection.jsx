@@ -28,6 +28,10 @@ const COLLAPSED_CELL_INNER_WIDTH = COLLAPSED_CELL_WIDTH - 24;
 const OUTSIDE_LABEL_COLUMN_WIDTH = 154;
 const OUTSIDE_LABEL_GAP = 20;
 const CHART_GAP = 28;
+const MERCHANT_COUNT_GAP = 12;
+const TOTAL_MERCHANTS = new Set(
+  roadmapItems.flatMap((item) => item.merchants.map((m) => m.shortLabel)),
+).size;
 
 function getInlineLabelWidth(label) {
   if (typeof document === "undefined") {
@@ -165,71 +169,87 @@ function RoadmapBar({
         </p>
       )}
 
-      <motion.button
-        type="button"
-        className={`${styles.bar} ${isExpanded ? styles.barExpanded : styles.barCollapsed}`}
-        aria-expanded={isExpanded}
-        style={{
-          willChange: "width, height",
-          ...(showInlineLabels ? { "--inline-label-width": `${inlineLabelWidth}px` } : {}),
-        }}
-        animate={{
-          width: targetWidth,
-          height: isExpanded ? EXPANDED_BAR_HEIGHT : COLLAPSED_BAR_HEIGHT,
-        }}
-        transition={BAR_TRANSITION}
-        onClick={() => onToggle(item.id)}
-      >
-        {showInlineLabels ? (
-          <span className={styles.barLabelText}>
-            {item.label}
+      <div className={styles.barGroup}>
+        <motion.button
+          type="button"
+          className={styles.bar}
+          aria-expanded={isExpanded}
+          style={{
+            willChange: "width, height",
+            ...(showInlineLabels ? { "--inline-label-width": `${inlineLabelWidth}px` } : {}),
+          }}
+          animate={{
+            width: targetWidth,
+            height: isExpanded ? EXPANDED_BAR_HEIGHT : COLLAPSED_BAR_HEIGHT,
+          }}
+          transition={BAR_TRANSITION}
+          onClick={() => onToggle(item.id)}
+        >
+          {showInlineLabels ? (
+            <span className={styles.barLabelText}>
+              {item.label}
+            </span>
+          ) : null}
+          <span className={styles.cellGroup}>
+            {item.merchants.map((merchant) => (
+              <motion.span
+                className={styles.cell}
+                key={`${item.id}-${merchant.detailLabel}`}
+                initial={false}
+                animate={{
+                  width: isExpanded ? EXPANDED_CELL_WIDTH : COLLAPSED_CELL_WIDTH,
+                  height: isExpanded ? EXPANDED_CELL_HEIGHT : COLLAPSED_CELL_HEIGHT,
+                }}
+                transition={BAR_TRANSITION}
+              >
+                <RoadmapCellLabel
+                  detailText={merchant.detailLabel}
+                  isExpanded={isExpanded}
+                  showMotion={showLabelMotion}
+                  shortText={merchant.shortLabel}
+                />
+                <AnimatePresence initial={false}>
+                  {isExpanded ? (
+                    <motion.span
+                      key={`${item.id}-${merchant.detailLabel}-detail`}
+                      className={styles.cellDetail}
+                      initial={{ opacity: 0, y: -6, filter: "blur(2px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      exit={{
+                        opacity: 0,
+                        y: -6,
+                        filter: "blur(2px)",
+                        transition: { duration: 0.1, ease: "easeOut" },
+                      }}
+                      transition={{
+                        duration: 0.18,
+                        delay: DETAIL_ENTRANCE_DELAY,
+                        ease: "easeOut",
+                      }}
+                    >
+                      {merchant.detail}
+                    </motion.span>
+                  ) : null}
+                </AnimatePresence>
+              </motion.span>
+            ))}
           </span>
-        ) : null}
-        <span className={styles.cellGroup}>
-          {item.merchants.map((merchant) => (
+        </motion.button>
+        <AnimatePresence initial={false}>
+          {!isExpanded ? (
             <motion.span
-              className={styles.cell}
-              key={`${item.id}-${merchant.detailLabel}`}
-              initial={false}
-              animate={{
-                width: isExpanded ? EXPANDED_CELL_WIDTH : COLLAPSED_CELL_WIDTH,
-                height: isExpanded ? EXPANDED_CELL_HEIGHT : COLLAPSED_CELL_HEIGHT,
-              }}
-              transition={BAR_TRANSITION}
+              key="count"
+              className={styles.merchantCount}
+              initial={{ opacity: 0, filter: "blur(4px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(4px)" }}
+              transition={{ duration: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
             >
-              <RoadmapCellLabel
-                detailText={merchant.detailLabel}
-                isExpanded={isExpanded}
-                showMotion={showLabelMotion}
-                shortText={merchant.shortLabel}
-              />
-              <AnimatePresence initial={false}>
-                {isExpanded ? (
-                  <motion.span
-                    key={`${item.id}-${merchant.detailLabel}-detail`}
-                    className={styles.cellDetail}
-                    initial={{ opacity: 0, y: -6, filter: "blur(2px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    exit={{
-                      opacity: 0,
-                      y: -6,
-                      filter: "blur(2px)",
-                      transition: { duration: 0.1, ease: "easeOut" },
-                    }}
-                    transition={{
-                      duration: 0.18,
-                      delay: DETAIL_ENTRANCE_DELAY,
-                      ease: "easeOut",
-                    }}
-                  >
-                    {merchant.detail}
-                  </motion.span>
-                ) : null}
-              </AnimatePresence>
+              {item.merchants.length} of {TOTAL_MERCHANTS}
             </motion.span>
-          ))}
-        </span>
-      </motion.button>
+          ) : null}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

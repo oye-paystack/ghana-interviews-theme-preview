@@ -121,4 +121,4 @@ export const roadmapItems = [
   },
 ];
 
-export const defaultExpandedRoadmapItemId = "cross-border";
+export const defaultExpandedRoadmapItemId = null;

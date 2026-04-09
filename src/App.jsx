@@ -35,7 +35,7 @@ function App() {
   const [showSideNav, setShowSideNav] = useState(false);
   const [merchantHoverPreviewSize, setMerchantHoverPreviewSize] = useState(760);
   const [showRoadmapLabelMotion, setShowRoadmapLabelMotion] = useState(true);
-  const [showRoadmapInlineLabels, setShowRoadmapInlineLabels] = useState(false);
+  const [showRoadmapInlineLabels, setShowRoadmapInlineLabels] = useState(true);
 
   return (
     <AppShell>
