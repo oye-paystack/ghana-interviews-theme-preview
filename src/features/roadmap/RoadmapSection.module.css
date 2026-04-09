@@ -130,7 +130,7 @@
 
 .cellGroup {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 4px;
   flex: 0 0 auto;
 }

@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { AnimatePresence, MotionConfig, motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { TextMorph } from "torph/react";
 import {
   defaultExpandedRoadmapItemId,
@@ -154,9 +154,7 @@ function RoadmapBar({
   );
 
   return (
-    <motion.div
-      initial={false}
-      layout="position"
+    <div
       className={`${styles.row} ${showInlineLabels ? styles.rowInlineLabel : ""}`}
       data-expanded={isExpanded ? "true" : "false"}
     >
@@ -231,7 +229,7 @@ function RoadmapBar({
           ))}
         </span>
       </motion.button>
-    </motion.div>
+    </div>
   );
 }
 
@@ -257,31 +255,21 @@ function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
           </p>
         </div>
 
-        <MotionConfig
-          transition={{
-            layout: {
-              type: "spring",
-              bounce: 0,
-              visualDuration: 0.34,
-            },
-          }}
+        <div
+          className={styles.chart}
+          style={{ "--chart-reference-width": `${chartReferenceWidth}px` }}
         >
-          <div
-            className={styles.chart}
-            style={{ "--chart-reference-width": `${chartReferenceWidth}px` }}
-          >
-            {roadmapItems.map((item) => (
-              <RoadmapBar
-                item={item}
-                isExpanded={expandedItemId === item.id}
-                key={item.id}
-                onToggle={handleToggle}
-                showInlineLabels={showInlineLabels}
-                showLabelMotion={showLabelMotion}
-              />
-            ))}
-          </div>
-        </MotionConfig>
+          {roadmapItems.map((item) => (
+            <RoadmapBar
+              item={item}
+              isExpanded={expandedItemId === item.id}
+              key={item.id}
+              onToggle={handleToggle}
+              showInlineLabels={showInlineLabels}
+              showLabelMotion={showLabelMotion}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
