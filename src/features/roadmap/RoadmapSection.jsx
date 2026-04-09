@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { TextMorph } from "torph/react";
 import {
@@ -146,6 +146,7 @@ function RoadmapCellLabel({ detailText, isExpanded, showMotion, shortText }) {
 function RoadmapBar({
   item,
   isExpanded,
+  isHighlighted,
   onToggle,
   showInlineLabels,
   showLabelMotion,
@@ -172,7 +173,7 @@ function RoadmapBar({
       <div className={styles.barGroup}>
         <motion.button
           type="button"
-          className={styles.bar}
+          className={`${styles.bar} ${isHighlighted ? styles.barHighlighted : ""}`}
           aria-expanded={isExpanded}
           style={{
             willChange: "width, height",
@@ -262,10 +263,51 @@ function getChartMinHeight() {
 
 function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
   const [expandedItemId, setExpandedItemId] = useState(defaultExpandedRoadmapItemId);
+  const chartRef = useRef(null);
+  const hasAutoExpandedRef = useRef(false);
+  const autoExpandTimerRef = useRef(null);
   const chartReferenceWidth = getChartReferenceWidth(showInlineLabels);
   const chartMinHeight = getChartMinHeight();
 
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAutoExpandedRef.current) {
+          autoExpandTimerRef.current = setTimeout(() => {
+            hasAutoExpandedRef.current = true;
+            setExpandedItemId(roadmapItems[0].id);
+          }, 2000);
+        } else if (!entry.isIntersecting && autoExpandTimerRef.current) {
+          clearTimeout(autoExpandTimerRef.current);
+          autoExpandTimerRef.current = null;
+        }
+      },
+      { threshold: 0.3 },
+    );
+
+    observer.observe(chart);
+
+    return () => {
+      observer.disconnect();
+      if (autoExpandTimerRef.current) {
+        clearTimeout(autoExpandTimerRef.current);
+      }
+    };
+  }, []);
+
+  const longestItemId = roadmapItems.reduce((longest, item) =>
+    item.merchants.length > longest.merchants.length ? item : longest,
+  ).id;
+
   function handleToggle(itemId) {
+    if (autoExpandTimerRef.current) {
+      clearTimeout(autoExpandTimerRef.current);
+      autoExpandTimerRef.current = null;
+    }
+    hasAutoExpandedRef.current = true;
     setExpandedItemId((currentId) => (currentId === itemId ? null : itemId));
   }
 
@@ -278,12 +320,12 @@ function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
             Where merchant demand is pulling the roadmap next.
           </h2>
           <p className={styles.copy}>
-            Each bar groups the merchants asking for a feature. Select one to expand the
-            demand behind it.
+            Click any bar to see who's behind the demand.
           </p>
         </div>
 
         <div
+          ref={chartRef}
           className={styles.chart}
           style={{ "--chart-reference-width": `${chartReferenceWidth}px`, minHeight: chartMinHeight }}
         >
@@ -291,6 +333,7 @@ function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
             <RoadmapBar
               item={item}
               isExpanded={expandedItemId === item.id}
+              isHighlighted={item.id === longestItemId}
               key={item.id}
               onToggle={handleToggle}
               showInlineLabels={showInlineLabels}
