@@ -175,6 +175,7 @@ function RoadmapBar({
           type="button"
           className={`${styles.bar} ${isHighlighted ? styles.barHighlighted : ""}`}
           aria-expanded={isExpanded}
+          initial={false}
           style={{
             willChange: "width, height",
             ...(showInlineLabels ? { "--inline-label-width": `${inlineLabelWidth}px` } : {}),
