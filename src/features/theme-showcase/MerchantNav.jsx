@@ -11,9 +11,14 @@ function MerchantNav({
   merchants,
   activeIndex,
   onSelect,
+  className = "",
+  variant = "default",
 }) {
+  const navVariantClassName = variant === "dark" ? styles.navDark : "";
+  const navClassName = [styles.nav, navVariantClassName, className].filter(Boolean).join(" ");
+
   return (
-    <nav className={styles.nav} aria-label="Merchant carousel">
+    <nav className={navClassName} aria-label="Merchant carousel">
       {merchants.map((merchant, index) => {
         const Icon = iconMap[merchant.iconKey];
         const isActive = index === activeIndex;

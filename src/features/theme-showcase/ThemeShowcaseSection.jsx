@@ -1,7 +1,8 @@
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ConfigPopover from "./ConfigPopover";
 import MerchantNav from "./MerchantNav";
-import PlaybackPanels from "./PlaybackPanels";
+import PlayerStage from "./PlayerStage";
 import styles from "./ThemeShowcaseSection.module.css";
 
 const DEFAULT_ORBIT_SPACING = 360;
@@ -15,31 +16,22 @@ const DEFAULT_EXIT_SCALE = 0.95;
 const DEFAULT_EXIT_BLUR = 0;
 const DEFAULT_EXIT_COMPLETE_AT = 0.77;
 const DEFAULT_FOOTER_SWITCH_AT = 0.92;
-const FINAL_THEME_DWELL = 120;
-const SHARED_FOOTER_BLOCK_HEIGHT = 120;
-const INITIAL_CARD_HEIGHT = 815;
-const DEFAULT_STICKY_TOP = 48;
-
-function clampIndex(value, length) {
-  if (length <= 0) {
-    return 0;
-  }
-
-  return Math.min(Math.max(value, 0), length - 1);
-}
+const FIRST_THEME_FRAME_START = 100;
+const FIRST_THEME_FRAME_REVEAL_DISTANCE = 200;
+const FIRST_THEME_FRAME_HOLD_DISTANCE = 100;
+const FIRST_THEME_FRAME_EXIT_DISTANCE = 80;
 
 function ThemeShowcaseSection({
   theme,
   themes,
-  merchants,
-  initialActiveIndex = 0,
+  merchants = [],
   showDebugControls = true,
   overviewSceneOffsetX = 0,
   overviewSceneOffsetY = 0,
   overviewSceneScale = 1,
   showOverviewSceneFrame = false,
   showSideNav = false,
-  merchantHoverPreviewSize = 260,
+  merchantHoverPreviewSize = 760,
   showRoadmapLabelMotion = true,
   showRoadmapInlineLabels = false,
   onOverviewSceneOffsetXChange = () => {},
@@ -51,18 +43,18 @@ function ThemeShowcaseSection({
   onShowRoadmapLabelMotionChange = () => {},
   onShowRoadmapInlineLabelsChange = () => {},
 }) {
-  const themeList = useMemo(() => {
-    if (themes?.length) {
-      return themes;
-    }
-
-    return theme ? [theme] : [];
-  }, [theme, themes]);
-  const [activeThemeIndex, setActiveThemeIndex] = useState(0);
+  const shellTrackRef = useRef(null);
+  const playbackAudioRef = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
+  const [shellTrackStart, setShellTrackStart] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(0);
+  const [activeMerchantIndex, setActiveMerchantIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isConfigOpen, setIsConfigOpen] = useState(false);
+  const [showGridOverlay, setShowGridOverlay] = useState(false);
+  const [showStickyGuide, setShowStickyGuide] = useState(false);
   const [orbitSpacing, setOrbitSpacing] = useState(DEFAULT_ORBIT_SPACING);
-  const [sideCassetteOffsetY, setSideCassetteOffsetY] = useState(
-    DEFAULT_SIDE_CASSETTE_OFFSET_Y,
-  );
+  const [sideCassetteOffsetY, setSideCassetteOffsetY] = useState(DEFAULT_SIDE_CASSETTE_OFFSET_Y);
   const [textMorphDuration, setTextMorphDuration] = useState(DEFAULT_TEXT_MORPH_DURATION);
   const [textMorphEase, setTextMorphEase] = useState(DEFAULT_TEXT_MORPH_EASE);
   const [playbackPulseDuration, setPlaybackPulseDuration] = useState(
@@ -76,401 +68,163 @@ function ThemeShowcaseSection({
     DEFAULT_EXIT_COMPLETE_AT,
   );
   const [footerSwitchAt, setFooterSwitchAt] = useState(DEFAULT_FOOTER_SWITCH_AT);
-  const [cardHeight, setCardHeight] = useState(INITIAL_CARD_HEIGHT);
-  const [nextCardOffsetY, setNextCardOffsetY] = useState(
-    INITIAL_CARD_HEIGHT + SHARED_FOOTER_BLOCK_HEIGHT + DEFAULT_THEME_SPACING,
-  );
-  const [isConfigOpen, setIsConfigOpen] = useState(false);
-  const [showGridOverlay, setShowGridOverlay] = useState(false);
-  const [showStickyGuide, setShowStickyGuide] = useState(false);
-  const [hasPinnedStageInitialized, setHasPinnedStageInitialized] = useState(false);
-  const [activeIndicesByThemeId, setActiveIndicesByThemeId] = useState(() =>
-    Object.fromEntries(
-      themeList.map((themeItem) => [themeItem.id, clampIndex(initialActiveIndex, merchants.length)]),
-    ),
-  );
-  const browserRef = useRef(null);
-  const currentCardRef = useRef(null);
-  const pinMetricsRef = useRef({
-    pinStart: 0,
-    stickyTop: DEFAULT_STICKY_TOP,
-  });
-  const scrollFrameRef = useRef(0);
+  const themeList = themes?.length ? themes : theme ? [theme] : [];
   const merchantsById = useMemo(
-    () => Object.fromEntries(merchants.map((merchantItem) => [merchantItem.id, merchantItem])),
+    () => new Map(merchants.map((merchantItem) => [merchantItem.id, merchantItem])),
     [merchants],
   );
+  const activeTheme = themeList[0] ?? null;
+  const activeThemeMerchants = useMemo(() => {
+    if (!activeTheme?.merchantIds?.length) {
+      return merchants;
+    }
+
+    return activeTheme.merchantIds
+      .map((merchantId) => merchantsById.get(merchantId))
+      .filter(Boolean);
+  }, [activeTheme, merchants, merchantsById]);
+  const safeActiveMerchantIndex =
+    activeThemeMerchants.length > 0
+      ? Math.min(activeMerchantIndex, activeThemeMerchants.length - 1)
+      : 0;
+  const activeMerchant = activeThemeMerchants[safeActiveMerchantIndex] ?? null;
+  const sectionHeading =
+    themeList[0]?.sectionHeading ??
+    "We heard a few things across our conversations and we'd like you to hear them too";
+  const { scrollYProgress } = useScroll({
+    target: shellTrackRef,
+    offset: ["start end", "start start"],
+  });
+  const { scrollY } = useScroll();
+
+  const shellScale = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
+  const shellY = useTransform(scrollYProgress, [0, 1], [40, 0]);
+  const shellRadius = useTransform(scrollYProgress, [0, 1], [32, 0]);
+  const firstFrameRevealStart = shellTrackStart + FIRST_THEME_FRAME_START;
+  const firstFrameRevealEnd = firstFrameRevealStart + FIRST_THEME_FRAME_REVEAL_DISTANCE;
+  const firstFrameHoldEnd = firstFrameRevealEnd + FIRST_THEME_FRAME_HOLD_DISTANCE;
+  const firstFrameExitEnd = firstFrameHoldEnd + FIRST_THEME_FRAME_EXIT_DISTANCE;
+  const firstFrameOpacity = useTransform(
+    scrollY,
+    [firstFrameRevealStart, firstFrameRevealEnd, firstFrameHoldEnd, firstFrameExitEnd],
+    [0, 1, 1, 0],
+  );
+  const firstFrameY = useTransform(
+    scrollY,
+    [firstFrameRevealStart, firstFrameRevealEnd, firstFrameHoldEnd, firstFrameExitEnd],
+    [24, 0, 0, -24],
+  );
+  const secondFrameOpacity = useTransform(
+    scrollY,
+    [firstFrameHoldEnd, firstFrameHoldEnd + 100],
+    [0, 1],
+  );
+  const secondFrameY = useTransform(
+    scrollY,
+    [firstFrameHoldEnd, firstFrameHoldEnd + 100],
+    [24, 0],
+  );
+  const textMorphEaseString = useMemo(
+    () => `cubic-bezier(${textMorphEase.join(", ")})`,
+    [textMorphEase],
+  );
+  const shellPlayerScale = useMemo(() => {
+    if (!viewportHeight) {
+      return 1;
+    }
+
+    return Math.max(0.86, Math.min(1, (viewportHeight - 240) / 620));
+  }, [viewportHeight]);
 
   useEffect(() => {
-    setActiveIndicesByThemeId((current) => {
-      const next = { ...current };
+    function updateShellMetrics() {
+      const shellTrack = shellTrackRef.current;
 
-      themeList.forEach((themeItem) => {
-        if (typeof next[themeItem.id] !== "number") {
-          next[themeItem.id] = 0;
-        }
-      });
+      if (!shellTrack) {
+        return;
+      }
 
-      return next;
-    });
-  }, [themeList]);
+      setShellTrackStart(shellTrack.getBoundingClientRect().top + window.scrollY);
+      setViewportHeight(window.innerHeight);
+    }
+
+    updateShellMetrics();
+    window.addEventListener("resize", updateShellMetrics, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", updateShellMetrics);
+    };
+  }, []);
 
   useEffect(() => {
-    const currentCard = currentCardRef.current;
+    if (!activeMerchant) {
+      return;
+    }
 
-    if (!currentCard) {
+    const audio = playbackAudioRef.current;
+
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+
+    setIsPlaying(false);
+  }, [activeMerchant?.id]);
+
+  useEffect(() => {
+    const audio = playbackAudioRef.current;
+
+    if (!audio) {
       return undefined;
     }
 
-    function updateCardHeight() {
-      const nextHeight = Math.round(currentCard.offsetHeight);
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleEnded = () => setIsPlaying(false);
 
-      setCardHeight((currentHeight) =>
-        currentHeight === nextHeight ? currentHeight : nextHeight,
-      );
-    }
-
-    const rafId = window.requestAnimationFrame(updateCardHeight);
-    window.addEventListener("resize", updateCardHeight, { passive: true });
+    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("pause", handlePause);
+    audio.addEventListener("ended", handleEnded);
 
     return () => {
-      window.cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", updateCardHeight);
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("ended", handleEnded);
     };
-  }, [activeThemeIndex, themeSpacing]);
+  }, [activeMerchant?.id]);
 
-  const parkedNextCardY = cardHeight + SHARED_FOOTER_BLOCK_HEIGHT + themeSpacing;
-  const transitionDistance = themeHoldDistance + parkedNextCardY;
-  const totalPinnedDistance = Math.max(
-    0,
-    (themeList.length - 1) * transitionDistance + FINAL_THEME_DWELL,
-  );
-  const stickyStageHeight = parkedNextCardY;
+  async function handleTogglePlayback() {
+    const audio = playbackAudioRef.current;
 
-  useEffect(() => {
-    function syncPinMetrics() {
-      const browser = browserRef.current;
-
-      if (!browser) {
-        return;
-      }
-
-      const desktopStickyTop = Number.parseFloat(
-        getComputedStyle(document.documentElement).getPropertyValue("--desktop-side-nav-top"),
-      );
-      const stickyTop = Number.isFinite(desktopStickyTop) ? desktopStickyTop : DEFAULT_STICKY_TOP;
-      const browserTop = browser.getBoundingClientRect().top + window.scrollY;
-
-      pinMetricsRef.current = {
-        stickyTop,
-        pinStart: Math.max(0, browserTop - stickyTop),
-      };
+    if (!audio || !activeMerchant?.playbackAudioSrc) {
+      setIsPlaying((current) => !current);
+      return;
     }
 
-    function updatePinnedStage() {
-      setHasPinnedStageInitialized((current) => (current ? current : true));
-
-      const scrollY = window.scrollY || window.pageYOffset || 0;
-      const { pinStart } = pinMetricsRef.current;
-      const localScroll = Math.max(0, Math.min(totalPinnedDistance, scrollY - pinStart));
-
-      if (themeList.length <= 1) {
-        setActiveThemeIndex(0);
-        setNextCardOffsetY(parkedNextCardY);
-        return;
+    if (audio.paused) {
+      if (audio.ended) {
+        audio.currentTime = 0;
       }
 
-      const completedTransitions = Math.min(
-        Math.floor(localScroll / transitionDistance),
-        themeList.length - 1,
-      );
-
-      if (completedTransitions >= themeList.length - 1) {
-        setActiveThemeIndex(themeList.length - 1);
-        setNextCardOffsetY(parkedNextCardY);
-        return;
-      }
-
-      const progressWithinTransition = localScroll - completedTransitions * transitionDistance;
-      const nextOffset =
-        progressWithinTransition <= themeHoldDistance
-          ? parkedNextCardY
-          : Math.max(0, parkedNextCardY - (progressWithinTransition - themeHoldDistance));
-
-      setActiveThemeIndex((currentIndex) =>
-        currentIndex === completedTransitions ? currentIndex : completedTransitions,
-      );
-      setNextCardOffsetY((currentOffset) =>
-        Math.abs(currentOffset - nextOffset) > 0.5 ? nextOffset : currentOffset,
-      );
+      await audio.play();
+      return;
     }
 
-    function queuePinnedStageUpdate() {
-      if (scrollFrameRef.current) {
-        return;
-      }
-
-      scrollFrameRef.current = window.requestAnimationFrame(() => {
-        scrollFrameRef.current = 0;
-        updatePinnedStage();
-      });
-    }
-
-    function handleResize() {
-      syncPinMetrics();
-      queuePinnedStageUpdate();
-    }
-
-    syncPinMetrics();
-    updatePinnedStage();
-    window.addEventListener("scroll", queuePinnedStageUpdate, { passive: true });
-    window.addEventListener("resize", handleResize, { passive: true });
-
-    return () => {
-      if (scrollFrameRef.current) {
-        window.cancelAnimationFrame(scrollFrameRef.current);
-        scrollFrameRef.current = 0;
-      }
-
-      window.removeEventListener("scroll", queuePinnedStageUpdate);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [parkedNextCardY, themeHoldDistance, themeList, totalPinnedDistance, transitionDistance]);
-
-  function getThemeContext(themeItem) {
-    const themeMerchants = (themeItem?.merchantIds ?? [])
-      .map((merchantId) => merchantsById[merchantId])
-      .filter(Boolean);
-    const resolvedThemeMerchants = themeMerchants.length ? themeMerchants : merchants;
-    const themeActiveIndex = clampIndex(
-      activeIndicesByThemeId[themeItem?.id] ?? 0,
-      resolvedThemeMerchants.length,
-    );
-    const themeActiveMerchant = resolvedThemeMerchants[themeActiveIndex];
-
-    return {
-      merchants: resolvedThemeMerchants,
-      activeIndex: themeActiveIndex,
-      activeMerchant: themeActiveMerchant,
-    };
+    audio.pause();
   }
-
-  const activeTheme = themeList[activeThemeIndex] ?? themeList[0];
-  const nextTheme = themeList[activeThemeIndex + 1] ?? null;
-  const futureThemes = themeList.slice(activeThemeIndex + 2);
-  const activeThemeContext = getThemeContext(activeTheme);
-  const nextThemeContext = nextTheme ? getThemeContext(nextTheme) : null;
-  const sectionHeadingId = `${themeList[0]?.id ?? "theme-showcase"}-heading`;
-  const textMorphEaseString = `cubic-bezier(${textMorphEase.join(", ")})`;
-  const nextCardRiseProgress =
-    hasPinnedStageInitialized && nextTheme && parkedNextCardY > 0
-      ? Math.max(0, Math.min(1, (parkedNextCardY - nextCardOffsetY) / parkedNextCardY))
-      : 0;
-  const footerThemeIndex =
-    nextTheme && nextCardRiseProgress >= footerSwitchAt ? activeThemeIndex + 1 : activeThemeIndex;
-  const footerTheme = themeList[footerThemeIndex] ?? activeTheme;
-  const footerThemeContext = getThemeContext(footerTheme);
-  const currentCardExitProgress = Math.max(
-    0,
-    Math.min(1, nextCardRiseProgress / currentCardExitCompleteAt),
-  );
-  const currentCardScale =
-    1 - currentCardExitProgress * (1 - currentCardExitScale);
-  const currentCardOpacity = 1 - currentCardExitProgress;
-  const currentCardBlur = currentCardExitProgress * currentCardExitBlur;
-
-  const sectionStyle = {
-    "--orbit-spacing": `${orbitSpacing}px`,
-    "--theme-slide-gap": `${themeSpacing}px`,
-    "--card-height": `${cardHeight}px`,
-    "--parked-next-card-y": `${parkedNextCardY}px`,
-    "--next-card-offset-y": `${nextCardOffsetY}px`,
-    "--sticky-stage-height": `${stickyStageHeight}px`,
-    "--pinned-scroll-distance": `${totalPinnedDistance}px`,
-    "--theme-hold-distance": `${themeHoldDistance}px`,
-    "--current-card-exit-scale": currentCardExitScale,
-    "--current-card-exit-blur": `${currentCardExitBlur}px`,
-    "--current-card-exit-complete-at": `${Math.round(currentCardExitCompleteAt * 100)}%`,
-    "--footer-switch-at": `${Math.round(footerSwitchAt * 100)}%`,
-  };
 
   return (
     <section
-      className={styles.section}
-      style={sectionStyle}
-      aria-labelledby={sectionHeadingId}
-      data-testid="theme-showcase-section"
+      className={styles.shellSection}
       data-show-grid={showGridOverlay ? "true" : "false"}
       data-show-sticky-guide={showStickyGuide ? "true" : "false"}
+      aria-label="Theme redesign workspace"
     >
-      <div className={styles.stage}>
-        <div className={styles.stickyGuide} aria-hidden="true" />
-
-        <div className={styles.gridOverlay} aria-hidden="true">
-          {Array.from({ length: 12 }).map((_, index) => (
-            <span className={styles.gridOverlayColumn} key={`grid-column-${index}`} />
-          ))}
-        </div>
-
-        <h1 className={styles.heading} id={sectionHeadingId}>
-          {themeList[0]?.sectionHeading}
-        </h1>
-
-        <div className={styles.themeBrowser} ref={browserRef}>
-          <div className={styles.stickyStage}>
-            {activeTheme ? (
-              <div
-                key={activeTheme.id}
-                className={`${styles.cardLayer} ${styles.currentCardLayer} ${
-                  currentCardBlur > 0 ? styles.currentCardLayerBlurred : ""
-                }`}
-                style={{
-                  "--current-card-scale": currentCardScale,
-                  "--current-card-opacity": currentCardOpacity,
-                  ...(currentCardBlur > 0
-                    ? { "--current-card-blur": `${currentCardBlur}px` }
-                    : {}),
-                }}
-              >
-                <div
-                  className={styles.card}
-                  ref={currentCardRef}
-                  style={{
-                    "--theme-player-panel": activeTheme.playerPanelColor,
-                  }}
-                >
-                  <div
-                    className={styles.tag}
-                    aria-label={`Theme ${activeTheme.indexLabel} title`}
-                  >
-                    <span className={styles.tagIndex}>{activeTheme.indexLabel}</span>
-                    <span className={styles.tagText}>{activeTheme.title}</span>
-                  </div>
-
-                  <div className={styles.cardBody}>
-                    <PlaybackPanels
-                      key={activeTheme.id}
-                      merchants={activeThemeContext.merchants}
-                      activeIndex={activeThemeContext.activeIndex}
-                      activeMerchant={activeThemeContext.activeMerchant}
-                      orbitSpacing={orbitSpacing}
-                      sideCassetteOffsetY={sideCassetteOffsetY}
-                      textMorphDuration={textMorphDuration}
-                      textMorphEaseString={textMorphEaseString}
-                      playbackPulseDuration={playbackPulseDuration}
-                      isActiveSlide
-                      isPrimaryInstance
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
-            <div className={styles.sharedFooter}>
-              <p className={styles.socialProofText}>{footerTheme?.socialProofText}</p>
-
-              <div className={styles.navSlot}>
-                <MerchantNav
-                  merchants={footerThemeContext.merchants}
-                  activeIndex={footerThemeContext.activeIndex}
-                  onSelect={(index) =>
-                    setActiveIndicesByThemeId((current) => ({
-                      ...current,
-                      [footerTheme.id]: index,
-                    }))
-                  }
-                />
-              </div>
-            </div>
-
-            {nextTheme && nextThemeContext ? (
-              <div
-                key={nextTheme.id}
-                className={`${styles.cardLayer} ${styles.nextCardLayer}`}
-              >
-                <div
-                  className={styles.card}
-                  style={{
-                    "--theme-player-panel": nextTheme.playerPanelColor,
-                  }}
-                >
-                  <div
-                    className={styles.tag}
-                    aria-label={`Theme ${nextTheme.indexLabel} title`}
-                  >
-                    <span className={styles.tagIndex}>{nextTheme.indexLabel}</span>
-                    <span className={styles.tagText}>{nextTheme.title}</span>
-                  </div>
-
-                  <div className={styles.cardBody}>
-                    <PlaybackPanels
-                      key={nextTheme.id}
-                      merchants={nextThemeContext.merchants}
-                      activeIndex={nextThemeContext.activeIndex}
-                      activeMerchant={nextThemeContext.activeMerchant}
-                      orbitSpacing={orbitSpacing}
-                      sideCassetteOffsetY={sideCassetteOffsetY}
-                      textMorphDuration={textMorphDuration}
-                      textMorphEaseString={textMorphEaseString}
-                      playbackPulseDuration={playbackPulseDuration}
-                      isActiveSlide={false}
-                      isPrimaryInstance={false}
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : null}
-
-            {futureThemes.map((futureTheme, futureThemeIndex) => {
-              const futureThemeContext = getThemeContext(futureTheme);
-              const stackedOffsetMultiplier = futureThemeIndex + 1;
-
-              return (
-                <div
-                  key={futureTheme.id}
-                  className={`${styles.cardLayer} ${styles.futureCardLayer}`}
-                  style={{
-                    "--future-card-y": `calc(var(--next-card-offset-y) + ${
-                      stackedOffsetMultiplier * parkedNextCardY
-                    }px)`,
-                    "--future-card-layer": 4 + futureThemeIndex,
-                  }}
-                >
-                  <div
-                    className={styles.card}
-                    style={{
-                      "--theme-player-panel": futureTheme.playerPanelColor,
-                    }}
-                  >
-                    <div
-                      className={styles.tag}
-                      aria-label={`Theme ${futureTheme.indexLabel} title`}
-                    >
-                      <span className={styles.tagIndex}>{futureTheme.indexLabel}</span>
-                      <span className={styles.tagText}>{futureTheme.title}</span>
-                    </div>
-
-                    <div className={styles.cardBody}>
-                      <PlaybackPanels
-                        key={futureTheme.id}
-                        merchants={futureThemeContext.merchants}
-                        activeIndex={futureThemeContext.activeIndex}
-                        activeMerchant={futureThemeContext.activeMerchant}
-                        orbitSpacing={orbitSpacing}
-                        sideCassetteOffsetY={sideCassetteOffsetY}
-                        textMorphDuration={textMorphDuration}
-                        textMorphEaseString={textMorphEaseString}
-                        playbackPulseDuration={playbackPulseDuration}
-                        isActiveSlide={false}
-                        isPrimaryInstance={false}
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+      <div className={styles.stickyGuide} />
+      <div className={styles.gridOverlay} aria-hidden="true">
+        {Array.from({ length: 12 }).map((_, index) => (
+          <div className={styles.gridOverlayColumn} key={`theme-grid-${index}`} />
+        ))}
       </div>
 
       {showDebugControls ? (
@@ -498,17 +252,15 @@ function ThemeShowcaseSection({
           showGridOverlay={showGridOverlay}
           showStickyGuide={showStickyGuide}
           isOpen={isConfigOpen}
-          onToggle={() => setIsConfigOpen((open) => !open)}
+          onToggle={() => setIsConfigOpen((current) => !current)}
           onClose={() => setIsConfigOpen(false)}
-          onSpacingChange={(value) => setOrbitSpacing(value)}
-          onThemeSpacingChange={(value) => setThemeSpacing(value)}
-          onThemeHoldDistanceChange={(value) => setThemeHoldDistance(value)}
-          onCurrentCardExitScaleChange={(value) => setCurrentCardExitScale(value)}
-          onCurrentCardExitBlurChange={(value) => setCurrentCardExitBlur(value)}
-          onCurrentCardExitCompleteAtChange={(value) =>
-            setCurrentCardExitCompleteAt(value)
-          }
-          onFooterSwitchAtChange={(value) => setFooterSwitchAt(value)}
+          onSpacingChange={setOrbitSpacing}
+          onThemeSpacingChange={setThemeSpacing}
+          onThemeHoldDistanceChange={setThemeHoldDistance}
+          onCurrentCardExitScaleChange={setCurrentCardExitScale}
+          onCurrentCardExitBlurChange={setCurrentCardExitBlur}
+          onCurrentCardExitCompleteAtChange={setCurrentCardExitCompleteAt}
+          onFooterSwitchAtChange={setFooterSwitchAt}
           onOverviewSceneOffsetXChange={onOverviewSceneOffsetXChange}
           onOverviewSceneOffsetYChange={onOverviewSceneOffsetYChange}
           onOverviewSceneScaleChange={onOverviewSceneScaleChange}
@@ -517,20 +269,143 @@ function ThemeShowcaseSection({
           onMerchantHoverPreviewSizeChange={onMerchantHoverPreviewSizeChange}
           onShowRoadmapLabelMotionChange={onShowRoadmapLabelMotionChange}
           onShowRoadmapInlineLabelsChange={onShowRoadmapInlineLabelsChange}
-          onSideCassetteOffsetYChange={(value) => setSideCassetteOffsetY(value)}
-          onTextMorphDurationChange={(value) => setTextMorphDuration(value)}
-          onPlaybackPulseDurationChange={(value) => setPlaybackPulseDuration(value)}
-          onShowGridOverlayChange={(value) => setShowGridOverlay(value)}
-          onShowStickyGuideChange={(value) => setShowStickyGuide(value)}
-          onTextMorphEaseChange={(index, value) =>
-            setTextMorphEase((currentEase) =>
-              currentEase.map((point, pointIndex) =>
-                pointIndex === index ? value : point,
-              ),
-            )
-          }
+          onSideCassetteOffsetYChange={setSideCassetteOffsetY}
+          onTextMorphDurationChange={setTextMorphDuration}
+          onPlaybackPulseDurationChange={setPlaybackPulseDuration}
+          onShowGridOverlayChange={setShowGridOverlay}
+          onShowStickyGuideChange={setShowStickyGuide}
+          onTextMorphEaseChange={setTextMorphEase}
         />
       ) : null}
+
+      <div className={styles.shellHeader}>
+        <p className={styles.eyebrow}>We brought receipts</p>
+        <h2 className={styles.heading}>{sectionHeading}</h2>
+      </div>
+      <div ref={shellTrackRef} className={styles.shellTrack}>
+        <div className={styles.shellViewport}>
+          <motion.div
+            className={styles.shellSurface}
+            style={
+              prefersReducedMotion
+                ? undefined
+                : {
+                    scale: shellScale,
+                    y: shellY,
+                    borderRadius: shellRadius,
+                    willChange: "transform, border-radius",
+                  }
+            }
+          >
+            <div className={styles.shellCanvas}>
+              <div className={styles.shellScene}>
+                <motion.div
+                  className={styles.shellTextFrame}
+                  style={
+                    prefersReducedMotion
+                      ? undefined
+                      : {
+                          opacity: firstFrameOpacity,
+                          y: firstFrameY,
+                          willChange: "opacity, transform",
+                        }
+                  }
+                >
+                  <p className={styles.shellIndex}>01</p>
+                  <h3 className={styles.shellTitle}>
+                    Reliability Is Paystack&apos;s Most Valuable Asset
+                  </h3>
+                </motion.div>
+
+                {activeMerchant ? (
+                  <motion.div
+                    className={styles.shellDetailFrame}
+                    style={
+                      prefersReducedMotion
+                        ? undefined
+                        : {
+                            opacity: secondFrameOpacity,
+                            y: secondFrameY,
+                            willChange: "opacity, transform",
+                          }
+                    }
+                  >
+                    <div className={styles.shellDetailCopy}>
+                      <p className={styles.shellDetailKicker}>
+                        {`${activeTheme?.indexLabel ?? "01"} ${activeTheme?.title ?? "Reliability Is Paystack's Most Valuable Asset"}`}
+                      </p>
+                      <div className={styles.shellMerchantSummary}>
+                        <h3 className={styles.shellMerchantName}>{activeMerchant.name}</h3>
+                        <p className={styles.shellMerchantBody}>
+                          {activeMerchant.copy.map((segment, index) => {
+                            if (typeof segment === "string") {
+                              return (
+                                <span key={`${activeMerchant.id}-copy-${index}`}>{segment}</span>
+                              );
+                            }
+
+                            return (
+                              <span
+                                key={`${activeMerchant.id}-copy-${index}`}
+                                className={styles.shellMerchantHighlight}
+                              >
+                                {segment.highlight}
+                              </span>
+                            );
+                          })}
+                        </p>
+                      </div>
+
+                      <div className={styles.shellMerchantFooter}>
+                        <p className={styles.shellMerchantSupport}>
+                          {activeTheme?.socialProofText ?? "We heard this from others too"}
+                        </p>
+                        <div className={styles.shellMerchantNavTheme}>
+                          <MerchantNav
+                            merchants={activeThemeMerchants}
+                            activeIndex={safeActiveMerchantIndex}
+                            onSelect={setActiveMerchantIndex}
+                            className={styles.shellMerchantNav}
+                            variant="dark"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.shellDetailPlayer}>
+                      <div
+                        className={styles.shellPlayerStage}
+                        style={{ "--shell-player-scale": shellPlayerScale.toFixed(3) }}
+                      >
+                        <PlayerStage
+                          merchants={activeThemeMerchants}
+                          activeIndex={safeActiveMerchantIndex}
+                          activeMerchant={activeMerchant}
+                          isPlaying={isPlaying}
+                          onTogglePlayback={handleTogglePlayback}
+                          spacing={orbitSpacing}
+                          sideOffsetY={sideCassetteOffsetY}
+                          textMorphDuration={textMorphDuration}
+                          textMorphEase={textMorphEase}
+                          playbackPulseDuration={playbackPulseDuration}
+                          isPrimaryInstance={false}
+                        />
+                      </div>
+                      <audio
+                        key={activeMerchant.id}
+                        ref={playbackAudioRef}
+                        src={activeMerchant.playbackAudioSrc}
+                        preload="metadata"
+                        aria-hidden="true"
+                      />
+                    </div>
+                  </motion.div>
+                ) : null}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

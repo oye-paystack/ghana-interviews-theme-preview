@@ -60,6 +60,30 @@
   background: var(--copy-panel);
 }
 
+.navDark {
+  color: #f9ecde;
+}
+
+.navDark .segment {
+  background: rgba(255, 255, 255, 0.04);
+  color: #f9ecde;
+}
+
+.navDark .segmentActive {
+  background: #f9ecde;
+  color: #2f1b0e;
+}
+
+.navDark .segment:hover,
+.navDark .segment:focus-visible {
+  background: rgba(249, 236, 222, 0.16);
+}
+
+.navDark .segmentActive:hover,
+.navDark .segmentActive:focus-visible {
+  background: #f9ecde;
+}
+
 .segmentActive .iconSlot {
   width: 20px;
   margin-right: 8px;
