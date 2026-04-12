@@ -1,5 +1,6 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import quoteMarksSrc from "../../../Quotes.svg";
 import ConfigPopover from "./ConfigPopover";
 import MerchantNav from "./MerchantNav";
 import PlayerStage from "./PlayerStage";
@@ -50,6 +51,7 @@ function ThemeShowcaseSection({
   const [viewportHeight, setViewportHeight] = useState(0);
   const [activeMerchantIndex, setActiveMerchantIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playbackTime, setPlaybackTime] = useState(0);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
   const [showGridOverlay, setShowGridOverlay] = useState(false);
   const [showStickyGuide, setShowStickyGuide] = useState(false);
@@ -168,6 +170,7 @@ function ThemeShowcaseSection({
       audio.currentTime = 0;
     }
 
+    setPlaybackTime(0);
     setIsPlaying(false);
   }, [activeMerchant?.id]);
 
@@ -180,16 +183,24 @@ function ThemeShowcaseSection({
 
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
-    const handleEnded = () => setIsPlaying(false);
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setPlaybackTime(0);
+    };
+    const handleTimeUpdate = () => {
+      setPlaybackTime(audio.currentTime);
+    };
 
     audio.addEventListener("play", handlePlay);
     audio.addEventListener("pause", handlePause);
     audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("timeupdate", handleTimeUpdate);
 
     return () => {
       audio.removeEventListener("play", handlePlay);
       audio.removeEventListener("pause", handlePause);
       audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
     };
   }, [activeMerchant?.id]);
 
@@ -322,8 +333,9 @@ function ThemeShowcaseSection({
                     className={styles.shellDetailFrame}
                     style={
                       prefersReducedMotion
-                        ? undefined
+                        ? { "--shell-player-scale": shellPlayerScale.toFixed(3) }
                         : {
+                            "--shell-player-scale": shellPlayerScale.toFixed(3),
                             opacity: secondFrameOpacity,
                             y: secondFrameY,
                             willChange: "opacity, transform",
@@ -335,25 +347,91 @@ function ThemeShowcaseSection({
                         {`${activeTheme?.indexLabel ?? "01"} ${activeTheme?.title ?? "Reliability Is Paystack's Most Valuable Asset"}`}
                       </p>
                       <div className={styles.shellMerchantSummary}>
-                        <h3 className={styles.shellMerchantName}>{activeMerchant.name}</h3>
-                        <p className={styles.shellMerchantBody}>
-                          {activeMerchant.copy.map((segment, index) => {
-                            if (typeof segment === "string") {
-                              return (
-                                <span key={`${activeMerchant.id}-copy-${index}`}>{segment}</span>
-                              );
-                            }
+                        <div
+                          className={`${styles.shellSummaryLayer} ${
+                            isPlaying ? styles.shellSummaryLayerHidden : styles.shellSummaryLayerVisible
+                          }`}
+                        >
+                          <h3 className={styles.shellMerchantName}>{activeMerchant.name}</h3>
+                          <p className={styles.shellMerchantBody}>
+                            {activeMerchant.copy.map((segment, index) => {
+                              if (typeof segment === "string") {
+                                return (
+                                  <span key={`${activeMerchant.id}-copy-${index}`}>{segment}</span>
+                                );
+                              }
 
-                            return (
-                              <span
-                                key={`${activeMerchant.id}-copy-${index}`}
-                                className={styles.shellMerchantHighlight}
-                              >
-                                {segment.highlight}
-                              </span>
-                            );
-                          })}
-                        </p>
+                              return (
+                                <span
+                                  key={`${activeMerchant.id}-copy-${index}`}
+                                  className={styles.shellMerchantHighlight}
+                                >
+                                  {segment.highlight}
+                                </span>
+                              );
+                            })}
+                          </p>
+                        </div>
+
+                        <div
+                          className={`${styles.shellQuoteLayer} ${
+                            isPlaying ? styles.shellQuoteLayerVisible : styles.shellQuoteLayerHidden
+                          }`}
+                          aria-hidden={!isPlaying}
+                        >
+                          <img
+                            className={styles.shellQuoteMark}
+                            src={quoteMarksSrc}
+                            alt=""
+                            aria-hidden="true"
+                            fetchPriority="high"
+                          />
+                          <div className={styles.shellQuoteContent}>
+                            {activeMerchant.playbackQuote?.segments ? (
+                              <p className={styles.shellQuoteText}>
+                                {activeMerchant.playbackQuote.segments.map((segment, index) => {
+                                  const isActive =
+                                    playbackTime >= segment.start && playbackTime < segment.end;
+                                  const hasPlayed = playbackTime >= segment.end;
+
+                                  return (
+                                    <Fragment key={`${activeMerchant.id}-quote-segment-${index}`}>
+                                      <span
+                                        className={`${styles.shellQuoteSegment} ${
+                                          isActive
+                                            ? styles.shellQuoteSegmentActive
+                                            : hasPlayed
+                                              ? styles.shellQuoteSegmentPlayed
+                                              : styles.shellQuoteSegmentUpcoming
+                                        }`}
+                                      >
+                                        {segment.text}
+                                      </span>{" "}
+                                    </Fragment>
+                                  );
+                                })}
+                              </p>
+                            ) : (
+                              <p className={styles.shellQuoteText}>
+                                <span className={styles.shellQuoteLead}>
+                                  {activeMerchant.playbackQuote?.lead}
+                                </span>
+                                <span className={styles.shellQuoteRest}>
+                                  {activeMerchant.playbackQuote?.rest}
+                                </span>
+                              </p>
+                            )}
+
+                            <div className={styles.shellQuoteAttribution}>
+                              <p className={styles.shellQuoteSpeaker}>
+                                {activeMerchant.playbackQuote?.speakerName}
+                              </p>
+                              <p className={styles.shellQuoteRole}>
+                                {activeMerchant.playbackQuote?.speakerRole}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       <div className={styles.shellMerchantFooter}>
@@ -373,23 +451,22 @@ function ThemeShowcaseSection({
                     </div>
 
                     <div className={styles.shellDetailPlayer}>
-                      <div
-                        className={styles.shellPlayerStage}
-                        style={{ "--shell-player-scale": shellPlayerScale.toFixed(3) }}
-                      >
-                        <PlayerStage
-                          merchants={activeThemeMerchants}
-                          activeIndex={safeActiveMerchantIndex}
-                          activeMerchant={activeMerchant}
-                          isPlaying={isPlaying}
-                          onTogglePlayback={handleTogglePlayback}
-                          spacing={orbitSpacing}
-                          sideOffsetY={sideCassetteOffsetY}
-                          textMorphDuration={textMorphDuration}
-                          textMorphEase={textMorphEase}
-                          playbackPulseDuration={playbackPulseDuration}
-                          isPrimaryInstance={false}
-                        />
+                      <div className={styles.shellPlayerStage}>
+                        <div className={styles.shellPlayerStageVisual}>
+                          <PlayerStage
+                            merchants={activeThemeMerchants}
+                            activeIndex={safeActiveMerchantIndex}
+                            activeMerchant={activeMerchant}
+                            isPlaying={isPlaying}
+                            onTogglePlayback={handleTogglePlayback}
+                            spacing={orbitSpacing}
+                            sideOffsetY={sideCassetteOffsetY}
+                            textMorphDuration={textMorphDuration}
+                            textMorphEase={textMorphEase}
+                            playbackPulseDuration={playbackPulseDuration}
+                            isPrimaryInstance={false}
+                          />
+                        </div>
                       </div>
                       <audio
                         key={activeMerchant.id}

@@ -219,7 +219,16 @@
   --shell-bottom-padding: clamp(0px, 2dvh, 24px);
   --shell-detail-gap: 0px;
   --shell-detail-bottom-padding: clamp(48px, 9dvh, 96px);
-  --shell-player-top-padding: clamp(0px, 2.5dvh, 40px);
+  --shell-player-top-padding: 0px;
+  --shell-player-align-top: 45px;
+  --shell-player-stage-top: 99px;
+  --shell-player-body-width: 361px;
+  --shell-player-body-height: 560px;
+  --shell-player-stage-base-height: calc(
+    var(--shell-player-stage-top) + var(--shell-player-body-height)
+  );
+  --shell-player-stage-width: calc(var(--shell-player-body-width) * var(--shell-player-scale, 1));
+  --shell-player-copy-height: calc(var(--shell-player-body-height) * var(--shell-player-scale, 1));
   position: relative;
   width: 100%;
   background: transparent;
@@ -344,13 +353,17 @@
 }
 
 .shellDetailKicker {
-  display: block;
-  width: 100%;
+  display: inline-block;
+  width: fit-content;
   margin: 0;
-  color: #f76c4d;
+  padding: 3px 6px 4px;
+  border-radius: 0;
+  background: #4c5530;
+  color: #f4f6ee;
   font-family: "PP Mori Medium", sans-serif;
   font-size: 14px;
-  line-height: 1.2;
+  line-height: 1;
+  letter-spacing: -0.01em;
   white-space: nowrap;
   text-transform: uppercase;
 }
@@ -358,8 +371,36 @@
 .shellMerchantSummary {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  position: relative;
   max-width: 425px;
+  height: var(--shell-player-copy-height);
+  min-height: var(--shell-player-copy-height);
+  max-height: var(--shell-player-copy-height);
+}
+
+.shellSummaryLayer,
+.shellQuoteLayer {
+  transition:
+    transform 260ms cubic-bezier(0.215, 0.61, 0.355, 1),
+    opacity 260ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  will-change: transform, opacity;
+}
+
+.shellSummaryLayer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.shellSummaryLayerVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.shellSummaryLayerHidden {
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
 }
 
 .shellMerchantName {
@@ -377,12 +418,103 @@
   margin: 0;
   color: #f9ecde;
   font-family: "PP Mori Regular", sans-serif;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1.4;
 }
 
 .shellMerchantHighlight {
   color: #91a653;
+}
+
+.shellQuoteLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.shellQuoteLayerHidden {
+  opacity: 0;
+  transform: translateY(-22px);
+  pointer-events: none;
+}
+
+.shellQuoteLayerVisible {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 80ms;
+}
+
+.shellQuoteMark {
+  width: 64px;
+  height: 64px;
+  filter: brightness(0) saturate(100%) invert(93%) sepia(17%) saturate(338%) hue-rotate(317deg)
+    brightness(105%) contrast(95%);
+}
+
+.shellQuoteContent {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 0;
+}
+
+.shellQuoteText {
+  margin: 0;
+  color: #f9ecde;
+  font-family: "PP Mori Regular", sans-serif;
+  font-size: 20px;
+  line-height: 1.45;
+}
+
+.shellQuoteLead {
+  color: #f9ecde;
+}
+
+.shellQuoteRest {
+  color: rgba(249, 236, 222, 0.5);
+}
+
+.shellQuoteSegment {
+  transition:
+    color 160ms ease-out,
+    opacity 160ms ease-out;
+}
+
+.shellQuoteSegmentActive,
+.shellQuoteSegmentPlayed {
+  color: #f9ecde;
+}
+
+.shellQuoteSegmentUpcoming {
+  color: rgba(249, 236, 222, 0.5);
+}
+
+.shellQuoteAttribution {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.shellQuoteSpeaker,
+.shellQuoteRole {
+  margin: 0;
+}
+
+.shellQuoteSpeaker {
+  color: #f9ecde;
+  font-family: "PP Mori Medium", sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.shellQuoteRole {
+  color: rgba(145, 166, 83, 0.88);
+  font-family: "PP Mori Regular", sans-serif;
+  font-size: 16px;
+  line-height: 1.35;
 }
 
 .shellMerchantFooter {
@@ -421,11 +553,23 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  overflow: visible;
 }
 
 .shellPlayerStage {
   flex: 0 0 auto;
-  transform: scale(var(--shell-player-scale, 1));
+  width: var(--shell-player-stage-width);
+  height: var(--shell-player-copy-height);
+  margin-top: var(--shell-player-align-top);
+  position: relative;
+  overflow: visible;
+}
+
+.shellPlayerStageVisual {
+  width: var(--shell-player-body-width);
+  height: var(--shell-player-stage-base-height);
+  transform: translateY(calc(-1 * var(--shell-player-stage-top) * var(--shell-player-scale, 1)))
+    scale(var(--shell-player-scale, 1));
   transform-origin: top center;
   will-change: transform;
 }
@@ -618,6 +762,14 @@
   }
 
   .shellMerchantBody {
+    font-size: 20px;
+  }
+
+  .shellMerchantSummary {
+    min-height: calc(520px * var(--shell-player-scale, 1));
+  }
+
+  .shellQuoteText {
     font-size: 20px;
   }
 

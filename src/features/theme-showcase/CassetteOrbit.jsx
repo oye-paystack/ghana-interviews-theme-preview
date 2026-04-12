@@ -1,12 +1,54 @@
+import { motion } from "motion/react";
 import CassetteArtwork from "./CassetteArtwork";
 import styles from "./CassetteOrbit.module.css";
 
-const positionClassNames = {
-  left: styles.cassetteLeft,
-  center: styles.cassetteCenter,
-  right: styles.cassetteRight,
-  "hidden-left": styles.cassetteHiddenLeft,
-  "hidden-right": styles.cassetteHiddenRight,
+const positionConfigs = {
+  left: {
+    x: (spacing) => spacing * -1,
+    y: () => 0,
+    rotate: 0,
+    scale: 0.95,
+    opacity: 0,
+  },
+  center: {
+    x: () => 0,
+    y: () => 0,
+    rotate: 0,
+    scale: 1,
+    opacity: 1,
+  },
+  right: {
+    x: (spacing) => spacing,
+    y: () => 0,
+    rotate: 0,
+    scale: 0.95,
+    opacity: 0.34,
+  },
+  "hidden-left": {
+    x: (spacing) => (spacing + 84) * -1,
+    y: () => 0,
+    rotate: 0,
+    scale: 0.92,
+    opacity: 0,
+  },
+  "hidden-right": {
+    x: (spacing) => spacing + 84,
+    y: () => 0,
+    rotate: 0,
+    scale: 0.92,
+    opacity: 0,
+  },
+};
+
+const movementTransition = {
+  type: "spring",
+  bounce: 0.08,
+  visualDuration: 0.62,
+};
+
+const opacityTransition = {
+  duration: 0.22,
+  ease: "linear",
 };
 
 function getCassettePosition(index, activeIndex) {
@@ -47,22 +89,37 @@ function CassetteOrbit({
       {merchants.map((merchant, index) => {
         const position = getCassettePosition(index, activeIndex);
         const isCenterCassette = position === "center";
+        const config = positionConfigs[position];
 
         return (
-          <article
-            className={`${styles.cassette} ${positionClassNames[position]}`}
+          <motion.article
+            className={styles.cassette}
             data-position={position}
             data-playing={isCenterCassette && isPlaying ? "true" : "false"}
             data-testid={`cassette-${merchant.id}`}
             key={merchant.id}
-            style={{ "--stack-order": index + 1 }}
+            style={{ zIndex: index + 1, willChange: "transform, opacity" }}
+            animate={{
+              x: config.x(spacing),
+              y: config.y(sideOffsetY),
+              rotate: config.rotate,
+              scale: config.scale,
+              opacity: config.opacity,
+            }}
+            transition={{
+              x: movementTransition,
+              y: movementTransition,
+              rotate: movementTransition,
+              scale: movementTransition,
+              opacity: opacityTransition,
+            }}
           >
             <CassetteArtwork
               isInline={isCenterCassette}
               isSpinning={isCenterCassette && isPlaying}
             />
             <div className={styles.cassetteLabel}>{merchant.recordingLabel}</div>
-          </article>
+          </motion.article>
         );
       })}
     </div>
