@@ -21,6 +21,7 @@ const FIRST_THEME_FRAME_START = 100;
 const FIRST_THEME_FRAME_REVEAL_DISTANCE = 200;
 const FIRST_THEME_FRAME_HOLD_DISTANCE = 100;
 const FIRST_THEME_FRAME_EXIT_DISTANCE = 80;
+const SECOND_THEME_FRAME_REVEAL_DISTANCE = 100;
 
 function ThemeShowcaseSection({
   theme,
@@ -118,12 +119,12 @@ function ThemeShowcaseSection({
   );
   const secondFrameOpacity = useTransform(
     scrollY,
-    [firstFrameHoldEnd, firstFrameHoldEnd + 100],
+    [firstFrameExitEnd, firstFrameExitEnd + SECOND_THEME_FRAME_REVEAL_DISTANCE],
     [0, 1],
   );
   const secondFrameY = useTransform(
     scrollY,
-    [firstFrameHoldEnd, firstFrameHoldEnd + 100],
+    [firstFrameExitEnd, firstFrameExitEnd + SECOND_THEME_FRAME_REVEAL_DISTANCE],
     [24, 0],
   );
   const textMorphEaseString = useMemo(
@@ -462,7 +463,7 @@ function ThemeShowcaseSection({
                             spacing={orbitSpacing}
                             sideOffsetY={sideCassetteOffsetY}
                             textMorphDuration={textMorphDuration}
-                            textMorphEase={textMorphEase}
+                            textMorphEase={textMorphEaseString}
                             playbackPulseDuration={playbackPulseDuration}
                             isPrimaryInstance={false}
                           />
