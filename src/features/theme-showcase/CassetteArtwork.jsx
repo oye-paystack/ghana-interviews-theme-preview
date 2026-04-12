@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useId, useMemo, useRef } from "react";
 import cassetteSrc from "../../../Cassette.svg";
 import cassetteMarkup from "../../../Cassette.svg?raw";
 import styles from "./CassetteArtwork.module.css";
@@ -26,10 +26,37 @@ function prepareReel(group) {
   group.style.willChange = "transform";
 }
 
+function prefixSvgIds(svgMarkup, prefix) {
+  const ids = [...svgMarkup.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
+
+  if (ids.length === 0) {
+    return svgMarkup;
+  }
+
+  let nextMarkup = svgMarkup;
+
+  for (const id of ids) {
+    const nextId = `${prefix}-${id}`;
+    nextMarkup = nextMarkup.replaceAll(`id="${id}"`, `id="${nextId}"`);
+    nextMarkup = nextMarkup.replaceAll(`url(#${id})`, `url(#${nextId})`);
+    nextMarkup = nextMarkup.replaceAll(`href="#${id}"`, `href="#${nextId}"`);
+    nextMarkup = nextMarkup.replaceAll(`xlink:href="#${id}"`, `xlink:href="#${nextId}"`);
+    nextMarkup = nextMarkup.replaceAll(`="#${id}"`, `="#${nextId}"`);
+  }
+
+  return nextMarkup;
+}
+
 function CassetteArtwork({
   isInline = true,
   isSpinning = false,
 }) {
+  const svgInstanceId = useId().replace(/:/g, "");
+  const reelGroupPrefix = useMemo(() => `cassette-${svgInstanceId}`, [svgInstanceId]);
+  const prefixedCassetteMarkup = useMemo(
+    () => prefixSvgIds(cassetteMarkup, reelGroupPrefix),
+    [reelGroupPrefix],
+  );
   const artworkRef = useRef(null);
   const animationFrameRef = useRef(0);
   const angleRef = useRef(0);
@@ -46,8 +73,8 @@ function CassetteArtwork({
       return undefined;
     }
 
-    const leftReelGroup = artwork.querySelector("#left-reel-group");
-    const rightReelGroup = artwork.querySelector("#right-reel-group");
+    const leftReelGroup = artwork.querySelector(`#${reelGroupPrefix}-left-reel-group`);
+    const rightReelGroup = artwork.querySelector(`#${reelGroupPrefix}-right-reel-group`);
 
     prepareReel(leftReelGroup);
     prepareReel(rightReelGroup);
@@ -108,7 +135,7 @@ function CassetteArtwork({
     }
 
     return stopAnimation;
-  }, [isInline, isSpinning]);
+  }, [isInline, isSpinning, reelGroupPrefix]);
 
   if (!isInline) {
     return <img className={styles.artworkImage} src={cassetteSrc} alt="" aria-hidden="true" />;
@@ -119,7 +146,7 @@ function CassetteArtwork({
       ref={artworkRef}
       className={styles.artwork}
       aria-hidden="true"
-      dangerouslySetInnerHTML={{ __html: cassetteMarkup }}
+      dangerouslySetInnerHTML={{ __html: prefixedCassetteMarkup }}
     />
   );
 }
