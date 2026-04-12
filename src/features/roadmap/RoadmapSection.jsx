@@ -305,6 +305,9 @@ function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
               showLabelMotion={showLabelMotion}
             />
           ))}
+          <p className={styles.caption}>
+            Degree of merchant interest in roadmap items. Two merchants are excluded from this.
+          </p>
         </div>
       </div>
     </section>

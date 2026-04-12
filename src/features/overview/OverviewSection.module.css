@@ -47,6 +47,8 @@
 .statement {
   margin: 0;
   font-family: var(--font-display);
+  font-weight: 500;
+  font-synthesis: none;
   font-size: 48px;
   line-height: 1.1;
   letter-spacing: -0.02em;

@@ -13,7 +13,7 @@
 
 .headingBlock {
   grid-column: 4 / span 6;
-  text-align: center;
+  text-align: left;
 }
 
 .eyebrow {
@@ -30,6 +30,8 @@
   margin: 16px 0 0;
   color: var(--title);
   font-family: var(--font-display);
+  font-weight: 500;
+  font-synthesis: none;
   font-size: 36px;
   line-height: 1.18;
   letter-spacing: -0.02em;
