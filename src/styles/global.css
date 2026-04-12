@@ -1,9 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400&display=swap");
+
 @font-face {
   font-family: "PP Mori Regular";
   src: url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Regular.woff2")
       format("woff2"),
     url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Regular.woff")
       format("woff");
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -13,6 +17,8 @@
       format("woff2"),
     url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Black.woff")
       format("woff");
+  font-weight: 900;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -22,6 +28,8 @@
       format("woff2"),
     url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Bold.woff")
       format("woff");
+  font-weight: 700;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -31,6 +39,19 @@
       format("woff2"),
     url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Semibold.woff")
       format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Mori Medium";
+  src: url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Medium.woff2")
+      format("woff2"),
+    url("../../fonts/PP Mori - Upright Family v2.3/web/PPMori-Medium.woff")
+      format("woff");
+  font-weight: 500;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -40,6 +61,19 @@
       format("woff2"),
     url("../../fonts/PP Monument Narrow - Medium v4.0/PPMonumentNarrow-Medium.woff")
       format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Monument Narrow Bold";
+  src: url("../../fonts/PP Monument Narrow - Bold v4.0/PPMonumentNarrow-Bold.woff2")
+      format("woff2"),
+    url("../../fonts/PP Monument Narrow - Bold v4.0/PPMonumentNarrow-Bold.woff")
+      format("woff");
+  font-weight: 700;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -63,6 +97,7 @@
   --cassette-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
   --font-body: "PP Mori Regular", sans-serif;
   --font-display: "PP Monument Narrow", sans-serif;
+  --font-display-strong: "PP Monument Narrow Bold", sans-serif;
   --scribble-font: "Bradley Hand", "Segoe Print", "Comic Sans MS", cursive;
   --desktop-section-max-width: 1440px;
   --desktop-section-padding-inline: 24px;

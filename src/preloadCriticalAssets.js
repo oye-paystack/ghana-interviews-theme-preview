@@ -13,6 +13,10 @@ const criticalFonts = [
     import.meta.url,
   ).href,
   new URL(
+    "../fonts/PP Mori - Upright Family v2.3/web/PPMori-Medium.woff2",
+    import.meta.url,
+  ).href,
+  new URL(
     "../fonts/PP Mori - Upright Family v2.3/web/PPMori-Bold.woff2",
     import.meta.url,
   ).href,
@@ -22,6 +26,10 @@ const criticalFonts = [
   ).href,
   new URL(
     "../fonts/PP Monument Narrow - Medium v4.0/PPMonumentNarrow-Medium.woff2",
+    import.meta.url,
+  ).href,
+  new URL(
+    "../fonts/PP Monument Narrow - Bold v4.0/PPMonumentNarrow-Bold.woff2",
     import.meta.url,
   ).href,
 ];

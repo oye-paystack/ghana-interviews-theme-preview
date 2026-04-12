@@ -14,6 +14,7 @@ const ThemeShowcaseSection = lazy(() =>
   import("./features/theme-showcase/ThemeShowcaseSection"),
 );
 const RoadmapSection = lazy(() => import("./features/roadmap/RoadmapSection"));
+const InsightsSection = lazy(() => import("./features/insights/InsightsSection"));
 
 function SectionFallback({ minHeight = 0 }) {
   return (
@@ -81,6 +82,9 @@ function App() {
           showInlineLabels={showRoadmapInlineLabels}
           showLabelMotion={showRoadmapLabelMotion}
         />
+      </Suspense>
+      <Suspense fallback={<SectionFallback minHeight={400} />}>
+        <InsightsSection />
       </Suspense>
     </AppShell>
   );
