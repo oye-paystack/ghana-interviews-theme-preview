@@ -286,13 +286,13 @@ function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
             roadmap next.
           </h2>
           <p className={styles.copy}>
-            Click any bar to see why merchants want it.
+            Expand any bar to see why merchants want it.
           </p>
         </div>
 
         <div
           className={styles.chart}
-          style={{ "--chart-reference-width": `${chartReferenceWidth}px`, minHeight: chartMinHeight }}
+          style={{ "--chart-reference-width": `${chartReferenceWidth}px` }}
         >
           {roadmapItems.map((item) => (
             <RoadmapBar
@@ -305,10 +305,10 @@ function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
               showLabelMotion={showLabelMotion}
             />
           ))}
-          <p className={styles.caption}>
-            Degree of merchant interest in roadmap items. Two merchants are excluded from this.
-          </p>
         </div>
+        <p className={styles.caption}>
+          Degree of merchant interest in roadmap items. Two merchants are excluded from this.
+        </p>
       </div>
     </section>
   );

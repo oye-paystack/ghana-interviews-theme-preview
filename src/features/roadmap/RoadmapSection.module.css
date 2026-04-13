@@ -140,7 +140,8 @@
 }
 
 .caption {
-  margin: 36px 0 0;
+  grid-column: 4 / span 6;
+  margin: 64px 0 0;
   color: var(--muted);
   font-family: var(--font-body);
   font-size: 12px;
@@ -235,6 +236,10 @@
   }
 
   .headingBlock {
+    grid-column: 3 / span 8;
+  }
+
+  .caption {
     grid-column: 3 / span 8;
   }
 
