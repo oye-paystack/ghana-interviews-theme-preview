@@ -1,5 +1,6 @@
+import { useMemo } from "react";
 import { motion } from "motion/react";
-import CassetteArtwork from "./CassetteArtwork";
+import CassetteArtwork, { getTintedCassetteSrc } from "./CassetteArtwork";
 import styles from "./CassetteOrbit.module.css";
 
 const positionConfigs = {
@@ -75,7 +76,10 @@ function CassetteOrbit({
   spacing,
   sideOffsetY,
   isPlaying,
+  panelColor,
 }) {
+  const staticCassetteSrc = useMemo(() => getTintedCassetteSrc(panelColor), [panelColor]);
+
   return (
     <div
       className={styles.orbit}
@@ -98,7 +102,13 @@ function CassetteOrbit({
             data-playing={isCenterCassette && isPlaying ? "true" : "false"}
             data-testid={`cassette-${merchant.id}`}
             key={merchant.id}
-            style={{ zIndex: index + 1, willChange: "transform, opacity" }}
+            style={{
+              zIndex: index + 1,
+              willChange:
+                position === "hidden-left" || position === "hidden-right"
+                  ? "auto"
+                  : "transform, opacity",
+            }}
             animate={{
               x: config.x(spacing),
               y: config.y(sideOffsetY),
@@ -117,6 +127,7 @@ function CassetteOrbit({
             <CassetteArtwork
               isInline={isCenterCassette}
               isSpinning={isCenterCassette && isPlaying}
+              staticSrc={staticCassetteSrc}
             />
             <div className={styles.cassetteLabel}>{merchant.recordingLabel}</div>
           </motion.article>

@@ -7,6 +7,8 @@ const TARGET_REEL_SPEED = 240;
 const START_SPEED_RESPONSE = 8;
 const STOP_SPEED_RESPONSE = START_SPEED_RESPONSE / 1.4;
 const STOP_THRESHOLD = 0.2;
+const COLORED_SURFACE_FILL = "#91A653";
+const tintedCassetteSrcCache = new Map();
 
 function prefersReducedMotion() {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
@@ -47,9 +49,32 @@ function prefixSvgIds(svgMarkup, prefix) {
   return nextMarkup;
 }
 
+export function getTintedCassetteSrc(panelColor) {
+  if (!panelColor || panelColor.toUpperCase() === COLORED_SURFACE_FILL) {
+    return cassetteSrc;
+  }
+
+  const normalizedColor = panelColor.toUpperCase();
+  const cachedSrc = tintedCassetteSrcCache.get(normalizedColor);
+
+  if (cachedSrc) {
+    return cachedSrc;
+  }
+
+  const tintedMarkup = cassetteMarkup.replace(
+    new RegExp(COLORED_SURFACE_FILL, "gi"),
+    normalizedColor,
+  );
+  const tintedSrc = `data:image/svg+xml,${encodeURIComponent(tintedMarkup)}`;
+  tintedCassetteSrcCache.set(normalizedColor, tintedSrc);
+
+  return tintedSrc;
+}
+
 function CassetteArtwork({
   isInline = true,
   isSpinning = false,
+  staticSrc,
 }) {
   const svgInstanceId = useId().replace(/:/g, "");
   const reelGroupPrefix = useMemo(() => `cassette-${svgInstanceId}`, [svgInstanceId]);
@@ -138,7 +163,7 @@ function CassetteArtwork({
   }, [isInline, isSpinning, reelGroupPrefix]);
 
   if (!isInline) {
-    return <img className={styles.artworkImage} src={cassetteSrc} alt="" aria-hidden="true" />;
+    return <img className={styles.artworkImage} src={staticSrc ?? cassetteSrc} alt="" aria-hidden="true" />;
   }
 
   return (

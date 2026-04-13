@@ -127,7 +127,8 @@ export const themeShowcaseTheme = {
   sectionHeading:
     "We heard a few things across our conversations and we'd like you to hear them too",
   socialProofText: "We heard this from others too",
-  playerPanelColor: "#657140",
+  playerPanelColor: "#91A653",
+  accentColor: "#91A653",
   merchantIds: ["achieve-by-petra", "africa-world-airlines", "warc"],
 };
 
@@ -139,7 +140,9 @@ export const themeShowcaseThemes = [
     title: "Merchants are growing faster than the support around them",
     sectionHeading: themeShowcaseTheme.sectionHeading,
     socialProofText: themeShowcaseTheme.socialProofText,
-    playerPanelColor: "#4A0113",
+    playerPanelColor: "#F76C4D",
+    accentColor: "#F76C4D",
+    eyebrowColor: "#A13C25",
     merchantIds: ["dajo-unimarket", "telecel", "seesail"],
   },
   {
@@ -148,7 +151,9 @@ export const themeShowcaseThemes = [
     title: "Reconciliation is still too manual, and it's costing merchant trust",
     sectionHeading: themeShowcaseTheme.sectionHeading,
     socialProofText: themeShowcaseTheme.socialProofText,
-    playerPanelColor: "#0C1A1D",
+    playerPanelColor: "#409599",
+    accentColor: "#409599",
+    eyebrowColor: "#409599",
     merchantIds: ["achieve-by-petra", "golly-express", "peadato-group"],
   },
   {
@@ -157,7 +162,9 @@ export const themeShowcaseThemes = [
     title: "When payments fail, merchants are left without answers",
     sectionHeading: themeShowcaseTheme.sectionHeading,
     socialProofText: themeShowcaseTheme.socialProofText,
-    playerPanelColor: "#F76C4D",
+    playerPanelColor: "#DE475E",
+    accentColor: "#DE475E",
+    eyebrowColor: "#DE475E",
     merchantIds: ["africa-world-airlines", "telecel", "seesail"],
   },
 ];

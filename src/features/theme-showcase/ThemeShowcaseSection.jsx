@@ -167,11 +167,17 @@ function ThemeTitleMotionFrame({
       style={
         prefersReducedMotion
           ? {
+              "--shell-player-panel": themeItem.playerPanelColor,
+              ...(themeItem.eyebrowColor && { "--shell-kicker": themeItem.eyebrowColor }),
+              ...(themeItem.accentColor && { "--shell-accent": themeItem.accentColor }),
               opacity: isVisible ? 1 : 0,
               visibility: isVisible ? "visible" : "hidden",
               pointerEvents: "none",
             }
           : {
+              "--shell-player-panel": themeItem.playerPanelColor,
+              ...(themeItem.eyebrowColor && { "--shell-kicker": themeItem.eyebrowColor }),
+              ...(themeItem.accentColor && { "--shell-accent": themeItem.accentColor }),
               opacity,
               y,
               visibility: isVisible ? "visible" : "hidden",
@@ -233,11 +239,17 @@ function ThemeDetailMotionFrame({
         prefersReducedMotion
           ? {
               "--shell-player-scale": shellPlayerScale.toFixed(3),
+              "--shell-player-panel": themeItem.playerPanelColor,
+              ...(themeItem.eyebrowColor && { "--shell-kicker": themeItem.eyebrowColor }),
+              ...(themeItem.accentColor && { "--shell-accent": themeItem.accentColor }),
               visibility: isVisible ? "visible" : "hidden",
               pointerEvents: isVisible ? "auto" : "none",
             }
           : {
               "--shell-player-scale": shellPlayerScale.toFixed(3),
+              "--shell-player-panel": themeItem.playerPanelColor,
+              ...(themeItem.eyebrowColor && { "--shell-kicker": themeItem.eyebrowColor }),
+              ...(themeItem.accentColor && { "--shell-accent": themeItem.accentColor }),
               opacity,
               y,
               visibility: isVisible ? "visible" : "hidden",
@@ -491,6 +503,7 @@ function ThemeDetailFrame({
               textMorphEase={textMorphEaseString}
               playbackPulseDuration={playbackPulseDuration}
               isPrimaryInstance={false}
+              panelColor={themeItem.playerPanelColor}
             />
           </div>
         </div>

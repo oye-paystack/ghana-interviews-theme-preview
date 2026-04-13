@@ -59,6 +59,7 @@ function PlayerStage({
   isActiveSlide = true,
   isPrimaryInstance = true,
   showPlaybackButton = true,
+  panelColor,
 }) {
   const buttonLabel = isPlaying ? "Stop playback" : activeMerchant.listenLabel;
 
@@ -70,6 +71,7 @@ function PlayerStage({
         spacing={spacing}
         sideOffsetY={sideOffsetY}
         isPlaying={isPlaying}
+        panelColor={panelColor}
       />
 
       <div className={styles.playerBody}>

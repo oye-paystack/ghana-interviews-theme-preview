@@ -297,7 +297,7 @@
 }
 
 .shellTextFrame {
-  grid-column: 4 / span 6;
+  grid-column: 3 / span 6;
   grid-row: 1;
   display: flex;
   flex-direction: column;
@@ -309,7 +309,7 @@
 
 .shellIndex {
   margin: 0;
-  color: #91a653;
+  color: var(--shell-accent, #91a653);
   font-family: "PP Mori Bold", sans-serif;
   font-size: 80px;
   line-height: 1;
@@ -343,7 +343,7 @@
 }
 
 .shellDetailCopy {
-  grid-column: 4 / span 3;
+  grid-column: 3 / span 3;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -358,8 +358,8 @@
   margin: 0;
   padding: 3px 6px 4px;
   border-radius: 0;
-  background: #4c5530;
-  color: #f4f6ee;
+  background: var(--shell-kicker, #4c5530);
+  color: #ffffff;
   font-family: "PP Mori Medium", sans-serif;
   font-size: 14px;
   line-height: 1;
@@ -423,7 +423,7 @@
 }
 
 .shellMerchantHighlight {
-  color: #91a653;
+  color: var(--shell-accent, #91a653);
 }
 
 .shellQuoteLayer {
@@ -511,7 +511,7 @@
 }
 
 .shellQuoteRole {
-  color: rgba(145, 166, 83, 0.88);
+  color: color-mix(in srgb, var(--shell-accent, #91a653) 88%, transparent);
   font-family: "PP Mori Regular", sans-serif;
   font-size: 16px;
   line-height: 1.35;
