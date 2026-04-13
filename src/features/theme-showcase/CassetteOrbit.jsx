@@ -43,13 +43,14 @@ const positionConfigs = {
 
 const movementTransition = {
   type: "spring",
-  bounce: 0.08,
-  visualDuration: 0.62,
+  stiffness: 420,
+  damping: 42,
+  mass: 0.9,
 };
 
 const opacityTransition = {
-  duration: 0.22,
-  ease: "linear",
+  duration: 0.18,
+  ease: [0.32, 0, 0.67, 0],
 };
 
 function getCassettePosition(index, activeIndex) {
