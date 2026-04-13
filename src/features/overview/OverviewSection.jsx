@@ -225,7 +225,7 @@ function OverviewSection() {
             </h1>
             <div className={styles.textGroupBody}>
               <p>
-                Ghana is one of our newest and fastest-growing markets. Merchants
+                Ghana is one of our newer and fastest-growing markets. Merchants
                 there are scaling quickly, building sophisticated products on top of
                 our infrastructure, and running into gaps we haven&apos;t closed yet.
               </p>
