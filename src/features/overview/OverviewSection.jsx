@@ -1,8 +1,14 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import UnicornScene from "unicornstudio-react";
 import styles from "./OverviewSection.module.css";
 
-const HOLD_DISTANCE = 400;
+const PROJECT_ID = "cBzWsZ2pKxXCWE8aQDdN";
+const DEV_PROJECT_ID = import.meta.env.DEV
+  ? `${PROJECT_ID}?update=${Date.now()}`
+  : PROJECT_ID;
+
+const HOLD_DISTANCE = 250;
 const EXIT_DISTANCE = 200;
 const GAP = 100;
 const REVEAL_DISTANCE = 200;
@@ -10,15 +16,17 @@ const TAIL_HOLD = 600;
 
 // Pre-compute total sequence length for CSS (must stay in sync with timeline below)
 const SEQUENCE_LENGTH =
-  HOLD_DISTANCE + EXIT_DISTANCE +                       // f1
-  GAP + REVEAL_DISTANCE + HOLD_DISTANCE + EXIT_DISTANCE + // f2
-  GAP + REVEAL_DISTANCE + HOLD_DISTANCE + EXIT_DISTANCE + // f3
-  GAP + REVEAL_DISTANCE + HOLD_DISTANCE + EXIT_DISTANCE + // f4
-  GAP + REVEAL_DISTANCE +                                // f5
+  HOLD_DISTANCE + EXIT_DISTANCE +                       // f1 (text group + scene)
+  GAP + REVEAL_DISTANCE + HOLD_DISTANCE + EXIT_DISTANCE + // f2 (GH Interviews)
+  GAP + REVEAL_DISTANCE + HOLD_DISTANCE + EXIT_DISTANCE + // f3 (8 merchants)
+  GAP + REVEAL_DISTANCE + HOLD_DISTANCE + EXIT_DISTANCE + // f4 (8 conversations)
+  GAP + REVEAL_DISTANCE + HOLD_DISTANCE + EXIT_DISTANCE + // f5 (1 market)
+  GAP + REVEAL_DISTANCE + HOLD_DISTANCE + EXIT_DISTANCE + // f6 (cedis)
   TAIL_HOLD;
 
 function OverviewSection() {
   const [introDone, setIntroDone] = useState(false);
+  const [sceneFailed, setSceneFailed] = useState(false);
   const trackRef = useRef(null);
   const [trackStart, setTrackStart] = useState(0);
   const { scrollY } = useScroll();
@@ -74,33 +82,41 @@ function OverviewSection() {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
-  // Frame 1: "GH INTERVIEWS 2026" — holds then fades out
+  // Frame 1: "Ghana is growing fast" text group — holds then fades out
   const f1HoldEnd = HOLD_DISTANCE;
   const f1ExitEnd = f1HoldEnd + EXIT_DISTANCE;
 
-  // Frame 2: "8 MERCHANTS." — fades in, holds, fades out
+  // Frame 2: "GH Interviews 2026" — fades in, holds, fades out
   const f2RevealStart = f1ExitEnd + GAP;
   const f2RevealEnd = f2RevealStart + REVEAL_DISTANCE;
   const f2HoldEnd = f2RevealEnd + HOLD_DISTANCE;
   const f2ExitEnd = f2HoldEnd + EXIT_DISTANCE;
 
-  // Frame 3: "8 CONVERSATIONS." — fades in, holds, fades out
+  // Frame 3: "8 merchants." — fades in, holds, fades out
   const f3RevealStart = f2ExitEnd + GAP;
   const f3RevealEnd = f3RevealStart + REVEAL_DISTANCE;
   const f3HoldEnd = f3RevealEnd + HOLD_DISTANCE;
   const f3ExitEnd = f3HoldEnd + EXIT_DISTANCE;
 
-  // Frame 4: "1 MARKET." — fades in, holds, fades out
+  // Frame 4: "8 conversations." — fades in, holds, fades out
   const f4RevealStart = f3ExitEnd + GAP;
   const f4RevealEnd = f4RevealStart + REVEAL_DISTANCE;
   const f4HoldEnd = f4RevealEnd + HOLD_DISTANCE;
   const f4ExitEnd = f4HoldEnd + EXIT_DISTANCE;
 
-  // Frame 5: "YOU'LL WANT TO CEDIS." — fades in and stays
+  // Frame 5: "1 market." — fades in, holds, fades out
   const f5RevealStart = f4ExitEnd + GAP;
   const f5RevealEnd = f5RevealStart + REVEAL_DISTANCE;
+  const f5HoldEnd = f5RevealEnd + HOLD_DISTANCE;
+  const f5ExitEnd = f5HoldEnd + EXIT_DISTANCE;
 
-  // Frame 1 transforms
+  // Frame 6: "You'll want to cedis." — fades in, holds, fades out
+  const f6RevealStart = f5ExitEnd + GAP;
+  const f6RevealEnd = f6RevealStart + REVEAL_DISTANCE;
+  const f6HoldEnd = f6RevealEnd + HOLD_DISTANCE;
+  const f6ExitEnd = f6HoldEnd + EXIT_DISTANCE;
+
+  // Frame 1 transforms (text group — intro fade then scroll-driven exit)
   const f1ScrollOpacity = useTransform(
     scrollY,
     [trackStart, trackStart + f1HoldEnd, trackStart + f1ExitEnd],
@@ -112,7 +128,7 @@ function OverviewSection() {
     [0, 0, -24],
   );
 
-  // Frame 2 transforms
+  // Frame 2 transforms (GH Interviews 2026)
   const f2Opacity = useTransform(
     scrollY,
     [trackStart + f2RevealStart, trackStart + f2RevealEnd, trackStart + f2HoldEnd, trackStart + f2ExitEnd],
@@ -151,13 +167,25 @@ function OverviewSection() {
   // Frame 5 transforms
   const f5Opacity = useTransform(
     scrollY,
-    [trackStart + f5RevealStart, trackStart + f5RevealEnd],
-    [0, 1],
+    [trackStart + f5RevealStart, trackStart + f5RevealEnd, trackStart + f5HoldEnd, trackStart + f5ExitEnd],
+    [0, 1, 1, 0],
   );
   const f5Y = useTransform(
     scrollY,
-    [trackStart + f5RevealStart, trackStart + f5RevealEnd],
-    [24, 0],
+    [trackStart + f5RevealStart, trackStart + f5RevealEnd, trackStart + f5HoldEnd, trackStart + f5ExitEnd],
+    [24, 0, 0, -24],
+  );
+
+  // Frame 6 transforms (cedis)
+  const f6Opacity = useTransform(
+    scrollY,
+    [trackStart + f6RevealStart, trackStart + f6RevealEnd, trackStart + f6HoldEnd, trackStart + f6ExitEnd],
+    [0, 1, 1, 0],
+  );
+  const f6Y = useTransform(
+    scrollY,
+    [trackStart + f6RevealStart, trackStart + f6RevealEnd, trackStart + f6HoldEnd, trackStart + f6ExitEnd],
+    [24, 0, 0, -24],
   );
 
   return (
@@ -168,48 +196,91 @@ function OverviewSection() {
         style={{ "--overview-sequence-length": `${SEQUENCE_LENGTH}px` }}
       >
         <div className={styles.viewport}>
-          <motion.h1
-            className={styles.title}
-            id="overview-heading"
+          {/* Frame 1: Scene + text group — intro fade then scroll-driven exit */}
+          <motion.div
+            className={styles.textGroup}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 3, ease: "easeOut", delay: 0.5 }}
             style={{ opacity: introDone ? f1ScrollOpacity : undefined, y: introDone ? f1Y : undefined }}
           >
-            GH Interviews 2026
-          </motion.h1>
+            {!sceneFailed && (
+              <div className={styles.sceneEmbed} aria-hidden="true">
+                <UnicornScene
+                  projectId={DEV_PROJECT_ID}
+                  width="100%"
+                  height="100%"
+                  scale={1}
+                  dpi={2}
+                  fps={60}
+                  production={import.meta.env.PROD}
+                  placeholder={<div />}
+                  showPlaceholderOnError
+                  onError={() => setSceneFailed(true)}
+                />
+              </div>
+            )}
+            <h1 className={styles.textGroupHeading} id="overview-heading">
+              Ghana is growing fast
+            </h1>
+            <div className={styles.textGroupBody}>
+              <p>
+                Ghana is one of our newest and fastest-growing markets. Merchants
+                there are scaling quickly, building sophisticated products on top of
+                our infrastructure, and running into gaps we haven&apos;t closed yet.
+              </p>
+              <p>
+                We wanted to understand what&apos;s working, what&apos;s not, and merchant
+                needs directly from the people running these businesses every day.
+              </p>
+            </div>
+          </motion.div>
 
+          {/* Frame 2: GH Interviews 2026 */}
           <motion.p
             className={styles.title}
             aria-hidden="true"
             style={{ opacity: f2Opacity, y: f2Y }}
           >
-            8 merchants.
+            GH Interviews 2026
           </motion.p>
 
+          {/* Frame 3: 8 merchants */}
           <motion.p
             className={styles.title}
             aria-hidden="true"
             style={{ opacity: f3Opacity, y: f3Y }}
           >
-            8 conversations.
+            8 merchants.
           </motion.p>
 
+          {/* Frame 4: 8 conversations */}
           <motion.p
             className={styles.title}
             aria-hidden="true"
             style={{ opacity: f4Opacity, y: f4Y }}
           >
-            1 market.
+            8 conversations.
           </motion.p>
 
+          {/* Frame 5: 1 market */}
           <motion.p
             className={styles.title}
             aria-hidden="true"
             style={{ opacity: f5Opacity, y: f5Y }}
           >
+            1 market.
+          </motion.p>
+
+          {/* Frame 6: You'll want to cedis */}
+          <motion.p
+            className={styles.title}
+            aria-hidden="true"
+            style={{ opacity: f6Opacity, y: f6Y }}
+          >
             You&apos;ll want to cedis.
           </motion.p>
+
         </div>
       </div>
     </section>
