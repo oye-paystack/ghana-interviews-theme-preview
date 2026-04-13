@@ -41,12 +41,7 @@ function App() {
   return (
     <AppShell>
       {showSideNav ? <SectionSideNav /> : null}
-      <OverviewSection
-        sceneOffsetX={overviewSceneOffsetX}
-        sceneOffsetY={overviewSceneOffsetY}
-        sceneScale={overviewSceneScale}
-        showSceneFrame={showOverviewSceneFrame}
-      />
+      <OverviewSection />
       <Suspense fallback={<SectionFallback minHeight={720} />}>
         <MerchantCardsSection
           hoverPreviewSize={merchantHoverPreviewSize}
