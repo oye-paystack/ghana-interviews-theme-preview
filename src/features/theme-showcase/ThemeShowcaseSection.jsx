@@ -283,6 +283,7 @@ function ThemeDetailFrame({
   isVisible,
 }) {
   const playbackAudioRef = useRef(null);
+  const appPlaybackRef = useRef(false);
   const [activeMerchantIndex, setActiveMerchantIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackTime, setPlaybackTime] = useState(0);
@@ -342,8 +343,19 @@ function ThemeDetailFrame({
       return undefined;
     }
 
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
+    const handlePlay = () => {
+      if (!appPlaybackRef.current) {
+        audio.pause();
+        return;
+      }
+      appPlaybackRef.current = false;
+      setIsPlaying(true);
+    };
+    const handlePause = () => {
+      if (!appPlaybackRef.current) return;
+      appPlaybackRef.current = false;
+      setIsPlaying(false);
+    };
     const handleEnded = () => {
       setIsPlaying(false);
       setPlaybackTime(0);
@@ -372,6 +384,8 @@ function ThemeDetailFrame({
       setIsPlaying((current) => !current);
       return;
     }
+
+    appPlaybackRef.current = true;
 
     if (audio.paused) {
       if (audio.ended) {
