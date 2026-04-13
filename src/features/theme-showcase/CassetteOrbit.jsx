@@ -78,18 +78,36 @@ function CassetteItem({ merchant, index, staticCassetteSrc }) {
   );
 }
 
-function CarouselSync({ activeIndex, onPageChange }) {
-  const { gotoPage, currentPage, totalPages } = useCarousel();
+const DEFAULT_CAROUSEL_GAP = 10;
+
+function CarouselSync({ activeIndex, onPageChange, spacing }) {
+  const { gotoPage, currentPage, totalPages, targetOffset } = useCarousel();
   const gotoPageRef = useRef(gotoPage);
+  const currentPageRef = useRef(currentPage);
   const intendedPage = useRef(activeIndex);
   const isNavigating = useRef(false);
   gotoPageRef.current = gotoPage;
+  currentPageRef.current = currentPage;
+
+  useEffect(() => {
+    if (totalPages <= 1) return;
+    const leeway = spacing * 0.15;
+    const maxInset = (totalPages - 1) * (spacing + DEFAULT_CAROUSEL_GAP);
+    const min = -(maxInset + leeway);
+    const max = leeway;
+    targetOffset.attach((v, set) => {
+      set(Math.max(min, Math.min(max, v)));
+    });
+    return () => targetOffset.attach(undefined);
+  }, [targetOffset, totalPages, spacing]);
 
   useEffect(() => {
     if (totalPages > 0) {
       intendedPage.current = activeIndex;
-      isNavigating.current = true;
-      gotoPageRef.current(activeIndex);
+      if (currentPageRef.current !== activeIndex) {
+        isNavigating.current = true;
+        gotoPageRef.current(activeIndex);
+      }
     }
   }, [activeIndex, totalPages]);
 
@@ -100,8 +118,23 @@ function CarouselSync({ activeIndex, onPageChange }) {
       return;
     }
     if (isNavigating.current) return;
-    intendedPage.current = currentPage;
-    onPageChange(currentPage);
+
+    const distance = currentPage - intendedPage.current;
+    if (totalPages > 2) {
+      const isEdgeWrap =
+        (currentPage === 0 && intendedPage.current === totalPages - 1) ||
+        (currentPage === totalPages - 1 && intendedPage.current === 0);
+      if (isEdgeWrap) return;
+    }
+
+    let nextPage = currentPage;
+    if (Math.abs(distance) > 1) {
+      nextPage = Math.max(0, Math.min(totalPages - 1, intendedPage.current + Math.sign(distance)));
+      isNavigating.current = true;
+      gotoPageRef.current(nextPage);
+    }
+    intendedPage.current = nextPage;
+    onPageChange(nextPage);
   }, [currentPage, onPageChange, totalPages]);
 
   return null;
@@ -145,11 +178,14 @@ function CassetteOrbit({
             loop={false}
             snap="page"
             overflow
+            gap={DEFAULT_CAROUSEL_GAP}
+            dragElastic={0.15}
             pageTransition={pageTransition}
           >
             <CarouselSync
               activeIndex={activeIndex}
               onPageChange={onActiveIndexChange}
+              spacing={spacing}
             />
           </Carousel>
         </div>
