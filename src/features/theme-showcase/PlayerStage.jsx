@@ -51,6 +51,7 @@ function PlayerStage({
   activeMerchant,
   isPlaying,
   onTogglePlayback,
+  onActiveIndexChange,
   spacing,
   sideOffsetY,
   textMorphDuration,
@@ -72,6 +73,7 @@ function PlayerStage({
         sideOffsetY={sideOffsetY}
         isPlaying={isPlaying}
         panelColor={panelColor}
+        onActiveIndexChange={onActiveIndexChange}
       />
 
       <div className={styles.playerBody}>

@@ -11,6 +11,8 @@
   width: 361px;
   height: 560px;
   transform: translateX(-50%);
+  pointer-events: none;
+  user-select: none;
 }
 
 .shell,
@@ -110,6 +112,7 @@
   bottom: 32px;
   z-index: 5;
   transform: translateX(-50%);
+  pointer-events: auto;
 }
 
 .listenPill:hover,

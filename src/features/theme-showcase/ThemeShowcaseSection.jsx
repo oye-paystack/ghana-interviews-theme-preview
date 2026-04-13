@@ -497,6 +497,7 @@ function ThemeDetailFrame({
               activeMerchant={activeMerchant}
               isPlaying={isPlaying}
               onTogglePlayback={handleTogglePlayback}
+              onActiveIndexChange={setActiveMerchantIndex}
               spacing={orbitSpacing}
               sideOffsetY={sideCassetteOffsetY}
               textMorphDuration={textMorphDuration}

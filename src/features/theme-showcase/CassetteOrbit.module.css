@@ -4,32 +4,43 @@
   pointer-events: none;
 }
 
-.cassette {
+.carouselWrapper {
   position: absolute;
-  left: calc(50% - 157.5px);
   top: 323px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 199px;
+  pointer-events: auto;
+}
+
+.cassetteSlide {
+  display: flex;
+  justify-content: center;
+}
+
+.cassette {
+  position: relative;
   width: 315px;
   height: 199px;
   transform-origin: center center;
+  -webkit-user-drag: none;
+}
+
+.cassette img {
+  -webkit-user-drag: none;
 }
 
 .cassetteLabel {
   position: absolute;
-  top: 26px;
-  left: 95px;
-  max-width: 152px;
+  top: 30px;
+  left: 50%;
+  width: max-content;
   color: #514741;
   font-family: var(--scribble-font);
   font-size: 12.5px;
   line-height: 1;
   white-space: nowrap;
-  transform: rotate(-1.6deg);
+  transform: translateX(-50%) rotate(-0.5deg);
   letter-spacing: 0.02em;
 }
 
-.cassette[data-position="left"] .cassetteLabel,
-.cassette[data-position="right"] .cassetteLabel,
-.cassette[data-position="hidden-left"] .cassetteLabel,
-.cassette[data-position="hidden-right"] .cassetteLabel {
-  opacity: 0;
-}
