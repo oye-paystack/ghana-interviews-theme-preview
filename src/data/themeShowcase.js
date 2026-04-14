@@ -10,6 +10,38 @@ import {
   victorQuoteAudioSrc,
   victorQuoteSegments,
 } from "./generated/victorQuoteClip";
+import {
+  danielQuoteAudioSrc,
+  danielQuoteSegments,
+} from "./generated/danielQuoteClip";
+import {
+  peadatoQuoteAudioSrc,
+  peadatoQuoteSegments,
+} from "./generated/peadatoQuoteClip";
+import {
+  sylviaQuoteAudioSrc,
+  sylviaQuoteSegments,
+} from "./generated/sylviaQuoteClip";
+import {
+  richloveQuoteAudioSrc,
+  richloveQuoteSegments,
+} from "./generated/richloveQuoteClip";
+import {
+  solomonQuoteAudioSrc,
+  solomonQuoteSegments,
+} from "./generated/solomonQuoteClip";
+import {
+  sylviaTheme4QuoteAudioSrc,
+  sylviaTheme4QuoteSegments,
+} from "./generated/sylviaTheme4QuoteClip";
+import {
+  danielTheme4QuoteAudioSrc,
+  danielTheme4QuoteSegments,
+} from "./generated/danielTheme4QuoteClip";
+import {
+  solomonTheme4QuoteAudioSrc,
+  solomonTheme4QuoteSegments,
+} from "./generated/solomonTheme4QuoteClip";
 
 const merchantTextureSrc = (filename) => `${import.meta.env.BASE_URL}merchant-cards/${filename}`;
 
@@ -254,40 +286,44 @@ export const themeShowcaseThemes = [
       {
         merchantId: "dajo-unimarket",
         listenLabel: "Listen to Daniel",
+        playbackAudioSrc: danielQuoteAudioSrc,
         playbackQuote: {
-          lead: "We have a lot of users in our system, a lot, a lot.",
-          rest: " So we cannot solve all the issues by calling. And some of the customers will not even try to call again.",
+          segments: danielQuoteSegments,
           speakerName: "Daniel",
           speakerRole: "Dajo Unimarket",
         },
         copy: [
-          "Dajo is growing quickly, but merchant support and account operations still require too much manual follow-up as volume increases.",
+          "Dajo moves hundreds of thousands in daily transactions, but a single unexplained account hold can freeze the business — and at their scale, the team can't reach every affected customer by phone.",
         ],
       },
       {
-        merchantId: "telecel",
-        listenLabel: "Listen to Alex",
+        merchantId: "peadato-group",
+        listenLabel: "Listen to Peadato",
+        playbackAudioSrc: peadatoQuoteAudioSrc,
         playbackQuote: {
-          lead: "My customer is saying they've been debited, their money is gone.",
-          rest: " We reach out to you and you tell us you don't have any way of reaching out to MTN or whichever the third party may be. So we should tell our customer to reach out to them.",
-          speakerName: "Alex",
-          speakerRole: "Digital Transformation Lead, Telecel",
+          segments: peadatoQuoteSegments,
+          speakerName: "Theo & Denzel",
+          speakerRole: "Peadato Group",
         },
         copy: [
-          "Telecel highlighted how quickly merchant trust drops when payment issues are hard to trace or explain in the moment.",
+          "Peadato runs payments across education, electronics, agriculture and travel. They've been asking for a dedicated account manager — and an application for a second Paystack account has been sitting for over ",
+          { highlight: "two months" },
+          ".",
         ],
       },
       {
-        merchantId: "seesail",
-        listenLabel: "Listen to Victor",
+        merchantId: "warc",
+        listenLabel: "Listen to Cathrin",
         playbackQuote: {
-          lead: "Those periods were very foggy times.",
-          rest: " Paystack yanked me off card payments — I'd never had callbacks on card payments. What happened?",
-          speakerName: "Victor",
-          speakerRole: "Founder, Seesail",
+          lead: "If we're going to scale up, there's a big risk that with some of these mistakes, we lose money if we don't act quick enough.",
+          rest: " The person who received the money took it out already, and we can't recall that money.",
+          speakerName: "Cathrin",
+          speakerRole: "WARC",
         },
         copy: [
-          "Seesail pointed to the widening gap between merchant growth and the support structures available to help them scale confidently.",
+          "WARC sends large payouts to farmers across northern Ghana, but reversal turnarounds of ",
+          { highlight: "5–15 days" },
+          " aren't keeping up. As they scale, a slow reversal can mean losing money they can't recall.",
         ],
       },
     ],
@@ -303,44 +339,42 @@ export const themeShowcaseThemes = [
     eyebrowColor: "#409599",
     merchantSlots: [
       {
-        merchantId: "achieve-by-petra",
-        listenLabel: "Listen to Sharon",
-        playbackAudioSrc: sharonQuoteAudioSrc,
+        merchantId: "telecel",
+        listenLabel: "Listen to Sylvia",
+        playbackAudioSrc: sylviaQuoteAudioSrc,
         playbackQuote: {
-          segments: sharonQuoteSegments,
-          speakerName: "Sharon",
-          speakerRole: "Tech Lead, Achieve by Petra",
+          segments: sylviaQuoteSegments,
+          speakerName: "Sylvia",
+          speakerRole: "Product Owner, Telecel",
         },
         copy: [
-          "Achieve moved from manual virtual account workflows to instant transfers and saw a ",
-          { highlight: "100%" },
-          " success rate on completed Paystack transactions.",
+          "Telecel's team described how delayed crediting forces them to work backwards from customer complaints, rather than proactively resolving issues.",
+        ],
+      },
+      {
+        merchantId: "achieve-by-petra",
+        listenLabel: "Listen to Richlove",
+        playbackAudioSrc: richloveQuoteAudioSrc,
+        playbackQuote: {
+          segments: richloveQuoteSegments,
+          speakerName: "Richlove",
+          speakerRole: "Operations, Achieve by Petra",
+        },
+        copy: [
+          "Achieve's reconciliation process breaks whenever refund timing shifts settlement amounts across days — mismatches they can't explain to their own customers.",
         ],
       },
       {
         merchantId: "golly-express",
         listenLabel: "Listen to Solomon",
+        playbackAudioSrc: solomonQuoteAudioSrc,
         playbackQuote: {
-          lead: "We just glance at the dashboard, but we don't get enough info.",
-          rest: " It just tells us that it's failed. So we don't really know what happened.",
+          segments: solomonQuoteSegments,
           speakerName: "Solomon",
           speakerRole: "Founder, Golly Express",
         },
         copy: [
-          "Golly Express described reconciliation work as one of the places where operational strain becomes most visible to the business.",
-        ],
-      },
-      {
-        merchantId: "peadato-group",
-        listenLabel: "Listen to Hezekiah",
-        playbackQuote: {
-          lead: "At the end of the month, you would have to compile a list and send it to your banks for them to disburse at their end.",
-          rest: " Doing it at our end comes with a cost.",
-          speakerName: "Hezekiah",
-          speakerRole: "Finance Officer, Peadato Group",
-        },
-        copy: [
-          "Peadato Group's multi-vertical setup makes reconciliation friction especially costly because mismatches ripple across several business lines.",
+          "Golly Express leans on webhook confirmations to create customer orders — when the webhook doesn't come through, the reconciliation work lands on them.",
         ],
       },
     ],
@@ -356,44 +390,55 @@ export const themeShowcaseThemes = [
     eyebrowColor: "#DE475E",
     merchantSlots: [
       {
-        merchantId: "africa-world-airlines",
-        listenLabel: "Listen to Eric",
+        merchantId: "warc",
+        listenLabel: "Listen to Felipe",
         playbackQuote: {
-          lead: "People are comfortable because it's available",
-          rest: ", and when others feel they are able to rely on it.",
-          speakerName: "Eric",
-          speakerRole: "IT Team, Africa World Airlines",
+          lead: "More or less, 185 transactions were based on a Paystack error,",
+          rest: " and we don't know the exact reason of the error. Sometimes we don't know what to do with those failed transactions — we just leave it as failed, but we don't know exactly what is happening. If we retry and retry and retry, we will never know if that is going to work.",
+          speakerName: "Felipe",
+          speakerRole: "Technical Lead, WARC",
         },
         copy: [
-          "AWA's payment volume through Paystack grew ",
-          { highlight: "4x" },
-          " in 2025. Eric, from AWA's IT team, was clear about why",
+          "WARC's team flagged roughly 185 failed transfers where the error reason was never surfaced — they're left unable to diagnose or act, and retry becomes guesswork.",
         ],
       },
       {
         merchantId: "telecel",
-        listenLabel: "Listen to Alex",
+        listenLabel: "Listen to Sylvia",
+        playbackAudioSrc: sylviaTheme4QuoteAudioSrc,
         playbackQuote: {
-          lead: "My customer is saying they've been debited, their money is gone.",
-          rest: " We reach out to you and you tell us you don't have any way of reaching out to MTN or whichever the third party may be. So we should tell our customer to reach out to them.",
-          speakerName: "Alex",
-          speakerRole: "Digital Transformation Lead, Telecel",
+          segments: sylviaTheme4QuoteSegments,
+          speakerName: "Sylvia",
+          speakerRole: "Product Owner, Telecel",
         },
         copy: [
-          "Telecel highlighted how quickly merchant trust drops when payment issues are hard to trace or explain in the moment.",
+          "Telecel described the moment their customer is debited, the money vanishes between Paystack and MTN, and nobody can explain where it went.",
         ],
       },
       {
-        merchantId: "seesail",
-        listenLabel: "Listen to Victor",
+        merchantId: "dajo-unimarket",
+        listenLabel: "Listen to Daniel",
+        playbackAudioSrc: danielTheme4QuoteAudioSrc,
         playbackQuote: {
-          lead: "Those periods were very foggy times.",
-          rest: " Paystack yanked me off card payments — I'd never had callbacks on card payments. What happened?",
-          speakerName: "Victor",
-          speakerRole: "Founder, Seesail",
+          segments: danielTheme4QuoteSegments,
+          speakerName: "Daniel",
+          speakerRole: "Founder, Dajo Unimarket",
         },
         copy: [
-          "Seesail pointed to the widening gap between merchant growth and the support structures available to help them scale confidently.",
+          "On Dajo's busiest day of the year, 25,000 orders went unfulfilled — and Daniel still doesn't know whether the customers paid or the webhooks never fired.",
+        ],
+      },
+      {
+        merchantId: "golly-express",
+        listenLabel: "Listen to Solomon",
+        playbackAudioSrc: solomonTheme4QuoteAudioSrc,
+        playbackQuote: {
+          segments: solomonTheme4QuoteSegments,
+          speakerName: "Solomon",
+          speakerRole: "Founder, Golly Express",
+        },
+        copy: [
+          "Solomon described glancing at the dashboard after a failure and finding no answer — just a status label and no way to tell the customer what went wrong.",
         ],
       },
     ],
