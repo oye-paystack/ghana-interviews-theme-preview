@@ -289,11 +289,19 @@ function ThemeDetailFrame({
   const [playbackTime, setPlaybackTime] = useState(0);
 
   const themeMerchants = useMemo(() => {
-    if (!themeItem?.merchantIds?.length) {
+    if (!themeItem?.merchantSlots?.length) {
       return [];
     }
 
-    return themeItem.merchantIds.map((merchantId) => merchantsById.get(merchantId)).filter(Boolean);
+    return themeItem.merchantSlots
+      .map((slot) => {
+        const base = merchantsById.get(slot.merchantId);
+        if (!base) {
+          return null;
+        }
+        return { ...base, ...slot, id: base.id };
+      })
+      .filter(Boolean);
   }, [themeItem, merchantsById]);
 
   const safeActiveMerchantIndex =

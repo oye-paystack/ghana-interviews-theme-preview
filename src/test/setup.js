@@ -20,6 +20,20 @@ if (!Element.prototype.getAnimations) {
   Element.prototype.getAnimations = () => [];
 }
 
+if (typeof window.IntersectionObserver === "undefined") {
+  class IntersectionObserverStub {
+    constructor() {}
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+    takeRecords() {
+      return [];
+    }
+  }
+  window.IntersectionObserver = IntersectionObserverStub;
+  global.IntersectionObserver = IntersectionObserverStub;
+}
+
 if (typeof HTMLMediaElement !== "undefined") {
   Object.defineProperty(HTMLMediaElement.prototype, "paused", {
     configurable: true,

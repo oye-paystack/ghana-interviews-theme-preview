@@ -38,10 +38,10 @@ describe("ThemeShowcaseSection", () => {
   test("renders the initial merchant state", () => {
     renderThemeShowcase();
 
-    expect(screen.getByRole("heading", { name: /achieve by petra/i })).toBeInTheDocument();
-    expect(screen.getByText(/100%/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /listen to sharon/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /achieve by petra/i })).toHaveAttribute(
+    expect(screen.getByRole("heading", { name: /^seesail$/i })).toBeInTheDocument();
+    expect(screen.getByText(/matured api/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /listen to victor/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^seesail$/i })).toHaveAttribute(
       "aria-pressed",
       "true",
     );
@@ -50,7 +50,7 @@ describe("ThemeShowcaseSection", () => {
   test("toggles the playback button label and pressed state", () => {
     renderThemeShowcase();
 
-    const listenButton = screen.getByRole("button", { name: /listen to sharon/i });
+    const listenButton = screen.getByRole("button", { name: /listen to victor/i });
     const merchantCopy = screen.getByTestId("merchant-copy");
 
     expect(merchantCopy).toHaveAttribute("data-playing", "false");
@@ -61,7 +61,7 @@ describe("ThemeShowcaseSection", () => {
       "aria-pressed",
       "true",
     );
-    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
+    expect(screen.getByTestId("cassette-seesail")).toHaveAttribute(
       "data-playing",
       "true",
     );
@@ -70,11 +70,11 @@ describe("ThemeShowcaseSection", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /stop playback/i }));
 
-    expect(screen.getByRole("button", { name: /listen to sharon/i })).toHaveAttribute(
+    expect(screen.getByRole("button", { name: /listen to victor/i })).toHaveAttribute(
       "aria-pressed",
       "false",
     );
-    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
+    expect(screen.getByTestId("cassette-seesail")).toHaveAttribute(
       "data-playing",
       "false",
     );
@@ -85,8 +85,8 @@ describe("ThemeShowcaseSection", () => {
   test("resets playback button state when the merchant changes", () => {
     renderThemeShowcase();
 
-    fireEvent.click(screen.getByRole("button", { name: /listen to sharon/i }));
-    fireEvent.click(screen.getByRole("button", { name: /warc/i }));
+    fireEvent.click(screen.getByRole("button", { name: /listen to victor/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^warc$/i }));
 
     expect(screen.getByRole("button", { name: /listen to felipe/i })).toHaveAttribute(
       "aria-pressed",
@@ -102,17 +102,17 @@ describe("ThemeShowcaseSection", () => {
   test("selects a merchant from the icon navigation", () => {
     renderThemeShowcase();
 
-    fireEvent.click(screen.getByRole("button", { name: /warc/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^warc$/i }));
 
     expect(screen.getByRole("heading", { name: /^warc$/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /warc/i })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: /^warc$/i })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: /listen to felipe/i })).toBeInTheDocument();
   });
 
   test("updates cassette positions from the active index", () => {
     renderThemeShowcase();
 
-    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
+    expect(screen.getByTestId("cassette-seesail")).toHaveAttribute(
       "data-position",
       "center",
     );
@@ -125,9 +125,9 @@ describe("ThemeShowcaseSection", () => {
       "right",
     );
 
-    fireEvent.click(screen.getByRole("button", { name: /warc/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^warc$/i }));
 
-    expect(screen.getByTestId("cassette-achieve-by-petra")).toHaveAttribute(
+    expect(screen.getByTestId("cassette-seesail")).toHaveAttribute(
       "data-position",
       "hidden-left",
     );
@@ -293,7 +293,7 @@ describe("ThemeShowcaseSection", () => {
       target: { value: "1" },
     });
 
-    const listenButton = screen.getByRole("button", { name: /listen to sharon/i });
+    const listenButton = screen.getByRole("button", { name: /listen to victor/i });
 
     expect(listenButton).toHaveAttribute("data-text-morph-duration", "260");
     expect(listenButton).toHaveAttribute(
@@ -344,7 +344,7 @@ describe("ThemeShowcaseSection", () => {
   test("keeps section state when the config popover opens and closes", () => {
     renderThemeShowcase();
 
-    fireEvent.click(screen.getByRole("button", { name: /achieve by petra/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^seesail$/i }));
     fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
 
     const slider = screen.getByLabelText(/orbit spacing/i);
@@ -355,7 +355,7 @@ describe("ThemeShowcaseSection", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /^config$/i }));
 
-    expect(screen.getByRole("heading", { name: /achieve by petra/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /^seesail$/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/orbit spacing/i)).toHaveValue("436");
   });
 
