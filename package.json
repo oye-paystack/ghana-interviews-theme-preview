@@ -18,6 +18,7 @@
     "motion-plus": "https://api.motion.dev/registry.tgz?package=motion-plus&version=2.0.2&token=694a95dea8b4655f156c83e71100ffe9c2e2860ac89670a2a5c5cf242e87a452",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "tegaki": "^0.11.0",
     "torph": "^0.0.9",
     "unicornstudio-react": "^2.1.4-1"
   },

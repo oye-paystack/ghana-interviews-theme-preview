@@ -1,7 +1,85 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { AnimateNumber } from "motion-plus/react";
+import { TegakiRenderer } from "tegaki/react";
+import caveatBundle from "tegaki/fonts/caveat";
 import styles from "./InsightsSection.module.css";
+
+const MARKET_NOTE_TEXT =
+  "If you're ever in Ghana, say please as often as you can. It\nsignifies respect, especially to older people.";
+
+function MarketNoteHandwritten({ onAnimationComplete }) {
+  const wrapperRef = useRef(null);
+  const [inView, setInView] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const completeRef = useRef(onAnimationComplete);
+  completeRef.current = onAnimationComplete;
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onChange = (event) => setReducedMotion(event.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
+    if (!wrapperRef.current || inView) return undefined;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(wrapperRef.current);
+    return () => observer.disconnect();
+  }, [inView]);
+
+  // Reduced-motion: no animation, so signal completion immediately.
+  useEffect(() => {
+    if (reducedMotion) {
+      completeRef.current?.();
+    }
+  }, [reducedMotion]);
+
+  if (reducedMotion) {
+    return (
+      <p ref={wrapperRef} className={styles.marketNote}>
+        {MARKET_NOTE_TEXT}
+      </p>
+    );
+  }
+
+  return (
+    <div ref={wrapperRef} className={styles.marketNote}>
+      <TegakiRenderer
+        font={caveatBundle}
+        time={{
+          mode: "uncontrolled",
+          playing: inView,
+          initialTime: 0,
+          duration: 3.8,
+          loop: false,
+        }}
+        onComplete={() => completeRef.current?.()}
+        style={{
+          color: "inherit",
+          fontFamily: "inherit",
+          fontSize: "inherit",
+          lineHeight: "inherit",
+          overflowWrap: "normal",
+          wordBreak: "normal",
+          whiteSpace: "pre-line",
+        }}
+      >
+        {MARKET_NOTE_TEXT}
+      </TegakiRenderer>
+    </div>
+  );
+}
 
 const stats = [
   {
@@ -104,6 +182,8 @@ function InsightStat({
 }
 
 function InsightsSection() {
+  const [noteAnimationComplete, setNoteAnimationComplete] = useState(false);
+
   return (
     <section className={styles.section} id="insights" aria-labelledby="insights-heading">
       <div className={styles.stage}>
@@ -150,10 +230,17 @@ function InsightsSection() {
             Those who don&apos;t trust us yet won&apos;t be convinced by better product UX.
           </p>
         </div>
-        <p className={styles.marketNote}>
-          If you&apos;re ever in Ghana, say please as often as you can. It signifies respect,
-          especially to older people.
-        </p>
+        <MarketNoteHandwritten
+          onAnimationComplete={() => setNoteAnimationComplete(true)}
+        />
+        <a
+          className={`${styles.findingsLink} ${noteAnimationComplete ? styles.findingsLinkVisible : ""}`}
+          href="https://www.notion.so/paystack/2e7e9e69406080cfba17fef83d409ac4?v=2e7e9e69406080d6a782000c30c6aa51&source=copy_link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Read all our findings in detail →
+        </a>
       </div>
     </section>
   );
