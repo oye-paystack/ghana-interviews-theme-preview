@@ -42,6 +42,18 @@ import {
   solomonTheme4QuoteAudioSrc,
   solomonTheme4QuoteSegments,
 } from "./generated/solomonTheme4QuoteClip";
+import {
+  cathrinTheme2QuoteAudioSrc,
+  cathrinTheme2QuoteSegments,
+} from "./generated/cathrinTheme2QuoteClip";
+import {
+  felipeTheme1QuoteAudioSrc,
+  felipeTheme1QuoteSegments,
+} from "./generated/felipeTheme1QuoteClip";
+import {
+  felipeTheme4QuoteAudioSrc,
+  felipeTheme4QuoteSegments,
+} from "./generated/felipeTheme4QuoteClip";
 
 const merchantTextureSrc = (filename) => `${import.meta.env.BASE_URL}merchant-cards/${filename}`;
 
@@ -259,9 +271,9 @@ export const themeShowcaseThemes = [
       {
         merchantId: "warc",
         listenLabel: "Listen to Felipe",
+        playbackAudioSrc: felipeTheme1QuoteAudioSrc,
         playbackQuote: {
-          lead: "We obtained almost 97% of success.",
-          rest: " And we have, more or less, a 3% of failed transactions.",
+          segments: felipeTheme1QuoteSegments,
           speakerName: "Felipe",
           speakerRole: "Technical Lead, WARC",
         },
@@ -314,9 +326,9 @@ export const themeShowcaseThemes = [
       {
         merchantId: "warc",
         listenLabel: "Listen to Cathrin",
+        playbackAudioSrc: cathrinTheme2QuoteAudioSrc,
         playbackQuote: {
-          lead: "If we're going to scale up, there's a big risk that with some of these mistakes, we lose money if we don't act quick enough.",
-          rest: " The person who received the money took it out already, and we can't recall that money.",
+          segments: cathrinTheme2QuoteSegments,
           speakerName: "Cathrin",
           speakerRole: "WARC",
         },
@@ -392,9 +404,9 @@ export const themeShowcaseThemes = [
       {
         merchantId: "warc",
         listenLabel: "Listen to Felipe",
+        playbackAudioSrc: felipeTheme4QuoteAudioSrc,
         playbackQuote: {
-          lead: "More or less, 185 transactions were based on a Paystack error,",
-          rest: " and we don't know the exact reason of the error. Sometimes we don't know what to do with those failed transactions — we just leave it as failed, but we don't know exactly what is happening. If we retry and retry and retry, we will never know if that is going to work.",
+          segments: felipeTheme4QuoteSegments,
           speakerName: "Felipe",
           speakerRole: "Technical Lead, WARC",
         },
