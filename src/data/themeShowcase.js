@@ -47,6 +47,10 @@ import {
   cathrinTheme2QuoteSegments,
 } from "./generated/cathrinTheme2QuoteClip";
 import {
+  achieveTheme2QuoteAudioSrc,
+  achieveTheme2QuoteSegments,
+} from "./generated/achieveTheme2QuoteClip";
+import {
   felipeTheme1QuoteAudioSrc,
   felipeTheme1QuoteSegments,
 } from "./generated/felipeTheme1QuoteClip";
@@ -296,16 +300,31 @@ export const themeShowcaseThemes = [
     eyebrowColor: "#A13C25",
     merchantSlots: [
       {
-        merchantId: "dajo-unimarket",
-        listenLabel: "Listen to Daniel",
-        playbackAudioSrc: danielQuoteAudioSrc,
+        merchantId: "achieve-by-petra",
+        listenLabel: "Listen to Achieve",
+        playbackAudioSrc: achieveTheme2QuoteAudioSrc,
         playbackQuote: {
-          segments: danielQuoteSegments,
-          speakerName: "Daniel",
-          speakerRole: "Dajo Unimarket",
+          segments: achieveTheme2QuoteSegments,
+          speakerName: "Richlove & Sharon",
+          speakerRole: "Achieve by Petra",
         },
         copy: [
-          "Dajo moves hundreds of thousands in daily transactions, but a single unexplained account hold can freeze the business — and at their scale, the team can't reach every affected customer by phone.",
+          "Achieve has been raising the same issues over and over — settlements, fixed-invest follow-ups — and the responses either take weeks or never come at all.",
+        ],
+      },
+      {
+        merchantId: "warc",
+        listenLabel: "Listen to Cathrin",
+        playbackAudioSrc: cathrinTheme2QuoteAudioSrc,
+        playbackQuote: {
+          segments: cathrinTheme2QuoteSegments,
+          speakerName: "Cathrin",
+          speakerRole: "WARC",
+        },
+        copy: [
+          "WARC sends large payouts to farmers across northern Ghana, but reversal turnarounds of ",
+          { highlight: "5–15 days" },
+          " aren't keeping up. As they scale, a slow reversal can mean losing money they can't recall.",
         ],
       },
       {
@@ -324,18 +343,16 @@ export const themeShowcaseThemes = [
         ],
       },
       {
-        merchantId: "warc",
-        listenLabel: "Listen to Cathrin",
-        playbackAudioSrc: cathrinTheme2QuoteAudioSrc,
+        merchantId: "dajo-unimarket",
+        listenLabel: "Listen to Daniel",
+        playbackAudioSrc: danielQuoteAudioSrc,
         playbackQuote: {
-          segments: cathrinTheme2QuoteSegments,
-          speakerName: "Cathrin",
-          speakerRole: "WARC",
+          segments: danielQuoteSegments,
+          speakerName: "Daniel",
+          speakerRole: "Dajo Unimarket",
         },
         copy: [
-          "WARC sends large payouts to farmers across northern Ghana, but reversal turnarounds of ",
-          { highlight: "5–15 days" },
-          " aren't keeping up. As they scale, a slow reversal can mean losing money they can't recall.",
+          "Dajo moves hundreds of thousands in daily transactions, but a single unexplained account hold can freeze the business — and at their scale, the team can't reach every affected customer by phone.",
         ],
       },
     ],
