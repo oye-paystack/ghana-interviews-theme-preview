@@ -2,7 +2,6 @@ import { Suspense, lazy, useState } from "react";
 import appStyles from "./App.module.css";
 import AppShell from "./app/AppShell";
 import MobileNotice from "./app/MobileNotice";
-import PalettePicker from "./app/PalettePicker";
 import SectionSideNav from "./app/SectionSideNav";
 import {
   allThemeShowcaseMerchants,
@@ -87,7 +86,6 @@ function App() {
       <Suspense fallback={<SectionFallback minHeight={400} />}>
         <InsightsSection />
       </Suspense>
-      <PalettePicker />
         </AppShell>
       </div>
     </>
