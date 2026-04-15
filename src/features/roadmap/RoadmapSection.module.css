@@ -19,11 +19,10 @@
 .eyebrow {
   margin: 0;
   color: var(--muted);
-  font-family: "PP Mori Medium", sans-serif;
+  font-family: "PP Mori Regular", sans-serif;
+  font-weight: 400;
   font-size: 14px;
   line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .heading {

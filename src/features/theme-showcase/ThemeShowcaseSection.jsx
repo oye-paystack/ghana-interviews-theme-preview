@@ -704,7 +704,7 @@ function ThemeShowcaseSection({
       ) : null}
 
       <div className={styles.shellHeader}>
-        <p className={styles.eyebrow}>We brought receipts</p>
+        <p className={styles.eyebrow}>We Brought Receipts</p>
         <h2 className={styles.heading}>{sectionHeading}</h2>
       </div>
       <div
