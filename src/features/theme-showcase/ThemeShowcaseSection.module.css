@@ -57,7 +57,7 @@
   min-width: 0;
   background: rgba(145, 166, 83, 0.12);
   border-inline: 1px solid rgba(145, 166, 83, 0.42);
-  box-shadow: inset 0 0 0 1px rgba(249, 236, 222, 0.08);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--dark-canvas-text) 8%, transparent);
 }
 
 .heading {
@@ -274,7 +274,7 @@
 .shellSurface {
   width: 100vw;
   height: 100dvh;
-  background: #0e0801;
+  background: var(--dark-canvas);
   transform-origin: center top;
 }
 
@@ -405,7 +405,7 @@
 
 .shellMerchantName {
   margin: 0;
-  color: #f9ecde;
+  color: var(--dark-canvas-text);
   font-family: var(--font-display);
   font-weight: 500;
   font-synthesis: none;
@@ -416,7 +416,7 @@
 
 .shellMerchantBody {
   margin: 0;
-  color: #f9ecde;
+  color: var(--dark-canvas-text);
   font-family: "PP Mori Regular", sans-serif;
   font-size: 20px;
   line-height: 1.4;
@@ -463,18 +463,18 @@
 
 .shellQuoteText {
   margin: 0;
-  color: #f9ecde;
+  color: var(--dark-canvas-text);
   font-family: "PP Mori Regular", sans-serif;
   font-size: 20px;
   line-height: 1.45;
 }
 
 .shellQuoteLead {
-  color: #f9ecde;
+  color: var(--dark-canvas-text);
 }
 
 .shellQuoteRest {
-  color: rgba(249, 236, 222, 0.5);
+  color: color-mix(in srgb, var(--dark-canvas-text) 50%, transparent);
 }
 
 .shellQuoteSegment {
@@ -485,11 +485,11 @@
 
 .shellQuoteSegmentActive,
 .shellQuoteSegmentPlayed {
-  color: #f9ecde;
+  color: var(--dark-canvas-text);
 }
 
 .shellQuoteSegmentUpcoming {
-  color: rgba(249, 236, 222, 0.5);
+  color: color-mix(in srgb, var(--dark-canvas-text) 50%, transparent);
 }
 
 .shellQuoteAttribution {
@@ -504,7 +504,7 @@
 }
 
 .shellQuoteSpeaker {
-  color: #f9ecde;
+  color: var(--dark-canvas-text);
   font-family: "PP Mori Medium", sans-serif;
   font-size: 16px;
   line-height: 1.2;
@@ -528,7 +528,7 @@
 
 .shellMerchantSupport {
   margin: 0;
-  color: #fff4e8;
+  color: var(--dark-canvas-text);
   font-family: "PP Mori Regular", sans-serif;
   font-size: 16px;
   line-height: 1.4;

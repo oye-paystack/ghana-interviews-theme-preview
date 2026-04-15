@@ -61,27 +61,27 @@
 }
 
 .navDark {
-  color: #f9ecde;
+  color: var(--dark-canvas-text);
 }
 
 .navDark .segment {
   background: rgba(255, 255, 255, 0.04);
-  color: #f9ecde;
+  color: var(--dark-canvas-text);
 }
 
 .navDark .segmentActive {
-  background: #f9ecde;
-  color: #2f1b0e;
+  background: var(--dark-canvas-text);
+  color: var(--dark-canvas);
 }
 
 .navDark .segment:hover,
 .navDark .segment:focus-visible {
-  background: rgba(249, 236, 222, 0.10);
+  background: color-mix(in srgb, var(--dark-canvas-text) 10%, transparent);
 }
 
 .navDark .segmentActive:hover,
 .navDark .segmentActive:focus-visible {
-  background: #f9ecde;
+  background: var(--dark-canvas-text);
 }
 
 .segmentActive .iconSlot {
@@ -94,7 +94,7 @@
 .segment:hover,
 .segment:focus-visible {
   outline: none;
-  background: rgba(249, 236, 222, 0.55);
+  background: color-mix(in srgb, var(--dark-canvas-text) 55%, transparent);
 }
 
 @media (max-width: 760px) {

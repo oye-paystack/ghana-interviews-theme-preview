@@ -1,5 +1,6 @@
 import { Suspense, lazy, useState } from "react";
 import AppShell from "./app/AppShell";
+import PalettePicker from "./app/PalettePicker";
 import SectionSideNav from "./app/SectionSideNav";
 import {
   allThemeShowcaseMerchants,
@@ -81,6 +82,7 @@ function App() {
       <Suspense fallback={<SectionFallback minHeight={400} />}>
         <InsightsSection />
       </Suspense>
+      <PalettePicker />
     </AppShell>
   );
 }

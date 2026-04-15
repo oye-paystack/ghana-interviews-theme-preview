@@ -7,7 +7,7 @@
   flex-direction: column;
   gap: 16px;
   width: var(--desktop-nav-rail-width);
-  color: #fff9f2;
+  color: var(--page-bg);
   mix-blend-mode: difference;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;

@@ -12,10 +12,10 @@
 .hoverPreview {
   width: clamp(180px, 18vw, 260px);
   overflow: hidden;
-  border: 1px solid rgba(82, 56, 39, 0.12);
+  border: 1px solid var(--border-card);
   border-radius: 18px;
-  background: rgba(255, 249, 242, 0.94);
-  box-shadow: 0 28px 72px rgba(28, 20, 14, 0.18);
+  background: var(--card-bg-overlay);
+  box-shadow: 0 28px 72px color-mix(in srgb, var(--title) 22%, transparent);
 }
 
 .hoverPreviewImage {

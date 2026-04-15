@@ -132,7 +132,7 @@
   bottom: 0;
   display: flex;
   align-items: center;
-  color: #523827;
+  color: var(--text);
   font-family: "PP Mori Regular", sans-serif;
   font-size: 12px;
   line-height: 1;

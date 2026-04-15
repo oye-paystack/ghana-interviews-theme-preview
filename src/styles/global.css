@@ -55,28 +55,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: "PP Monument Narrow";
-  src: url("../../fonts/PP Monument Narrow - Medium v4.0/PPMonumentNarrow-Medium.woff2")
-      format("woff2"),
-    url("../../fonts/PP Monument Narrow - Medium v4.0/PPMonumentNarrow-Medium.woff")
-      format("woff");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "PP Monument Narrow Bold";
-  src: url("../../fonts/PP Monument Narrow - Bold v4.0/PPMonumentNarrow-Bold.woff2")
-      format("woff2"),
-    url("../../fonts/PP Monument Narrow - Bold v4.0/PPMonumentNarrow-Bold.woff")
-      format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --page-bg: #fff9f2;
   --copy-panel: #f9ecde;
@@ -86,7 +64,14 @@
   --muted: #6b5847;
   --tag-bg: #523827;
   --tag-text: #fff4e8;
+  --dark-canvas: #0e0801;
+  --dark-canvas-text: #ffefdb;
   --border-soft: rgba(255, 244, 232, 0.15);
+  --border-subtle: rgba(47, 27, 14, 0.12);
+  --border-card: rgba(82, 56, 39, 0.12);
+  --card-bg-overlay: rgba(255, 249, 242, 0.94);
+  --card-bg-popover: rgba(255, 249, 242, 0.95);
+  --scrim-bg: rgba(82, 56, 39, 0.2);
   --glass: rgba(255, 255, 255, 0.26);
   --button-bg: rgba(255, 255, 255, 0.2);
   --button-text: #ffffff;
@@ -96,8 +81,8 @@
   --shadow-soft: 0 20px 42px rgba(61, 43, 24, 0.07);
   --cassette-shadow: 0 10px 22px rgba(0, 0, 0, 0.14);
   --font-body: "PP Mori Regular", sans-serif;
-  --font-display: "PP Monument Narrow", sans-serif;
-  --font-display-strong: "PP Monument Narrow Bold", sans-serif;
+  --font-display: "PP Mori Medium", sans-serif;
+  --font-display-strong: "PP Mori Bold", sans-serif;
   --scribble-font: "Bradley Hand", "Segoe Print", "Comic Sans MS", cursive;
   --desktop-section-max-width: 1440px;
   --desktop-section-padding-inline: 24px;
@@ -119,6 +104,72 @@
     (var(--desktop-grid-column-width) * 2) + var(--desktop-grid-gutter)
   );
   --desktop-side-nav-top: 48px;
+}
+
+/* ---- Palette: Editorial Slate ---- */
+:root[data-palette="slate"] {
+  --page-bg: #f5f5f1;
+  --copy-panel: #eceae3;
+  --title: #1a1c20;
+  --text: #262a30;
+  --muted: #5a5e66;
+  --tag-bg: #1a1c20;
+  --tag-text: #f5f5f1;
+  --nav: #767a84;
+  --nav-active: #1a1c20;
+  --dark-canvas: #0a0b0d;
+  --dark-canvas-text: #e8e9eb;
+  --border-soft: rgba(245, 245, 241, 0.15);
+  --border-subtle: rgba(26, 28, 32, 0.12);
+  --border-card: rgba(26, 28, 32, 0.14);
+  --card-bg-overlay: rgba(245, 245, 241, 0.94);
+  --card-bg-popover: rgba(245, 245, 241, 0.95);
+  --scrim-bg: rgba(26, 28, 32, 0.22);
+  --shadow-soft: 0 20px 42px rgba(26, 28, 32, 0.08);
+}
+
+/* ---- Palette: Ink Navy ---- */
+:root[data-palette="navy"] {
+  --page-bg: #ffffff;
+  --copy-panel: #f2ebdd;
+  --title: #011b33;
+  --text: #0c2744;
+  --muted: #4e6073;
+  --tag-bg: #011b33;
+  --tag-text: #fbf8f1;
+  --nav: #687a90;
+  --nav-active: #011b33;
+  --dark-canvas: #000c1a;
+  --dark-canvas-text: #e6ecf5;
+  --border-soft: rgba(251, 248, 241, 0.15);
+  --border-subtle: rgba(1, 27, 51, 0.12);
+  --border-card: rgba(1, 27, 51, 0.14);
+  --card-bg-overlay: rgba(251, 248, 241, 0.94);
+  --card-bg-popover: rgba(251, 248, 241, 0.95);
+  --scrim-bg: rgba(1, 27, 51, 0.22);
+  --shadow-soft: 0 20px 42px rgba(1, 27, 51, 0.08);
+}
+
+/* ---- Palette: Ink Plum ---- */
+:root[data-palette="plum"] {
+  --page-bg: #f7f3ee;
+  --copy-panel: #ebe3da;
+  --title: #1d1524;
+  --text: #2a2130;
+  --muted: #605664;
+  --tag-bg: #1d1524;
+  --tag-text: #f7f3ee;
+  --nav: #7b7280;
+  --nav-active: #1d1524;
+  --dark-canvas: #0f0912;
+  --dark-canvas-text: #ede5ee;
+  --border-soft: rgba(247, 243, 238, 0.15);
+  --border-subtle: rgba(29, 21, 36, 0.12);
+  --border-card: rgba(29, 21, 36, 0.14);
+  --card-bg-overlay: rgba(247, 243, 238, 0.94);
+  --card-bg-popover: rgba(247, 243, 238, 0.95);
+  --scrim-bg: rgba(29, 21, 36, 0.22);
+  --shadow-soft: 0 20px 42px rgba(29, 21, 36, 0.08);
 }
 
 *,

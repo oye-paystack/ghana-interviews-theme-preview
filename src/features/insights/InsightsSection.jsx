@@ -5,12 +5,27 @@ import { TegakiRenderer } from "tegaki/react";
 import caveatBundle from "tegaki/fonts/caveat";
 import styles from "./InsightsSection.module.css";
 
-const MARKET_NOTE_TEXT =
-  "If you're ever in Ghana, say please as often as you can. It\nsignifies respect, especially to older people.";
+const MARKET_NOTE_LINE_1 =
+  "If you're ever in Ghana, say please as often as you can. It";
+const MARKET_NOTE_LINE_2 = "signifies respect, especially to older people.";
+const MARKET_NOTE_FALLBACK_TEXT = `${MARKET_NOTE_LINE_1}\n${MARKET_NOTE_LINE_2}`;
+const LINE_1_DURATION = 2.4;
+const LINE_2_DURATION = 1.6;
+
+const TEGAKI_INLINE_STYLE = {
+  color: "inherit",
+  fontFamily: "inherit",
+  fontSize: "inherit",
+  lineHeight: "inherit",
+  overflowWrap: "normal",
+  wordBreak: "normal",
+  whiteSpace: "pre-wrap",
+};
 
 function MarketNoteHandwritten({ onAnimationComplete }) {
   const wrapperRef = useRef(null);
   const [inView, setInView] = useState(false);
+  const [line1Complete, setLine1Complete] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const completeRef = useRef(onAnimationComplete);
   completeRef.current = onAnimationComplete;
@@ -48,7 +63,7 @@ function MarketNoteHandwritten({ onAnimationComplete }) {
   if (reducedMotion) {
     return (
       <p ref={wrapperRef} className={styles.marketNote}>
-        {MARKET_NOTE_TEXT}
+        {MARKET_NOTE_FALLBACK_TEXT}
       </p>
     );
   }
@@ -61,21 +76,27 @@ function MarketNoteHandwritten({ onAnimationComplete }) {
           mode: "uncontrolled",
           playing: inView,
           initialTime: 0,
-          duration: 3.8,
+          duration: LINE_1_DURATION,
+          loop: false,
+        }}
+        onComplete={() => setLine1Complete(true)}
+        style={TEGAKI_INLINE_STYLE}
+      >
+        {MARKET_NOTE_LINE_1}
+      </TegakiRenderer>
+      <TegakiRenderer
+        font={caveatBundle}
+        time={{
+          mode: "uncontrolled",
+          playing: line1Complete,
+          initialTime: 0,
+          duration: LINE_2_DURATION,
           loop: false,
         }}
         onComplete={() => completeRef.current?.()}
-        style={{
-          color: "inherit",
-          fontFamily: "inherit",
-          fontSize: "inherit",
-          lineHeight: "inherit",
-          overflowWrap: "normal",
-          wordBreak: "normal",
-          whiteSpace: "pre-line",
-        }}
+        style={TEGAKI_INLINE_STYLE}
       >
-        {MARKET_NOTE_TEXT}
+        {MARKET_NOTE_LINE_2}
       </TegakiRenderer>
     </div>
   );

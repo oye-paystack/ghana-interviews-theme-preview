@@ -1,6 +1,6 @@
 .section {
-  background: #0e0801;
-  color: #ffefdb;
+  background: var(--dark-canvas);
+  color: var(--dark-canvas-text);
 }
 
 .track {

@@ -8,11 +8,11 @@
   width: fit-content;
   max-width: 310px;
   overflow: hidden;
-  border: 1px solid rgba(82, 56, 39, 0.12);
+  border: 1px solid var(--border-card);
   border-radius: 14px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0)),
-    rgba(255, 249, 242, 0.95);
+    var(--card-bg-popover);
 }
 
 .popoverOpen {
@@ -48,7 +48,7 @@
 
 .body::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: rgba(82, 56, 39, 0.2);
+  background: var(--scrim-bg);
 }
 
 .group {
@@ -113,7 +113,7 @@
 .numberInput {
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid rgba(82, 56, 39, 0.14);
+  border: 1px solid var(--border-card);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.72);
   color: var(--title);
