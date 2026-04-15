@@ -46,9 +46,9 @@
 }
 
 .chart {
-  grid-column: 3 / span 8;
+  grid-column: 4 / -1;
   width: min(100%, var(--chart-reference-width, 809px));
-  margin: 96px auto 0;
+  margin: 96px 0 0;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -244,7 +244,7 @@
   }
 
   .chart {
-    grid-column: 2 / span 10;
+    grid-column: 3 / -1;
   }
 }
 
