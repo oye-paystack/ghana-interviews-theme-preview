@@ -24,8 +24,8 @@
   left: 50%;
   translate: -50% -50%;
   margin: 0;
-  font-family: var(--font-display-strong);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 500;
   font-synthesis: none;
   font-size: 64px;
   line-height: 1.1;
@@ -49,8 +49,8 @@
 
 .textGroupHeading {
   margin: 0;
-  font-family: var(--font-display-strong);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 500;
   font-synthesis: none;
   font-size: 48px;
   line-height: 1.1;

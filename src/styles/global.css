@@ -132,22 +132,22 @@
 :root[data-palette="navy"] {
   --page-bg: #ffffff;
   --copy-panel: #f2ebdd;
-  --title: #011b33;
+  --title: #000914;
   --text: #0c2744;
-  --muted: #4e6073;
-  --tag-bg: #011b33;
+  --muted: #5c6065;
+  --tag-bg: #000914;
   --tag-text: #fbf8f1;
   --nav: #687a90;
-  --nav-active: #011b33;
-  --dark-canvas: #000c1a;
-  --dark-canvas-text: #e6ecf5;
+  --nav-active: #000914;
+  --dark-canvas: #000914;
+  --dark-canvas-text: #f3f4f7;
   --border-soft: rgba(251, 248, 241, 0.15);
-  --border-subtle: rgba(1, 27, 51, 0.12);
-  --border-card: rgba(1, 27, 51, 0.14);
+  --border-subtle: rgba(0, 9, 20, 0.12);
+  --border-card: rgba(0, 9, 20, 0.14);
   --card-bg-overlay: rgba(251, 248, 241, 0.94);
   --card-bg-popover: rgba(251, 248, 241, 0.95);
-  --scrim-bg: rgba(1, 27, 51, 0.22);
-  --shadow-soft: 0 20px 42px rgba(1, 27, 51, 0.08);
+  --scrim-bg: rgba(0, 9, 20, 0.22);
+  --shadow-soft: 0 20px 42px rgba(0, 9, 20, 0.08);
 }
 
 /* ---- Palette: Ink Plum ---- */
