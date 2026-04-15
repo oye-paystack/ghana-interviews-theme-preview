@@ -252,8 +252,8 @@ export const themeShowcaseThemes = [
           speakerRole: "Founder, Seesail",
         },
         copy: [
-          "Seesail's founder Victor moved his commerce platform to Paystack because of its ",
-          { highlight: "matured API" },
+          "Seesail's founder Victor Blavo moved his commerce platform to Paystack because of its ",
+          { highlight: "mature API" },
           " — calling it the most reliable option for handling live transaction traffic.",
         ],
       },
