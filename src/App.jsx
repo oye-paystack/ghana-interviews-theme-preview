@@ -1,5 +1,7 @@
 import { Suspense, lazy, useState } from "react";
+import appStyles from "./App.module.css";
 import AppShell from "./app/AppShell";
+import MobileNotice from "./app/MobileNotice";
 import PalettePicker from "./app/PalettePicker";
 import SectionSideNav from "./app/SectionSideNav";
 import {
@@ -40,8 +42,11 @@ function App() {
   const [showRoadmapInlineLabels, setShowRoadmapInlineLabels] = useState(true);
 
   return (
-    <AppShell>
-      {showSideNav ? <SectionSideNav /> : null}
+    <>
+      <MobileNotice />
+      <div className={appStyles.desktopOnly}>
+        <AppShell>
+          {showSideNav ? <SectionSideNav /> : null}
       <OverviewSection />
       <Suspense fallback={<SectionFallback minHeight={720} />}>
         <MerchantCardsSection
@@ -83,7 +88,9 @@ function App() {
         <InsightsSection />
       </Suspense>
       <PalettePicker />
-    </AppShell>
+        </AppShell>
+      </div>
+    </>
   );
 }
 
