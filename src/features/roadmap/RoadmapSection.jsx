@@ -280,9 +280,9 @@ function RoadmapSection({ showInlineLabels = false, showLabelMotion = true }) {
         <div className={styles.headingBlock}>
           <p className={styles.eyebrow}>Roadmap</p>
           <h2 className={styles.heading} id="whats-next">
-            Where merchant demand is pulling the
+            Where merchant demand is pulling
             <br />
-            roadmap next.
+            the roadmap next.
           </h2>
           <p className={styles.copy}>
             Expand any bar to see why merchants want it.
