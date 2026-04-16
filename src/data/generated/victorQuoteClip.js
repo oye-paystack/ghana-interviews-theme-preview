@@ -4,7 +4,7 @@ export const victorQuoteSegments = [
   { start: 0.0, end: 2.58, text: "Well, we had issues because, I mean," },
   { start: 2.58, end: 4.06, text: "Paystack has a more matured API." },
   { start: 4.06, end: 5.76, text: "We all know it's been there for a while." },
-  { start: 5.76, end: 7.62, text: "You know, ZeePay is just starting." },
+  { start: 5.76, end: 7.62, text: "You know, Zeepay is just starting." },
   { start: 7.62, end: 13.58, text: "So they couldn't handle certain traffic that were coming in." },
   { start: 13.58, end: 16.5, text: "There was a lot of callback URL problems" },
   { start: 16.5, end: 18.66, text: "and webhook issues." },

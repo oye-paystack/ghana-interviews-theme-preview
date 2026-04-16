@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import UnicornScene from "unicornstudio-react";
 import styles from "./OverviewSection.module.css";
 
-const PROJECT_ID = "cBzWsZ2pKxXCWE8aQDdN";
+const PROJECT_ID = "o5Zpke7BOmhQrvllyuWc";
 const DEV_PROJECT_ID = import.meta.env.DEV
   ? `${PROJECT_ID}?update=${Date.now()}`
   : PROJECT_ID;
