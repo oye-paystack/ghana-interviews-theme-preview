@@ -31,7 +31,7 @@ export const sylviaTheme4QuoteSegments = [
   {
     start: 23.38,
     end: 25.12,
-    text: "because their money is debited.",
+    text: "because their monies were deducted.",
   },
   {
     start: 27.50,
