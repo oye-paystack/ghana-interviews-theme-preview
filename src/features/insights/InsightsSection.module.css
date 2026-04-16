@@ -52,7 +52,7 @@
 .marketCopy {
   grid-column: 4 / span 6;
   margin-top: 144px;
-  color: var(--text);
+  color: #001733;
   font-family: "PP Mori Regular", sans-serif;
   font-size: 20px;
   line-height: 1.38;
