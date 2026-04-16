@@ -16,6 +16,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
+  will-change: transform;
 }
 
 .title {
