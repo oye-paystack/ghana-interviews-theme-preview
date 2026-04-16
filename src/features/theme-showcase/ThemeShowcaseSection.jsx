@@ -10,6 +10,7 @@ import quoteMarksSrc from "../../../Quotes.svg";
 import ConfigPopover from "./ConfigPopover";
 import MerchantNav from "./MerchantNav";
 import PlayerStage from "./PlayerStage";
+import ScrollingQuoteText from "./ScrollingQuoteText";
 import styles from "./ThemeShowcaseSection.module.css";
 
 const DEFAULT_ORBIT_SPACING = 360;
@@ -457,28 +458,12 @@ function ThemeDetailFrame({
             />
             <div className={styles.shellQuoteContent}>
               {activeMerchant.playbackQuote?.segments ? (
-                <p className={styles.shellQuoteText}>
-                  {activeMerchant.playbackQuote.segments.map((segment, index) => {
-                    const isActive = playbackTime >= segment.start && playbackTime < segment.end;
-                    const hasPlayed = playbackTime >= segment.end;
-
-                    return (
-                      <Fragment key={`${activeMerchant.id}-quote-segment-${index}`}>
-                        <span
-                          className={`${styles.shellQuoteSegment} ${
-                            isActive
-                              ? styles.shellQuoteSegmentActive
-                              : hasPlayed
-                                ? styles.shellQuoteSegmentPlayed
-                                : styles.shellQuoteSegmentUpcoming
-                          }`}
-                        >
-                          {segment.text}
-                        </span>{" "}
-                      </Fragment>
-                    );
-                  })}
-                </p>
+                <ScrollingQuoteText
+                  segments={activeMerchant.playbackQuote.segments}
+                  playbackTime={playbackTime}
+                  variant="shell"
+                  merchantId={activeMerchant.id}
+                />
               ) : (
                 <p className={styles.shellQuoteText}>
                   <span className={styles.shellQuoteLead}>{activeMerchant.playbackQuote?.lead}</span>

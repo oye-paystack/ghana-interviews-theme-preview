@@ -1,0 +1,85 @@
+.viewport {
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
+}
+
+.viewport[data-scrolled="false"] {
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+.textBlock {
+  margin: 0;
+  will-change: transform;
+  transition: transform 400ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.textBlock[data-transition="false"] {
+  transition: none;
+}
+
+/* Shell (dark) variant */
+.shellText {
+  color: var(--dark-canvas-text);
+  font-family: "PP Mori Regular", sans-serif;
+  font-size: 20px;
+  line-height: 1.45;
+}
+
+.shellSegment {
+  transition:
+    color 160ms ease-out,
+    opacity 160ms ease-out;
+}
+
+.shellSegmentActive,
+.shellSegmentPlayed {
+  color: var(--dark-canvas-text);
+}
+
+.shellSegmentUpcoming {
+  color: color-mix(in srgb, var(--dark-canvas-text) 50%, transparent);
+}
+
+/* Light variant */
+.lightText {
+  color: var(--title);
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+}
+
+.lightSegment {
+  transition:
+    color 160ms ease-out,
+    opacity 160ms ease-out;
+}
+
+.lightSegmentActive,
+.lightSegmentPlayed {
+  color: var(--title);
+}
+
+.lightSegmentUpcoming {
+  color: #938376;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .textBlock {
+    transition: none;
+  }
+
+  .viewport {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .lightText {
+    font-size: 20px;
+  }
+}

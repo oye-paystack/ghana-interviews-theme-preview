@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import quoteMarksSrc from "../../../Quotes.svg";
 import styles from "./MerchantCopy.module.css";
+import ScrollingQuoteText from "./ScrollingQuoteText";
 
 function MerchantCopy({ merchant, isPlaying, audioRef = null, isPrimaryInstance = true }) {
   const [playbackTime, setPlaybackTime] = useState(0);
@@ -71,29 +72,12 @@ function MerchantCopy({ merchant, isPlaying, audioRef = null, isPrimaryInstance 
 
         <div className={styles.quoteContent}>
           {quoteSegments ? (
-            <p className={styles.quoteText}>
-              {quoteSegments.map((segment, index) => {
-                const isActive =
-                  playbackTime >= segment.start && playbackTime < segment.end;
-                const hasPlayed = playbackTime >= segment.end;
-
-                return (
-                  <Fragment key={`${merchant.id}-quote-segment-${index}`}>
-                    <span
-                      className={`${styles.quoteSegment} ${
-                        isActive
-                          ? styles.quoteSegmentActive
-                          : hasPlayed
-                            ? styles.quoteSegmentPlayed
-                            : styles.quoteSegmentUpcoming
-                      }`}
-                    >
-                      {segment.text}
-                    </span>{" "}
-                  </Fragment>
-                );
-              })}
-            </p>
+            <ScrollingQuoteText
+              segments={quoteSegments}
+              playbackTime={playbackTime}
+              variant="light"
+              merchantId={merchant.id}
+            />
           ) : (
             <p className={styles.quoteText}>
               <span className={styles.quoteLead}>{merchant.playbackQuote.lead}</span>

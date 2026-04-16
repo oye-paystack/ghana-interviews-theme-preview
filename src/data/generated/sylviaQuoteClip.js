@@ -25,7 +25,7 @@ export const sylviaQuoteSegments = [
   {
     start: 32.44,
     end: 35.68,
-    text: "But right now, it seems like once the customer complains —",
+    text: "But right now, it seems like until the customer complains —",
   },
   {
     start: 35.68,

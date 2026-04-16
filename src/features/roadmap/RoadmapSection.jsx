@@ -177,7 +177,6 @@ function RoadmapBar({
           aria-expanded={isExpanded}
           initial={false}
           style={{
-            willChange: "width, height",
             ...(showInlineLabels ? { "--inline-label-width": `${inlineLabelWidth}px` } : {}),
           }}
           animate={{
