@@ -165,6 +165,13 @@ function MerchantCardsGrid({ hoverPreviewSize = 260, merchants = [] }) {
   };
 
   useEffect(() => {
+    Object.values(wrappedImageByMerchantId).forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
     function handleResize() {
       const nextGap = window.innerWidth <= MOBILE_BREAKPOINT ? MOBILE_GAP : DESKTOP_GAP;
 
